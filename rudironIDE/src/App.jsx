@@ -1,3 +1,4 @@
+import React from 'react'
 import Header from "./components/Header";
 import WayToTeach from "./components/WayToTeach";
 import Button from "./components/Button/Button";
@@ -5,6 +6,9 @@ import { data } from "./data";
 
 
 export default function App() {
+  function handleClick(type){
+    console.log(type)
+  }
   return (
     <div>
       <Header />
@@ -29,9 +33,9 @@ export default function App() {
         </section>
         <section>
           <h3>Чем мы отличаемся от других</h3>
-          <Button>Подход</Button>
-          <Button>Транса</Button>
-          <Button>РАфт</Button>
+          <Button onClick={()=>handleClick("way")}>Подход</Button>
+          <Button onClick={()=>handleClick("easy")}>Транса</Button>
+          <Button onClick={()=>handleClick("program")}>РАфт</Button>
         </section>
       </main>
     </div>
