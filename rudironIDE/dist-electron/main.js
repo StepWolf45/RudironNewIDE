@@ -2,7 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-createRequire(import.meta.url);
+const require2 = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 process.env.APP_ROOT = path.join(__dirname, "..");
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -33,6 +33,9 @@ app.on("window-all-closed", () => {
     app.quit();
     win = null;
   }
+});
+app.on("ready", () => {
+  require2("electron-react-titlebar/main").initialize();
 });
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {

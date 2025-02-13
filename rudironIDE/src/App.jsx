@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import WayToTeach from "./components/WayToTeach";
 import Button from "./components/Button/Button";
 import { data } from "./data";
+import TitleBar from './components/TitleBar/TitleBar';
+import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
 
 
 export default function App() {
@@ -11,6 +13,9 @@ export default function App() {
   }
   return (
     <div>
+      <TitleBar>
+        <TitleBarBtns></TitleBarBtns>
+      </TitleBar>
       <Header />
       <main>
         <section>
