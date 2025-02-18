@@ -13,9 +13,7 @@ export default function App() {
   }
   return (
     <div>
-      <TitleBar>
-        <TitleBarBtns></TitleBarBtns>
-      </TitleBar>
+      <TitleBar/>
       <Header />
       <main>
         <section>

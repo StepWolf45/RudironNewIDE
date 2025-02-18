@@ -1,0 +1,14 @@
+.titleBar {
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    -webkit-app-region: drag;
+    position: absolute;
+    width: 100%;
+    background-color:#181818;
+  }
+.titleBar img{
+    height: 40px;
+
+}

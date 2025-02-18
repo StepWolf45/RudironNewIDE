@@ -3,12 +3,12 @@ import "./TitleBar.css";
 export default function TitleBar({children}) {
 
   return (
-    <div className="titleBar">
-        <img src="public/vite.svg" alt="" />
+    <nav className="titleBar">
+        <img src="public/Лого.svg" alt="" />
         <div className="title">
             RudironIDE
         </div>
         {children}
-    </div>
+    </nav>
   )
 }
