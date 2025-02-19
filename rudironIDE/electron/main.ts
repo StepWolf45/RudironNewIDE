@@ -28,9 +28,12 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
+    minHeight:400,
+    minWidth:500,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color:'#181818',
+      symbolColor:"#ffffff",
       height: 35,
 
     },

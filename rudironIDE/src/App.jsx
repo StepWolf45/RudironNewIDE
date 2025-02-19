@@ -1,8 +1,10 @@
 import React from 'react'
 import Header from "./components/Header";
 import WayToTeach from "./components/WayToTeach";
-import Button from "./components/Button/Button";
+
 import { data } from "./data";
+import { Layout ,Button, Dropdown, Space } from "antd";
+
 import TitleBar from './components/TitleBar/TitleBar';
 import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
 
@@ -14,9 +16,9 @@ export default function App() {
   return (
     <div>
       <TitleBar/>
-      <Header />
+      {/* <Header /> */}
       <main>
-        <section>
+        {/* <section>
           <h3>Наш подход</h3>
           <ul>
             <WayToTeach {... data[0]}/>
@@ -39,8 +41,10 @@ export default function App() {
           <Button onClick={()=>handleClick("way")}>Подход</Button>
           <Button onClick={()=>handleClick("easy")}>Транса</Button>
           <Button onClick={()=>handleClick("program")}>РАфт</Button>
-        </section>
+        </section> */}
       </main>
+
+
     </div>
   );
 }

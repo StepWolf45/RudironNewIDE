@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ant-design": "^1.0.0",
+    "antd": "^5.24.1",
     "electron-react-titlebar": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
