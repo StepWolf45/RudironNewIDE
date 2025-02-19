@@ -1,10 +1,9 @@
 import React from 'react'
 import Header from "./components/Header";
 import WayToTeach from "./components/WayToTeach";
-
 import { data } from "./data";
-import { Layout ,Button, Dropdown, Space } from "antd";
-
+// import {items} from './components/itemsMenu.jsx';
+import MenuBar from './components/MenuBar';
 import TitleBar from './components/TitleBar/TitleBar';
 import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
 
@@ -15,7 +14,11 @@ export default function App() {
   }
   return (
     <div>
-      <TitleBar/>
+      <TitleBar>
+        <MenuBar title="Файл"/>
+        <MenuBar title="Вид"/>
+        <MenuBar title="Подключение"/>
+      </TitleBar>
       {/* <Header /> */}
       <main>
         {/* <section>

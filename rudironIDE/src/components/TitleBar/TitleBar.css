@@ -1,27 +1,13 @@
-/* .titleBar {
-    height: 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
-    -webkit-app-region: drag;
-    width: 100%;
-    background-color:#181818;
-  }
-.titleBar img{
-    height: 20px;
 
-} */
 
 
 .draggable {
   -webkit-app-region: drag;
-  /* Pre-fix app-region during standardization process */
   -webkit-app-region: drag;
 }
 
 .nonDraggable {
   -webkit-app-region: no-drag;
-  /* Pre-fix app-region during standardization process */
   -webkit-app-region: no-drag;
 }
 
@@ -37,17 +23,15 @@
   top: 0;
   display: flex;
   user-select: none;
-  height: 100%;
+  height: 42;
   left: env(titlebar-area-x, 0);
   width: env(titlebar-area-width, 100%);
-
   color: #FFFFFF;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
 }
 
 #titleBar > span {
-  margin: auto;
   padding: 0px 16px 0px 5px;
 }
 
@@ -59,8 +43,8 @@
   padding: 8px;
 }
 #titleBar > img{
-  margin: auto;
-  padding: 0px 5px 0px 10px;
-  height:20px;
+  margin: 5px 10px 5px 10px;
+
+  height:30px;
 }
 

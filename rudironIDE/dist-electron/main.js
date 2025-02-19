@@ -18,7 +18,7 @@ function createWindow() {
     titleBarOverlay: {
       color: "#181818",
       symbolColor: "#ffffff",
-      height: 35
+      height: 40
     },
     icon: path.join(process.env.VITE_PUBLIC, "Лого.svg"),
     webPreferences: {

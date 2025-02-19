@@ -34,7 +34,7 @@ function createWindow() {
     titleBarOverlay: {
       color:'#181818',
       symbolColor:"#ffffff",
-      height: 35,
+      height: 40,
 
     },
     icon: path.join(process.env.VITE_PUBLIC, 'Лого.svg'),
@@ -54,6 +54,8 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
+
+  // win.webContents.openDevTools();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -66,6 +68,7 @@ app.on('window-all-closed', () => {
   }
 })
 app.on('ready', () => {
+
   require('electron-react-titlebar/main').initialize()
 })
 app.on('activate', () => {
