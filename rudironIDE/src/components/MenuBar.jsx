@@ -1,6 +1,10 @@
-import "./TitleBar/TitleBar.css";
+import "./MenuBar.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { useState } from 'react';
 import { FileOutlined } from '@ant-design/icons';
-import {ConfigProvider, Button, Dropdown, Space} from 'antd';     
+import {ConfigProvider, Button, Menu, Dropdown, Space} from 'antd';    
 
 export default function MenuBar({title, children}) {
     const items = [
@@ -55,12 +59,6 @@ export default function MenuBar({title, children}) {
                           defaultBorderColor:'#3D3D3D',
                           defaultActiveBg:'#3D3D3D',
                         },
-                        Dropdown:{
-                                itemHoverColor:'#181818',
-
-                            }
-
-
                     },
                 }}
         >
@@ -70,8 +68,10 @@ export default function MenuBar({title, children}) {
                         trigger={['click']}
                         menu={{
                             items,
+
                         }}
                         placement="bottomLeft"
+                        overlayClassName="custom-dropdown-menu"
                     >
                         
                     <Button  type="default" icon={<FileOutlined />}>{title}</Button>
@@ -81,8 +81,33 @@ export default function MenuBar({title, children}) {
             </Space>
         </ConfigProvider>
     </div>
-    
+  //   const userMenu = (
+  //   <Menu>
+  //     <Menu.Item key="1">Item 1</Menu.Item>
+  //     <Menu.Item key="2">Item 2</Menu.Item>
+  //     <Menu.Item key="3">Item 3</Menu.Item>
+  //     <Menu.Divider />
+  //     <Menu.Item key="3">Logout</Menu.Item>
+  //   </Menu>
+  // );
+  // return (
+  //   <div>
+  //     <Dropdown.Button
+  //       style={{ float: 'right' }}
+  //       overlay={userMenu}
+  //       icon={
+  //         <UserOutlined
+  //           style={{
+  //             fontSize: '28px',
+  //             backgroundColor: '#f0f0f0',
+  //             borderRadius: '50%',
+  //           }}
+  //         />
+  //       }
+  //     >Файл</Dropdown.Button>
+  //   </div>
 
+  // )
   )
 }
 

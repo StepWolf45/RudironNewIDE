@@ -28,15 +28,17 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
+    height:1080,
+    width:1920,
     minHeight:400,
     minWidth:500,
     titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color:'#181818',
-      symbolColor:"#ffffff",
-      height: 40,
+    // titleBarOverlay: {
+    //   color:'#181818',
+    //   symbolColor:"#ffffff",
+    //   height: 80,
 
-    },
+    // },
     icon: path.join(process.env.VITE_PUBLIC, 'Лого.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
@@ -55,7 +57,7 @@ function createWindow() {
     win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
 
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

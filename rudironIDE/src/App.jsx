@@ -4,6 +4,7 @@ import WayToTeach from "./components/WayToTeach";
 import { data } from "./data";
 // import {items} from './components/itemsMenu.jsx';
 import MenuBar from './components/MenuBar';
+import Panels from './components/Panels';
 import TitleBar from './components/TitleBar/TitleBar';
 import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
 
@@ -21,6 +22,8 @@ export default function App() {
       </TitleBar>
       {/* <Header /> */}
       <main>
+      <Panels/>
+
         {/* <section>
           <h3>Наш подход</h3>
           <ul>
