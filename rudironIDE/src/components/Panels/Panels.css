@@ -1,0 +1,39 @@
+
+.Panels{
+    background-color:#181818 ;
+    height:625px;
+  }
+
+.ant-splitter-bar-dragger::after{
+  background-color:  #5A5A5A !important;
+
+}
+.ant-splitter-bar-dragger-active::after{
+  background-color:  #5A5A5A !important;
+
+}
+.sider1{
+  border-right: 1px solid #5A5A5A;
+  background-color: #181818;
+  padding:10px;
+}
+.men{
+  background-color: #181818;
+
+}
+.sider2{
+  border-right:1px solid#5A5A5A;
+
+  background-color: #181818;
+}
+.SplitTop{
+  background-color: #1F1F1F;
+}
+.SplitBottom{
+  border-top:1px solid#5A5A5A;
+  background-color: #1B1B1B;
+}
+.SplitRight{
+  border-left:1px solid#5A5A5A;
+  background-color: #1B1B1B;
+}

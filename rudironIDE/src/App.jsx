@@ -2,9 +2,8 @@ import React from 'react'
 import Header from "./components/Header";
 import WayToTeach from "./components/WayToTeach";
 import { data } from "./data";
-// import {items} from './components/itemsMenu.jsx';
-import MenuBar from './components/MenuBar';
-import Panels from './components/Panels';
+import MenuBar from './components/MenuBar/MenuBar';
+import Panels from './components/Panels/Panels';
 import TitleBar from './components/TitleBar/TitleBar';
 import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
 
@@ -16,38 +15,12 @@ export default function App() {
   return (
     <div>
       <TitleBar>
-        <MenuBar title="Файл"/>
-        <MenuBar title="Вид"/>
-        <MenuBar title="Подключение"/>
+        <MenuBar title="Файл" flag = "1"/>
+        <MenuBar title="Вид" flag = "2"/>
+        <MenuBar title="Подключение" flag = "3"/>
       </TitleBar>
-      {/* <Header /> */}
       <main>
       <Panels/>
-
-        {/* <section>
-          <h3>Наш подход</h3>
-          <ul>
-            <WayToTeach {... data[0]}/>
-            <WayToTeach
-              title={data[1].title}
-              description={data[1].description}
-            />
-            <WayToTeach
-              title={data[2].title}
-              description={data[2].description}
-            />
-            <WayToTeach
-              title={data[3].title}
-              description={data[3].description}
-            />
-          </ul>
-        </section>
-        <section>
-          <h3>Чем мы отличаемся от других</h3>
-          <Button onClick={()=>handleClick("way")}>Подход</Button>
-          <Button onClick={()=>handleClick("easy")}>Транса</Button>
-          <Button onClick={()=>handleClick("program")}>РАфт</Button>
-        </section> */}
       </main>
 
 

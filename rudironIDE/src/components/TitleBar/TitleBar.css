@@ -15,6 +15,7 @@
   height: 54px;
   width: 100%;
   background-color:#181818;
+  border-bottom:1px solid #4A4B4C;
 }
 
 #titleBar {
@@ -27,14 +28,6 @@
 
 #titleBar > img{
   height: 27px;
+  margin:13.5px 30px 13.5px 13.5px;
 }
 
-.Panels{
-  background-color: red ;
-  height:25em;
-  
-}
-.ant-splitter-bar-dragger{
-  background-color: green ;
-
-}

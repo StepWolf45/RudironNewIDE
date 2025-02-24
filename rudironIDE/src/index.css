@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto:wght@400;700&family=Titillium+Web&display=swap');
 
+:root {
+  --ant-default-color: #2E6475; /* Ваш новый основной цвет */
+}
 * {
   margin: 0;
   padding: 0;

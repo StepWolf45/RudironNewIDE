@@ -12,16 +12,16 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win;
 function createWindow() {
   win = new BrowserWindow({
-    height: 1080,
-    width: 1920,
+    height: 900,
+    width: 1e3,
     minHeight: 400,
     minWidth: 500,
     titleBarStyle: "hidden",
-    // titleBarOverlay: {
-    //   color:'#181818',
-    //   symbolColor:"#ffffff",
-    //   height: 80,
-    // },
+    titleBarOverlay: {
+      color: "#181818",
+      symbolColor: "#ffffff",
+      height: 53
+    },
     icon: path.join(process.env.VITE_PUBLIC, "Лого.svg"),
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs")

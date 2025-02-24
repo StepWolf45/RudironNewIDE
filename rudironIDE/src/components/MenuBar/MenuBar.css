@@ -1,0 +1,42 @@
+  .custom-dropdown-menu .ant-dropdown-menu {
+    background-color: #1F1F1F;
+    color: #ffffff;
+  }
+  .ant-dropdown-menu .ant-dropdown-menu-sub {
+
+    background-color: #1F1F1F;
+  }
+  .ant-dropdown-menu-item {
+    color: #ffffff !important;
+  }
+  .ant-dropdown-menu-item .ant-checkbox-input{
+    color: #ffffff !important;
+  }
+  .ant-dropdown-menu-item:hover {
+    background-color: #2E6475 !important;
+    color: #ffffff;
+  }
+  .ant-dropdown-menu-submenu-title:hover{
+    background-color: #2E6475 !important;
+    color: #ffffff;
+  }
+  .ant-checkbox-label{
+
+    color: #ffffff;
+  }
+  .ant-dropdown-menu-title-content{
+
+    color: #ffffff;
+
+  }
+  .DropDownButton{
+    margin:10px 5px
+  }
+  .ant-dropdown-menu-item .ant-dropdown-menu-item-only-child:hover{
+
+    background-color: #2E6475;
+  }
+  .ret{
+    background-color: #2E6475;
+
+  }
