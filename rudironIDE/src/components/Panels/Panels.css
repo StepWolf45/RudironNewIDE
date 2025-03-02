@@ -1,11 +1,10 @@
 
-.ant-splitter-bar-dragger::after{
+.ant-splitter-bar-dragger::before{
   background-color:  #5A5A5A !important;
-
+  width: 1px !important;
 }
 .ant-splitter-bar-dragger-active::after{
   background-color:  #5A5A5A !important;
-
 }
 .sider1{
   border-right: 1px solid #5A5A5A;
@@ -38,5 +37,16 @@
 .ant-splitter-panel {
 
 padding: 0px !important;
+
+}
+.ant-tabs-content-holder{
+  height: 100%;
+
+}
+.ant-splitter-bar-collapse-bar{
+  width:35px !important;
+  height:35px !important;
+  background-color: rgba(62, 171, 204, 0.5) !important;
+
 
 }

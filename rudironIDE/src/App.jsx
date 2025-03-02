@@ -1,11 +1,11 @@
 import React from 'react'
-
+import 'normalize.css';
 import './components/Panels/Panels.css'
 import MenuBar from './components/MenuBar/MenuBar';
 import Panels from './components/Panels/Panels';
 import TitleBar from './components/TitleBar/TitleBar';
 import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
-
+import FileManager from '/src/components/FileManager/FileManager.jsx';
 import { useState } from 'react';
 import { Layout,Splitter, Menu, Tabs, Button,Space } from 'antd';
 import {
@@ -61,48 +61,9 @@ export default function App() {
           <Sider className="sider2">
           </Sider>
         
-  
-          <Layout>
-                <Splitter className='Panels'>
-                    <Splitter.Panel>
-                    <Splitter layout="vertical" className='Ret'>
-                        <Splitter.Panel collapsible min="20%" className="SplitTop">
-                          <Content style={{ margin: '16px' }}>
-                            <Tabs defaultActiveKey="1">
-                              <Tabs.TabPane tab="index.html" key="1">
-                                <div style={{ padding: '16px', background: '#f0f0f0' }}>
-                                  <pre>{`<!DOCTYPE html>
-                                      <html>
-                                      <head>
-                                        <title>Hello, World!</title>
-                                      </head>
-                                      <body>
-                                        <h1>Hello, World!</h1>
-                                      </body>
-                                      </html>`}
-                                  </pre>
-                                </div>
-                              </Tabs.TabPane>
-                              <Tabs.TabPane tab="style.css" key="2">
-                                <div style={{ padding: '16px', background: '#f0f0f0' }}>
-                                  <pre>{`body {
-                                    font-family: Arial, sans-serif;
-                                    background-color: #fff;
-                                      }`}
-                                  </pre>
-                                </div>
-                              </Tabs.TabPane>
-                            </Tabs>
-                          </Content>
-                        </Splitter.Panel>
-                        <Splitter.Panel  collapsible min="20%" className="SplitBottom" >
-                        </Splitter.Panel>
-                    </Splitter>
-                    </Splitter.Panel>
-                    <Splitter.Panel collapsible min="20%"className="SplitRight" >
-                    </Splitter.Panel>
-                </Splitter>
-            </Layout>
+          <Panels>
+            <FileManager/>
+          </Panels>
         </Layout>
       </Layout>
     </div>

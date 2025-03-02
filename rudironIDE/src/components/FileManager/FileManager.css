@@ -1,0 +1,85 @@
+/* Основные стили для панели */
+
+.file-panel {
+    width: 100%;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Стили для вкладок */
+  .ant-tabs {
+    height: 100%;
+  }
+  
+  .ant-tabs-nav {
+    margin: 0;
+  }
+  
+  .ant-tabs-tab {
+    background-color: #2d2d2d !important;
+    border-left:0px !important;
+    border-top:0px !important;
+    border-right: 1px solid #444 !important;
+    border-bottom: 1px solid #444 !important;
+    border-radius: 0px !important;
+    color: #fff !important;
+    /* margin-right: 2px !important; */
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    margin: 0px !important;
+  }
+  
+  .ant-tabs-tab-active {
+    background-color: #1e1e1e !important;
+    border-bottom: 1px solid #1e1e1e !important;
+    border-top: 1px solid rgba(62, 171, 204, 0.5) !important;
+    margin: 0px !important;
+
+  }
+  
+  .ant-tabs-link-bar {
+    background-color:rgba(62, 171, 204, 0.5) !important;
+  }
+  
+  /* Стили для текстового поля */
+  .file-content {
+    width: 100%;
+    height: calc(100vh - 40px);
+    background-color: #1e1e1e;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+
+  }
+  
+  /* Стили для кнопки закрытия вкладки */
+  .tab-label {
+    display: flex;
+    align-items: center;
+    
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: #fff;
+    margin-left: 8px;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .close-button:hover {
+    color: #ff4d4f;
+  }
+  .empty-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #888;
+  }

@@ -12,8 +12,8 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win;
 function createWindow() {
   win = new BrowserWindow({
-    height: 900,
-    width: 1e3,
+    height: 1080,
+    width: 1920,
     minHeight: 400,
     minWidth: 650,
     titleBarStyle: "hidden",
@@ -24,7 +24,8 @@ function createWindow() {
     },
     icon: path.join(process.env.VITE_PUBLIC, "Лого.svg"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.mjs")
+      preload: path.join(__dirname, "preload.mjs"),
+      nodeIntegration: true
     }
   });
   win.removeMenu();

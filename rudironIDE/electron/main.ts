@@ -28,8 +28,8 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
-    height:900,
-    width:1000,
+    height:1080,
+    width:1920,
     minHeight:400,
     minWidth:650,
     titleBarStyle: 'hidden',
@@ -42,6 +42,7 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, 'Лого.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
+      nodeIntegration: true,
     },
   })
   win.removeMenu()
@@ -74,6 +75,7 @@ app.on('ready', () => {
   require('electron-react-titlebar/main').initialize()
 })
 app.on('activate', () => {
+
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {

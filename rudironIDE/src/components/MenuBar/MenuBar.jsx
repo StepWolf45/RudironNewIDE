@@ -2,17 +2,13 @@ import "./MenuBar.css";
 import React from 'react';
 
 import {MenuItem1,MenuItem2,MenuItem3} from './itemsMenu.jsx';
-import { useState } from 'react';
 
 import { FileOutlined ,AppstoreOutlined, ControlOutlined} from '@ant-design/icons';
-import {ConfigProvider, Button, Menu, Dropdown, Space} from 'antd';   
-import { Checkbox } from 'antd';
+import {Button, Dropdown, Space} from 'antd';   
 
 
 
-export default function MenuBar({title, children, flag}) {
-
-
+export default function MenuBar({title, flag}) {
     let items = []
     let iconbutton
     if (flag=="1"){
@@ -30,24 +26,24 @@ export default function MenuBar({title, children, flag}) {
     }
   return (
     <div>
-            <Space direction="vertical" class="nonDraggable">
-                <Space wrap>
-                    <Dropdown
-                        trigger={['click']} 
-                        menu={{
-                            items,
+        <Space direction="vertical" class="nonDraggable">
+            <Space wrap>
+                <Dropdown
+                    trigger={['click']} 
+                    menu={{
+                        items,
 
-                        }}
-                        placement="bottomLeft"
-                        overlayClassName="custom-dropdown-menu"
-                        
-                    >
-                        
-                    <Button className="DropDownButton" type="default" icon={iconbutton}>{title}</Button>
-                    </Dropdown>
+                    }}
+                    placement="bottomLeft"
+                    overlayClassName="custom-dropdown-menu"
                     
-                </Space>
+                >
+                    
+                <Button className="DropDownButton" type="default" icon={iconbutton}>{title}</Button>
+                </Dropdown>
+                
             </Space>
+        </Space>
     </div>
   )
 }
