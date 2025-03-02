@@ -1,7 +1,6 @@
 import { BorderBottomOutlined , MenuUnfoldOutlined,PlusSquareFilled} from "@ant-design/icons";
 import "./Panels.css";
-
-import { Flex, Splitter,Menu, Typography,Layout,Button } from 'antd';
+import { Flex, Splitter,Menu, Typography,Layout, Tabs, Button, Space } from 'antd';
 import React, { useState } from 'react';
 const { Sider } = Layout;
 
@@ -27,7 +26,7 @@ const Desc = (props) => (
 export default function Panels(){
     const [collapsed, setCollapsed] = useState(false);
     return (
-      <Layout>
+      <div>
         <Sider className="sider1"trigger={null} width={90} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
@@ -52,8 +51,10 @@ export default function Panels(){
         />
 
         </Sider>
-        <Sider width={300} className="sider2">
+
+        <Sider className="sider2">
         </Sider>
+        
         <Splitter
             className='Panels'
         >
@@ -71,6 +72,6 @@ export default function Panels(){
             <Desc text="Right" />
             </Splitter.Panel>
         </Splitter>
-        </Layout>
+      </div>
   );
 }

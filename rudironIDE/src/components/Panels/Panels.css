@@ -1,9 +1,4 @@
 
-.Panels{
-    background-color:#181818 ;
-    height:625px;
-  }
-
 .ant-splitter-bar-dragger::after{
   background-color:  #5A5A5A !important;
 
@@ -23,17 +18,25 @@
 }
 .sider2{
   border-right:1px solid#5A5A5A;
-
+  width:10vw;
   background-color: #181818;
 }
 .SplitTop{
   background-color: #1F1F1F;
+  padding: 0px 0px !important;
 }
 .SplitBottom{
   border-top:1px solid#5A5A5A;
   background-color: #1B1B1B;
+
 }
 .SplitRight{
   border-left:1px solid#5A5A5A;
   background-color: #1B1B1B;
+}
+
+.ant-splitter-panel {
+
+padding: 0px !important;
+
 }

@@ -1,6 +1,7 @@
   .custom-dropdown-menu .ant-dropdown-menu {
     background-color: #1F1F1F;
     color: #ffffff;
+
   }
   .ant-dropdown-menu .ant-dropdown-menu-sub {
 
@@ -8,16 +9,18 @@
   }
   .ant-dropdown-menu-item {
     color: #ffffff !important;
+    padding: 5px 20px;
+    
   }
   .ant-dropdown-menu-item .ant-checkbox-input{
     color: #ffffff !important;
   }
   .ant-dropdown-menu-item:hover {
-    background-color: #2E6475 !important;
+    background-color: rgba(62, 171, 204, 0.5) !important;
     color: #ffffff;
   }
   .ant-dropdown-menu-submenu-title:hover{
-    background-color: #2E6475 !important;
+    background-color: rgba(62, 171, 204, 0.5)  !important;
     color: #ffffff;
   }
   .ant-checkbox-label{
@@ -30,13 +33,39 @@
 
   }
   .DropDownButton{
-    margin:10px 5px
+    margin:10px 5px;
+    background-color: #181818;
+    color:#ffffff;
+    border:1px solid #3D3D3D;
+  }
+  .DropDownButton:hover{
+    background-color:#3D3D3D !important;
+    border:1px solid rgba(62, 171, 204, 0.5)  !important;
+    color:#ffffff !important
   }
   .ant-dropdown-menu-item .ant-dropdown-menu-item-only-child:hover{
 
-    background-color: #2E6475;
+    background-color: rgba(62, 171, 204, 0.5) ;
   }
-  .ret{
-    background-color: #2E6475;
 
+  .custom-checkbox .ant-checkbox-inner {
+    background-color: #1F1F1F; 
+    border-color:#555770; 
+    width:14px;
+    height:14px;
+    border-width: 2px;
+    border-radius: 2px;
+  }
+  .custom-checkbox:hover .ant-checkbox-inner {
+    border-color:red; /* Красная рамка */
+  }
+  .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner{
+
+    background-color: #ffffff; 
+    border-color:#ffffff;
+
+  }
+
+  .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
+    border-color:#1F1F1F;
   }

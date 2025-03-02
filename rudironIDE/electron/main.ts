@@ -31,7 +31,7 @@ function createWindow() {
     height:900,
     width:1000,
     minHeight:400,
-    minWidth:500,
+    minWidth:650,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color:'#181818',
