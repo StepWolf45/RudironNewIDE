@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Tabs } from "antd"; // Используем Ant Design для вкладок
-import "./FileManager.css"; // Подключим стили
+import { Tabs } from "antd";
+import "./FileManager.css";
 
 const { TabPane } = Tabs;
 
 export default function FileManager() {
-  // Состояние для хранения списка открытых файлов
+
   const [files, setFiles] = useState([
     { id: 1, name: "index.js", content: "console.log('Hello, world!');" },
     { id: 2, name: "App.js", content: "import React from 'react';" },
     { id: 3, name: "styles.css", content: "body { margin: 0; }" },
   ]);
 
-  // Состояние для активной вкладки
+
   const [activeFileId, setActiveFileId] = useState(files[0]?.id || null);
 
   // Закрытие вкладки
@@ -20,13 +20,12 @@ export default function FileManager() {
     const updatedFiles = files.filter((file) => file.id !== id);
     setFiles(updatedFiles);
 
-    // Если закрыли активную вкладку, переключаемся на первую
+    // Если закрыли активную вкладку, переключаемся на вкладку слева
     if (id === activeFileId) {
-      if (updatedFiles.length > 0) {
-        setActiveFileId(updatedFiles[0].id); // Переключаемся на первый файл
-      } else {
-        setActiveFileId(null); // Если файлов нет, активной вкладки нет
-      }
+      const closedIndex = files.findIndex((file) => file.id === id);
+      const newActiveIndex = Math.max(0, closedIndex - 1); // Индекс вкладки слева
+      const newActiveFileId = updatedFiles[newActiveIndex]?.id || null;
+      setActiveFileId(newActiveFileId);
     }
   };
 
@@ -72,9 +71,8 @@ export default function FileManager() {
               </div>
             }
             key={file.id}
-            closable={files.length > 0} // Закрываемые вкладки, только если есть файлы
+            closable={files.length > 0}
           >
-            {/* Содержимое файла */}
             <textarea
               className="file-content"
               value={file.content}

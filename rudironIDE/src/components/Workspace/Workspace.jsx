@@ -1,16 +1,16 @@
-import "./Panels.css";
+import "./Workspace.css";
 import {Splitter,Layout,Tabs} from 'antd';
 
 const {Content} = Layout;
 
 
-export default function Panels({children}){
+export default function Workspace({children}){
 
     return (
       <Layout>
             <Splitter>
                 <Splitter.Panel>
-                <Splitter layout="vertical">
+                <Splitter layout="vertical" className="SplitLeft">
                     <Splitter.Panel collapsible min="20%" className="SplitTop">
                       {children}
 

@@ -1,0 +1,33 @@
+
+  .ant-layout-sider-trigger{
+    background-color: rgba(62, 171, 204, 0.5)  !important;
+    border-top:1px solid #5A5A5A;
+    border-right:1px solid #5A5A5A;
+
+  }
+  .categories{
+    border-right: 1px solid #5A5A5A;
+    background-color: #181818;
+    min-width: 50px !important;
+    width: 50px !important;
+  }
+
+  .blocks{
+    border-right:1px solid#5A5A5A;
+    width:40px !important;
+    background-color: #181818;
+    padding: 16px;
+  }
+
+  .categ .ant-menu-item{
+    padding: 0px 5px 0px 10px !important;
+    border-radius: 0px;
+  }
+  .categ{
+
+    background-color: #181818;
+  }
+  .img_categ {
+    width: 30px;
+    height: 30px;
+  }
