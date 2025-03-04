@@ -1,3 +1,4 @@
+import BoardVisualization from "../BoardVisualization/BoardVisualization";
 import "./Panels.css";
 import {Splitter,Layout,Tabs} from 'antd';
 
@@ -20,6 +21,7 @@ export default function Panels({children}){
                 </Splitter>
                 </Splitter.Panel>
                 <Splitter.Panel collapsible min="20%"className="SplitRight" >
+                  <BoardVisualization/>
                 </Splitter.Panel>
             </Splitter>
         </Layout>
