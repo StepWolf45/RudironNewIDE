@@ -12,6 +12,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win;
 function createWindow() {
   win = new BrowserWindow({
+    backgroundColor: "#191919",
     height: 1080,
     width: 1920,
     minHeight: 400,
@@ -20,7 +21,7 @@ function createWindow() {
     titleBarOverlay: {
       color: "#181818",
       symbolColor: "#ffffff",
-      height: 53
+      height: 51
     },
     icon: path.join(process.env.VITE_PUBLIC, "Лого.svg"),
     webPreferences: {

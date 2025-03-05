@@ -1,33 +1,57 @@
+.ant-layout-sider-trigger {
+  background-color: #2d2d2d !important;
+  border-top: 1px solid #5a5a5a;
+  border-right: 1px solid #5a5a5a;
+}
 
-  .ant-layout-sider-trigger{
-    background-color: rgba(62, 171, 204, 0.5)  !important;
-    border-top:1px solid #5A5A5A;
-    border-right:1px solid #5A5A5A;
+.categories {
+  border-right: 1px solid #5a5a5a;
+  background-color: #181818;
+}
 
-  }
-  .categories{
-    border-right: 1px solid #5A5A5A;
-    background-color: #181818;
-    min-width: 50px !important;
-    width: 50px !important;
-  }
+.blocks {
+  border-right: 1px solid #5a5a5a;
+  width: 40px !important;
+  background-color: #181818;
+  padding: 16px;
+}
 
-  .blocks{
-    border-right:1px solid#5A5A5A;
-    width:40px !important;
-    background-color: #181818;
-    padding: 16px;
-  }
+.categ .ant-menu-item {
+  padding: 5px 12px !important; /* Отступы для иконки и текста */
+  border-radius: 0px;
+  margin: 0px;
+  width: 100%;
+  display: flex;
+  align-items: center; /* Выравниваем иконку и текст по центру */
+}
 
-  .categ .ant-menu-item{
-    padding: 0px 5px 0px 10px !important;
-    border-radius: 0px;
-  }
-  .categ{
+.ant-menu-item-selected {
+  background-color: #2d2d2d !important;
+  color: #fff !important;
+}
 
-    background-color: #181818;
-  }
-  .img_categ {
-    width: 30px;
-    height: 30px;
-  }
+.categ {
+  background-color: #181818;
+}
+
+.img_categ {
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain;
+
+}
+
+/* Стили для свернутого состояния */
+.ant-layout-sider-collapsed .categ .ant-menu-item {
+  padding: 5px 12px !important; /* Отступы для иконки в свернутом состоянии */
+  justify-content: center; /* Центрируем иконку в свернутом состоянии */
+}
+
+
+.ant-layout-sider-collapsed .categ .ant-menu-item > .ant-menu-title-content {
+  display: none;
+}
+
+.ant-layout-sider-collapsed .categ .ant-menu-item > .ant-menu-item-icon {
+  display: inline-block; /* Показываем иконку в свернутом состоянии */
+}

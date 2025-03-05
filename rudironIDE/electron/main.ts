@@ -28,15 +28,17 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
+    backgroundColor: '#191919',
     height:1080,
     width:1920,
     minHeight:400,
     minWidth:650,
+
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color:'#181818',
       symbolColor:"#ffffff",
-      height: 53,
+      height: 51,
 
     },
     icon: path.join(process.env.VITE_PUBLIC, 'Лого.svg'),

@@ -11,6 +11,10 @@
     height: 34px;
     position: fixed;
   }
+  .ant-tabs-nav:before{
+      border-bottom: 1px solid #444 !important;
+      
+  }
   .file-panel{
 
     height:100%;
@@ -28,15 +32,23 @@
     margin: 0px !important;
 
   }
-  
+  .anticon svg {
+    display: inline-block;
+    color:#fff;
+    }
   .ant-tabs-tab-active {
     background-color: #1e1e1e !important;
     border-bottom: 1px solid #1e1e1e !important;
     border-top: 1px solid rgba(62, 171, 204,1) !important;
     margin: 0px !important;
     box-sizing: border-box !important;
+    color:rgba(62, 171, 204) !important;
 
 
+  }
+  .ant-tabs-tab-active .ant-tabs-tab-btn{
+
+    color:rgba(62, 171, 204) !important;
   }
   
   .ant-tabs-link-bar {
@@ -71,9 +83,7 @@
   .tab-label {
     display: flex;
     align-items: center;
-    
   }
-  
 
   .empty-tab {
     display: flex;
@@ -86,7 +96,28 @@
     border: 1px solid #444 !important;
     border-radius: 0px !important;
     margin-left: 5px !important;
-    height: 34px;
-    padding: 6px !important;
+    padding: 2px !important;
+    width: 35px !important;
 
+  }
+  .ant-tabs-nav-add:hover{
+    background-color:#444 !important;
+
+  }
+  .ant-tabs-nav-more{
+    padding: 3px !important;
+    width:35px !important;
+    border-right: 1px solid #444 !important;
+    border-left: 1px solid #444 !important;
+
+  }
+  .ant-tabs-nav-more:hover{
+    background-color:#444 !important;
+
+  }
+
+  .ant-tabs-dropdown-menu{
+
+    color:#fff !important;
+    background-color: #1e1e1e !important;
   }

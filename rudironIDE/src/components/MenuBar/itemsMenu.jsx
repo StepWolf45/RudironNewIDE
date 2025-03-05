@@ -1,6 +1,6 @@
 import { Checkbox } from 'antd';
 import "./MenuBar.css";
-
+  
 const onChange = (e) => {
   console.log(`checked = ${e.target.checked}`);
   
@@ -15,7 +15,7 @@ export let MenuItem1 = [
       label: (
         <a >
           Сохранить файл
-        </a>
+        </a> 
       ),
     },
     {

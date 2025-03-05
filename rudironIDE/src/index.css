@@ -3,24 +3,27 @@
 #root {
   --font-family: "Inter", sans-serif !important;
   --second-family: "Uni Neue", sans-serif !important;
+  background-color: #181818;
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
 
+}
+html, body {
+  background-color: transparent;
+  overflow: hidden;
+}
 
 
 
 main {
   margin: 0 auto;
-
+  background-color: #181818;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-}
+
 
 
 

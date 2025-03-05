@@ -5,8 +5,12 @@
 }
 .ant-splitter-bar-dragger-active::after{
   background-color:  #5A5A5A !important;
+  width: 1px !important;
 }
+.Workspace{
+  background-color: #1B1B1B;
 
+}
 .SplitTop{
   background-color: #1F1F1F;
   padding: 0px 0px !important;
