@@ -1,0 +1,17 @@
+/* Основные стили контейнера */
+.blockly-container {
+  width: 100%;
+  height: 80vh;
+  min-height: 500px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Кастомизация темы */
+.blocklyMainBackground {
+  fill: #f8f9fa !important;
+}
+
+.blocklyScrollbarHandle {
+  fill: #6c757d !important;
+}

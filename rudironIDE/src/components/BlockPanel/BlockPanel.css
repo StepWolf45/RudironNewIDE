@@ -21,7 +21,7 @@
   border-radius: 0px;
   margin: 0px;
   width: 100%;
-  display: flex;
+
   align-items: center; /* Выравниваем иконку и текст по центру */
 }
 
@@ -41,17 +41,15 @@
 
 }
 
-/* Стили для свернутого состояния */
-.ant-layout-sider-collapsed .categ .ant-menu-item {
-  padding: 5px 12px !important; /* Отступы для иконки в свернутом состоянии */
-  justify-content: center; /* Центрируем иконку в свернутом состоянии */
-}
+/* Скрываем текст при сворачивании */
 
 
-.ant-layout-sider-collapsed .categ .ant-menu-item > .ant-menu-title-content {
+.ant-layout-sider-collapsed .ant-menu-title-content {
   display: none;
 }
 
-.ant-layout-sider-collapsed .categ .ant-menu-item > .ant-menu-item-icon {
-  display: inline-block; /* Показываем иконку в свернутом состоянии */
+/* Фикс выравнивания иконки */
+.ant-layout-sider-collapsed .img_categ {
+  margin: 0 auto;
+  display: block;
 }

@@ -117,7 +117,12 @@
   }
 
   .ant-tabs-dropdown-menu{
-
-    color:#fff !important;
     background-color: #1e1e1e !important;
+    box-shadow: 0 3px 10px 3px rgba(62, 171, 204, 0.5) !important;
+  }
+  .ant-tabs-dropdown-menu-item:hover{
+    background-color: #444  !important;
+  }
+  .ant-tabs-dropdown-menu .tab-label{
+    color:#fff !important;
   }

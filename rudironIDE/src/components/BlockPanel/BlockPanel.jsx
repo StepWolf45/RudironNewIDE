@@ -1,7 +1,7 @@
 import React, { Children, useState } from 'react';
 import { Layout, Menu ,Row,Col } from 'antd';
 import "./BlockPanel.css";
-import ScratchBlocks from '../Blocks/BlocksTemplate';
+
 
 
 const { Sider } = Layout;
@@ -40,11 +40,7 @@ const BlockPanel = ({children}) => {
         <Menu theme="dark" defaultSelectedKes={[activeCategory.id]} mode="inline" items={menuItems} className='categ'/>
       </Sider>
       <Sider width={200} className='blocks'>
-          <ScratchBlocks/>
-            {/* <div >
-              <h2>{activeCategory.name}</h2>
-              <p>{activeCategory.content}</p>
-            </div> */}
+
       </Sider>
       {children}
     </Layout>

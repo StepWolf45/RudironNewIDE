@@ -73,28 +73,28 @@ const BoardVisualization = props => {
 
     })
 
-    // useEffect(() => {
-    //     // Some demo pin control only front
+    useEffect(() => {
+        // Some demo pin control only front
 
-    //     const interval = setInterval(() => {
-    //         handleColorChange("_4", color)
-    //         handleColorChange("_6", color)
-    //         handleColorChange("_7", color)
-    //         handleColorChange("_SDB", color)
-    //         handleColorChange("_12", color)
-    //         if (color == "red") color = "green"
-    //         else color = "red"
-    //     }, 500);
+        const interval = setInterval(() => {
+            handleColorChange("_4", color)
+            handleColorChange("_6", color)
+            handleColorChange("_7", color)
+            handleColorChange("_SDB", color)
+            handleColorChange("_12", color)
+            if (color == "red") color = "green"
+            else color = "red"
+        }, 500);
 
-    //     const interval2 = setInterval(() => {
-    //         handleColorChange("_17", color2)
+        const interval2 = setInterval(() => {
+            handleColorChange("_17", color2)
 
-    //         if (color2 == "red") color2 = "green"
-    //         else color2 = "red"
-    //     }, 100);
+            if (color2 == "red") color2 = "green"
+            else color2 = "red"
+        }, 100);
 
-    //     return () => {clearInterval(interval), clearInterval(interval2)};
-    // }, [])
+        return () => {clearInterval(interval), clearInterval(interval2)};
+    }, [])
 
     return (
         <BoardSVG pins={pins} pwm={pwmPins} />

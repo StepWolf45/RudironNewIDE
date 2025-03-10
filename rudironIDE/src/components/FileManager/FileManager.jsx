@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Tabs } from "antd";
 import "./FileManager.css";
+// import BlocklyWorkspace from '../Blocks/BlocklyWorkspace.jsx';
+
 
 const { TabPane } = Tabs;
 
@@ -73,7 +75,7 @@ export default function FileManager() {
             key={file.id}
             closable={files.length > 0}
           >
-            <textarea
+            {/* <textarea
               className="file-content"
               value={file.content}
               onChange={(e) => {
@@ -82,7 +84,8 @@ export default function FileManager() {
                 );
                 setFiles(updatedFiles);
               }}
-            />
+            /> */}
+              {/* <BlocklyWorkspace /> */}
           </TabPane>
         ))}
 

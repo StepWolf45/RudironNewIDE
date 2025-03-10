@@ -23,15 +23,11 @@
 .SplitRight{
   border-left:1px solid#5A5A5A;
   background-color: #1B1B1B;
-  padding: 70px !important;
-
+  padding: 80px 0px !important;
+  vertical-align: middle !important;
 }
 
-.ant-splitter-panel {
 
-padding: 0px !important;
-
-}
 .ant-tabs-content-holder{
   height: 100%;
 
