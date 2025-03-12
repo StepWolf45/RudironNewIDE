@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Tabs } from "antd";
 import "./FileManager.css";
+import BlocklyEditor from "../Blocks/BlocklyWorkspace.jsx";
 // import BlocklyWorkspace from '../Blocks/BlocklyWorkspace.jsx';
 
 
@@ -85,7 +86,7 @@ export default function FileManager() {
                 setFiles(updatedFiles);
               }}
             /> */}
-              {/* <BlocklyWorkspace /> */}
+            <BlocklyEditor/>
           </TabPane>
         ))}
 

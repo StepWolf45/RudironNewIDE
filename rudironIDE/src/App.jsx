@@ -25,9 +25,9 @@ export default function App() {
           <MenuBar title="Подключение" flag = "3"/>
         </TitleBar>
         <BlockPanel>
-          <Workspace>
+          {/* <Workspace>
             <FileManager/>
-          </Workspace>
+          </Workspace> */}
         </BlockPanel>
       </Layout>
     </div>

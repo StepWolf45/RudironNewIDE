@@ -14,6 +14,7 @@
 .SplitTop{
   background-color: #1F1F1F;
   padding: 0px 0px !important;
+  overflow:hidden ;
 }
 .SplitBottom{
   border-top:1px solid#5A5A5A;
@@ -30,6 +31,7 @@
 
 .ant-tabs-content-holder{
   height: 100%;
+  overflow: hidden;
 
 }
 .ant-splitter-bar-collapse-bar{

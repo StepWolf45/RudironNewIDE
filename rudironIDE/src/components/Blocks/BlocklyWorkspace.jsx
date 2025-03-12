@@ -1,84 +1,58 @@
-// import { useEffect, useRef } from "react";
-// import { inject, Themes } from "blockly";
-// import { javascriptGenerator } from "blockly/javascript";
+import React, { useEffect, useRef } from 'react';
+import * as Blockly from 'blockly'; // Импортируем Blockly как объект
+import 'blockly/blocks';
+import 'blockly/javascript';
 
-// // Правильные пути для стилей в Blockly v10+
-// import "blockly/core.css";
-// import "blockly/theme/modern.css"; // Или другая тема
+const BlocklyEditor = () => {
+  const blocklyDiv = useRef(null);
 
-// const BlocklyWorkspace = ({ onCodeGenerated }) => {
-//   const blocklyDivRef = useRef(null);
+  useEffect(() => {
+    // Инициализация Blockly
+    if (blocklyDiv.current) {
+      Blockly.inject(blocklyDiv.current, {
+        renderer: 'zelos', 
+        toolbox: `
+          <xml xmlns="https://developers.google.com/blockly/xml">
+            <block type="controls_if"></block>
+            <block type="logic_compare"></block>
+            <block type="math_number"></block>
+            <block type="text"></block>
+          </xml>
+        `
+      });
+    }
+
+
+  }, []);
+
+  return (
+    <div
+      ref={blocklyDiv}
+      style={{ height: '100vh', width: '100vw' }}
+    >
+    </div>
+  );
+};
+
+export default BlocklyEditor;
+
+// import { useEffect, useRef } from 'react';
+// import * as Blockly from 'blockly';
+
+// export default function WorkspacePanel({ toolboxId }) {
 //   const workspaceRef = useRef(null);
 
-//   // Конфигурация панели инструментов
-//   const toolbox = {
-//     kind: 'categoryToolbox',
-//     contents: [
-//       {
-//         kind: 'category',
-//         name: 'Logic',
-//         colour: '#5b80a5',
-//         contents: [
-//           { kind: 'block', type: 'controls_if' },
-//           { kind: 'block', type: 'logic_compare' }
-//         ]
-//       },
-//       {
-//         kind: 'category',
-//         name: 'Math',
-//         colour: '#5ba55b',
-//         contents: [
-//           { kind: 'block', type: 'math_number' },
-//           { kind: 'block', type: 'math_arithmetic' }
-//         ]
-//       }
-//     ]
-//   };
-
 //   useEffect(() => {
-//     if (!blocklyDivRef.current) return;
+//     if (!workspaceRef.current) return;
 
-//     // Инициализация рабочей области
-//     workspaceRef.current = inject(blocklyDivRef.current, {
-//       toolbox: toolbox,
-//       theme: Themes.Modern,
-//       grid: {
-//         spacing: 20,
-//         length: 3,
-//         colour: '#ddd',
-//         snap: true
-//       },
-//       move: {
-//         scrollbars: true,
-//         drag: true,
-//         wheel: true
-//       },
+//     const workspace = Blockly.inject(workspaceRef.current, {
+//       toolbox: document.getElementById(toolboxId), // Связь через ID
+//       scrollbars: true,
 //       trashcan: true
 //     });
 
-//     // Обработчик изменений
-//     const changeListener = workspaceRef.current.addChangeListener(() => {
-//       const code = javascriptGenerator.workspaceToCode(workspaceRef.current);
-//       onCodeGenerated?.(code);
-//     });
+//     return () => workspace.dispose();
+//   }, [toolboxId]);
 
-//     return () => {
-//       workspaceRef.current?.removeChangeListener(changeListener);
-//       workspaceRef.current?.dispose();
-//     };
-//   }, []);
-
-//   return (
-//     <div
-//       ref={blocklyDivRef}
-//       style={{
-//         height: '80vh',
-//         width: '100%',
-//         minHeight: '400px',
-//         position: 'relative'
-//       }}
-//     />
-//   );
-// };
-
-// export default BlocklyWorkspace;
+//   return <div ref={workspaceRef} style={{ height: '100vh', width: '100vw' }}/>;
+// }

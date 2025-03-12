@@ -1,8 +1,9 @@
 import React, { Children, useState } from 'react';
 import { Layout, Menu ,Row,Col } from 'antd';
 import "./BlockPanel.css";
-
-
+import Workspace from '../Workspace/Workspace.jsx';
+import BlocklyEditor from '../Blocks/BlocklyWorkspace.jsx';
+import FileManager from '../FileManager/FileManager';
 
 const { Sider } = Layout;
 
@@ -33,16 +34,18 @@ const BlockPanel = ({children}) => {
     icon:<img src={category.image} className='img_categ'/>,
     onClick: () => setActiveCategory(category),
   }));
-
   return (
     <Layout>
       <Sider width={145} collapsedWidth={51} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} className='categories'>
         <Menu theme="dark" defaultSelectedKes={[activeCategory.id]} mode="inline" items={menuItems} className='categ'/>
       </Sider>
-      <Sider width={200} className='blocks'>
+      <Sider width={250} className='blocks'>
 
       </Sider>
-      {children}
+      <Workspace>
+          <FileManager/>
+      </Workspace>
+
     </Layout>
   );
 };
