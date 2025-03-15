@@ -44,7 +44,7 @@ export default function FileManager() {
   };
 
   return (
-    <div className="file-panel">
+    <div className="file-panel" id ="BlocklyArea">
       {/* Панель вкладок */}
       <Tabs
         type="editable-card"
@@ -64,7 +64,6 @@ export default function FileManager() {
           }
         }}
       >
-        {/* Вкладки для файлов */}
         {files.map((file) => (
           <TabPane
             tab={
@@ -76,16 +75,7 @@ export default function FileManager() {
             key={file.id}
             closable={files.length > 0}
           >
-            {/* <textarea
-              className="file-content"
-              value={file.content}
-              onChange={(e) => {
-                const updatedFiles = files.map((f) =>
-                  f.id === file.id ? { ...f, content: e.target.value } : f
-                );
-                setFiles(updatedFiles);
-              }}
-            /> */}
+
             <BlocklyEditor/>
           </TabPane>
         ))}
@@ -95,4 +85,5 @@ export default function FileManager() {
     </div>
   );
 };
+
 

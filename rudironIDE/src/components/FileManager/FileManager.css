@@ -10,9 +10,11 @@
     margin: 0;
     height: 34px;
     position: fixed;
+    /* padding-left:30px !important; */
+  
   }
   .ant-tabs-nav:before{
-      border-bottom: 1px solid #444 !important;
+      border-bottom: 1px solid rgba(74, 75, 76, 0.5)!important;
       
   }
   .file-panel{
@@ -23,8 +25,8 @@
     background-color: #2d2d2d !important;
     border-left:0px !important;
     border-top:0px !important;
-    border-right: 1px solid #444 !important;
-    border-bottom: 1px solid #444 !important;
+    border-right: 1px solid  rgba(74, 75, 76, 0.5)!important;
+    border-bottom: 1px solid rgba(74, 75, 76, 0.5) !important;
     border-radius: 0px !important;
     color: #fff !important;
     /* margin-right: 2px !important; */
@@ -37,8 +39,8 @@
     color:#fff;
     }
   .ant-tabs-tab-active {
-    background-color: #1e1e1e !important;
-    border-bottom: 1px solid #1e1e1e !important;
+    background-color: #1F1F1F !important;
+    border-bottom: 1px solid #1F1F1F !important;
     border-top: 1px solid rgba(62, 171, 204,1) !important;
     margin: 0px !important;
     box-sizing: border-box !important;

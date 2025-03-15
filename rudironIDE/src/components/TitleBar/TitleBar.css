@@ -10,7 +10,7 @@
   height: 52px;
   width: 100%;
   background-color:#181818;
-  border-bottom:1px solid #4A4B4C;
+  border-bottom:1px solid rgba(74, 75, 76, 0.5);
 }
 
 #titleBar {
@@ -19,6 +19,7 @@
   color: #FFFFFF;
   font-weight: bold;
   text-align: left;
+
 }
 
 #titleBar > img{

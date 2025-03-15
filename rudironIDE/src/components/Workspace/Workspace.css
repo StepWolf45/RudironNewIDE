@@ -17,12 +17,12 @@
   overflow:hidden ;
 }
 .SplitBottom{
-  border-top:1px solid#5A5A5A;
+  border-top:1px solid rgba(74, 75, 76, 0.5);
   background-color: #1B1B1B;
 
 }
 .SplitRight{
-  border-left:1px solid#5A5A5A;
+  border-left:1px solid rgba(74, 75, 76, 0.5);
   background-color: #1B1B1B;
   padding: 80px 0px !important;
   vertical-align: middle !important;
@@ -37,12 +37,16 @@
 .ant-splitter-bar-collapse-bar{
 
   width:20px !important;
-  height:30px !important;
+  height:40px !important;
   background-color: rgba(62, 171, 204, 0.5) !important;
 
 }
+.ant-splitter-panel {
+  padding: 0px !important;
+
+}
 .SplitLeft .ant-splitter-bar-collapse-bar{
-  width:30px !important;
+  width:40px !important;
   height:20px !important;
   background-color: rgba(62, 171, 204, 0.5) !important;
 

@@ -36,12 +36,12 @@ const BlockPanel = ({children}) => {
   }));
   return (
     <Layout>
-      <Sider width={145} collapsedWidth={51} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} className='categories'>
+      <Sider width={158} collapsedWidth={60} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} className='categories'>
         <Menu theme="dark" defaultSelectedKes={[activeCategory.id]} mode="inline" items={menuItems} className='categ'/>
       </Sider>
-      <Sider width={250} className='blocks'>
+      {/* <Sider width={250} className='blocks'>
 
-      </Sider>
+      </Sider> */}
       <Workspace>
           <FileManager/>
       </Workspace>
