@@ -27,8 +27,9 @@ const BlocklyEditor = () => {
           <xml xmlns="https://developers.google.com/blockly/xml">
             <block type="controls_if"></block>
             <block type="logic_compare"></block>
-            <block type="math_number"></block>
-            <block type="text"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_boolean"></block>
+
           </xml>
         `
       });
