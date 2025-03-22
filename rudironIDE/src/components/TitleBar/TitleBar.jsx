@@ -6,7 +6,7 @@ export default function TitleBar({children}) {
   return (
     <div id="titleBarContainer">
           <div id="titleBar" className="draggable">
-              <img src="public/Лого.svg" alt="" />
+              <img src="public/logo.svg" alt="" />
               {children}
           </div>
 

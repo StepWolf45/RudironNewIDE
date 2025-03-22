@@ -69,18 +69,12 @@
     font-size: 14px;
 
   }
-  .ant-tabs-content-holder{
-    height:100%;
 
-  }
   .ant-tabs-content{
     height:100%;
 
   }
-  .ant-tabs-tabpane{
 
-    height: calc(100%-50px);
-  }
   /* Стили для кнопки закрытия вкладки */
   .tab-label {
     display: flex;

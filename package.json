@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@ant-design/pro-components": "^2.8.6",
-    "@types/react": "^19.0.10"
-  }
-}

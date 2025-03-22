@@ -23,7 +23,9 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
+const { Tray, Menu } = require('electron');
 
+let tray = null;
 let win: BrowserWindow | null
 
 function createWindow() {
@@ -38,15 +40,16 @@ function createWindow() {
     titleBarOverlay: {
       color:'#181818',
       symbolColor:"#ffffff",
-      height: 51,
+      height: 45,
 
     },
-    icon: path.join(process.env.VITE_PUBLIC, 'Лого.svg'),
+    icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true,
     },
   })
+
   win.removeMenu()
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -73,6 +76,11 @@ app.on('window-all-closed', () => {
   }
 })
 app.on('ready', () => {
+  try {
+    tray = new Tray(path.join(__dirname,  '../public/logo.png')); // Path to the tray icon
+  } catch (error) {
+    console.error('Failed to create tray icon:', error);
+  }
 
   require('electron-react-titlebar/main').initialize()
 })

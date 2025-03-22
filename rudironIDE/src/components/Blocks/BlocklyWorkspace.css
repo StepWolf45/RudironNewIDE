@@ -11,3 +11,14 @@
   fill: #1F1F1F  !important;
   fill-opacity: 0  !important;
 }
+.BlocklyDiv{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.blocklyBlockBackground[data-category="logic"] {
+  fill: #FF5733; /* Новый цвет для логических блоков */
+}

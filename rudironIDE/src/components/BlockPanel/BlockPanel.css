@@ -34,7 +34,7 @@
 .ant-menu-item-selected {
   background-color: #1F1F1F !important;
   color: #fff !important;
-  
+  border-top: 1px solid rgba(74, 75, 76, 0.5);
 
 
 }

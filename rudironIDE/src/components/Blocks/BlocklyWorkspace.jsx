@@ -3,6 +3,8 @@ import * as Blockly from 'blockly'; // Импортируем Blockly как о�
 import 'blockly/blocks';
 import 'blockly/javascript';
 import './BlocklyWorkspace.css'
+// import 'blockly/msg/ru'; 
+
 
 
 const BlocklyEditor = () => {
@@ -10,6 +12,13 @@ const BlocklyEditor = () => {
 
   useEffect(() => {
     // Инициализация Blockly
+    // if (Blockly.Msg && Blockly.Msg.ru) {
+    //   Blockly.setLocale(Blockly.Msg.ru);
+    // } else {
+    //   console.error('Локализация не загружена!');
+    //   return;
+    // }
+
     if (blocklyDiv.current) {
       Blockly.inject(blocklyDiv.current, {
         renderer: 'zelos', 
