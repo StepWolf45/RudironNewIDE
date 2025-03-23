@@ -19,6 +19,7 @@ export const categories = [
     image: cat2,
     toolboxXML: `
       <xml>
+        <block type="start"></block>
         <block type="controls_whileUntil"></block>
         <block type="controls_repeat_ext" colour="#FFA500"></block>
       </xml>
@@ -35,6 +36,7 @@ export const categories = [
         <block type="logic_compare"></block>
         <block type="logic_operation"></block>
         <block type="logic_boolean"></block>
+        <block type="math_arithmetic"></block>
       </xml>
     `
   },
@@ -53,11 +55,11 @@ export const categories = [
   },
   {
   id: '4', 
-  name: 'Математика',
+  name: 'Электроника',
   image: cat3,
   toolboxXML: `
     <xml>
-        <block type="math_arithmetic"></block>
+        <block type="digital_pin"></block>
     </xml>
   `
 },

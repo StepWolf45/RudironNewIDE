@@ -5,6 +5,7 @@ import 'blockly/core';
 import 'blockly/blocks';
 import 'blockly/javascript';
 import './BlocklyWorkspace.css';
+import './CustomBlocks.jsx';
 
 const customTheme = Blockly.Theme.defineTheme('myTheme', {
   'base': Blockly.Themes.Classic,
@@ -21,7 +22,7 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
 });
 
 Blockly.setLocale(Ru);
-
+Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_DO = "вфыв";
 const BlocklyWorkspace = ({ activeCategory }) => {
   const blocklyDiv = useRef(null);
   const workspaceRef = useRef(null);
