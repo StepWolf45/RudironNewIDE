@@ -19,6 +19,19 @@
   bottom: 0;
 }
 
-.blocklyBlockBackground[data-category="logic"] {
-  fill: #FF5733; /* Новый цвет для логических блоков */
+/* #ffe500 */
+.blocklyDraggable:hover .blocklyPath {
+
+  stroke: #ffe500  !important; 
+  stroke-opacity: 1 !important;
+  stroke-width: 3px !important;
 }
+.blocklyPath{
+  filter: none !important;
+}
+
+.blocklySelected .blocklyPath {
+  stroke: #ffe500  !important; /* Красная граница */
+  stroke-width: 3px !important;
+}
+

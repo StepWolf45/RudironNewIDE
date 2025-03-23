@@ -1,11 +1,10 @@
 import React from 'react'
-import './components/Workspace/Workspace.css'
+import './components/SplitterWorkspace/SplitterWorkspace.css'
 import MenuBar from './components/MenuBar/MenuBar';
 import BlockPanel from './components/BlockPanel/BlockPanel';
-import Workspace from './components/Workspace/Workspace';
+import SplitterWorkspace from './components/SplitterWorkspace/SplitterWorkspace.jsx';
 import TitleBar from './components/TitleBar/TitleBar';
-import TitleBarBtns from './components/TitleBarBtns/TitleBarBtns';
-import FileManager from '/src/components/FileManager/FileManager.jsx';
+
 import { useState } from 'react';
 import { Layout } from 'antd';
 

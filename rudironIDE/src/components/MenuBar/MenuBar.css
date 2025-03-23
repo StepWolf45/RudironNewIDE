@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
 .DropDownButton{
-  margin:5px 5px;
+  margin:10px 5px;
   background-color: #181818;
   color:#ffffff;
   border:1px solid #181818;
+  font-family: "Inter", sans-serif !important;
+  
 }
 .DropDownButton:hover{
   background-color:#3D3D3D !important;
@@ -15,12 +20,13 @@
   color: #ffffff;
   box-shadow: 0 3px 10px 3px rgba(62, 171, 204, 0.5);
   padding: 5px;
-
+  font-family: "Inter", sans-serif !important;
 }
 
 .ant-dropdown-menu-item:hover {
   background-color: rgba(62, 171, 204, 0.5) !important;
   color: #ffffff;
+  
 }
 
 
@@ -36,19 +42,20 @@
 .ant-dropdown-menu .ant-dropdown-menu-sub {
   background-color: #1F1F1F;
   box-shadow: 0 3px 10px 3px rgba(62, 171, 204, 0.5);
+  font-family: "Inter", sans-serif !important;
 }
 
 .ant-dropdown-menu-title-content{
   padding: 0px 40px 0px 10px;
   color: #ffffff;
-  
+  font-family: "Inter", sans-serif !important;
 
 }
 
 
 
 .ant-checkbox-label{
-
+  font-family: "Inter", sans-serif !important;
   color: #ffffff;
 }
 
@@ -59,6 +66,7 @@
   height:14px;
   border-width: 2px;
   border-radius: 2px;
+  
 }
 
 .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner{
@@ -75,4 +83,3 @@
   background-color: #ffffff !important; 
   border-color:#ffffff !important;
 }
-
