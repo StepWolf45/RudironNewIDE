@@ -50,6 +50,7 @@ export const categories = [
         <block type="variables_set_dynamic" ></block>
         <block type="variables_get"></block>
         <block type="math_number"></block>
+        <block type="text"></block>
       </xml>
     `
   },
@@ -60,6 +61,7 @@ export const categories = [
   toolboxXML: `
     <xml>
         <block type="digital_pin"></block>
+        <block type="text_print"></block>
     </xml>
   `
 },

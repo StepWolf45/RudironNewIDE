@@ -5,7 +5,7 @@
   .ant-tabs {
     height: 100%;
   }
-  
+
   .ant-tabs-nav{
     margin: 0;
     height: 34px;
@@ -123,3 +123,19 @@
   .ant-tabs-dropdown-menu .tab-label{
     color:#fff !important;
   }
+
+  #BlocklyArea {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .ant-tabs-tabpane .ant-tabs-tabpane-active{
+
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  

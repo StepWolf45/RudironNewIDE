@@ -15,10 +15,16 @@
   background-color: #1F1F1F;
   padding: 0px 0px !important;
   overflow:hidden ;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 .SplitBottom{
   border-top:1px solid rgba(74, 75, 76, 0.5);
   background-color: #1B1B1B;
+  width: 100%;
+  height: 100%;
+  position: relative;
 
 }
 .SplitRight{
@@ -36,8 +42,8 @@
 }
 .ant-splitter-bar-collapse-bar{
 
-  width:20px !important;
-  height:40px !important;
+  width:30px !important;
+  height:50px !important;
   background-color: rgba(62, 171, 204, 0.5) !important;
 
 }
@@ -46,9 +52,10 @@
 
 }
 .SplitLeft .ant-splitter-bar-collapse-bar{
-  width:40px !important;
-  height:20px !important;
+  width:50px !important;
+  height:30px !important;
   background-color: rgba(62, 171, 204, 0.5) !important;
-
-
+  width: 100%;
+  height: 100%;
+  position: relative;
 }

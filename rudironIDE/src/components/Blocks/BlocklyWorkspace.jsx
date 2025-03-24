@@ -28,6 +28,8 @@ const BlocklyWorkspace = ({ activeCategory }) => {
   const workspaceRef = useRef(null);
   const fileInputRef = useRef(null);
   const [autoSave, setAutoSave] = useState(true);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const resizeObserverRef = useRef(null);
 
   // Инициализация workspace
   useEffect(() => {
@@ -40,7 +42,6 @@ const BlocklyWorkspace = ({ activeCategory }) => {
         theme: customTheme,
         renderer: 'zelos',
         scrollbars: true,
-        trashcan: true,
         zoom: {
           controls: true,
           wheel: true,
@@ -73,6 +74,26 @@ const BlocklyWorkspace = ({ activeCategory }) => {
     };
   }, []);
 
+  // Добавлен ResizeObserver
+  useEffect(() => {
+    if (blocklyDiv.current) {
+      resizeObserverRef.current = new ResizeObserver(entries => {
+        const { width, height } = entries[0].contentRect;
+        setContainerSize({ width, height });
+        if (workspaceRef.current) {
+          Blockly.svgResize(workspaceRef.current);
+        }
+      });
+      resizeObserverRef.current.observe(blocklyDiv.current);
+    }
+
+    return () => {
+      if (resizeObserverRef.current && blocklyDiv.current) {
+        resizeObserverRef.current.unobserve(blocklyDiv.current);
+      }
+    };
+  }, []);
+
   // Сохранение в localStorage
   const saveToStorage = useCallback(() => {
     if (workspaceRef.current) {
@@ -81,20 +102,6 @@ const BlocklyWorkspace = ({ activeCategory }) => {
     }
   }, []);
 
-  // const loadFromStorage = () => {
-  //   try {
-  //     const jsonString = localStorage.getItem('blocklyWorkspace');
-  //     return jsonString ? JSON.parse(jsonString) : null;
-  //   } catch (error) {
-  //     console.error('Ошибка загрузки:', error);
-  //     return null;
-  //   }
-  // };
-  
-  // const savedState = loadFromStorage();
-  // console.log(savedState)
-
-  
   // Сохранение в файл
   const saveToFile = useCallback(() => {
     if (workspaceRef.current) {
@@ -131,16 +138,29 @@ const BlocklyWorkspace = ({ activeCategory }) => {
   // Обновление toolbox
   useEffect(() => {
     if (workspaceRef.current && activeCategory) {
-      saveToStorage(); // Сохраняем перед изменением категории
+      saveToStorage();
       const newToolbox = Blockly.utils.xml.textToDom(activeCategory.toolboxXML);
       workspaceRef.current.updateToolbox(newToolbox);
     }
   }, [activeCategory, saveToStorage]);
 
   return (
-    <div>
-      <div ref={blocklyDiv} style={{ height: '100vh', width: '100vw' }} />
-      
+    <div id="blocklyContainer" style={{ 
+      position: 'relative', 
+      width: '100%', 
+      height: '100%' 
+    }}>
+      <div 
+        ref={blocklyDiv} 
+        id="blocklyDiv" 
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0
+        }}
+      />
       <div style={{
         position: 'absolute',
         top: '10px',
@@ -150,31 +170,31 @@ const BlocklyWorkspace = ({ activeCategory }) => {
         gap: '10px',
         flexDirection: 'column'
       }}>
-        <button 
-          onClick={saveToFile}
-          style={buttonStyle}
-          title="Сохранить в файл"
-        >
-          Сохранить
-        </button>
-        
-        <button 
-          onClick={() => fileInputRef.current.click()}
-          style={buttonStyle}
-          title="Загрузить из файла"
-        >
-           Загрузить
-        </button>
+          <button 
+            onClick={saveToFile}
+            style={buttonStyle}
+            title="Сохранить в файл"
+          >
+            Сохранить
+          </button>
+          
+          <button 
+            onClick={() => fileInputRef.current.click()}
+            style={buttonStyle}
+            title="Загрузить из файла"
+          >
+            Загрузить
+          </button>
 
-        <label style={{ ...buttonStyle, background: autoSave ? '#4CAF50' : '#f44336' }}>
-          <input
-            type="checkbox"
-            checked={autoSave}
-            onChange={(e) => setAutoSave(e.target.checked)}
-            style={{ marginRight: '8px' }}
-          />
-          Автосохранение
-        </label>
+          <label style={{ ...buttonStyle, background: autoSave ? '#4CAF50' : '#f44336' }}>
+            <input
+              type="checkbox"
+              checked={autoSave}
+              onChange={(e) => setAutoSave(e.target.checked)}
+              style={{ marginRight: '8px' }}
+            />
+            Автосохранение
+          </label>
       </div>
 
       <input
@@ -184,7 +204,8 @@ const BlocklyWorkspace = ({ activeCategory }) => {
         accept=".json"
         onChange={loadFromFile}
       />
-    </div>
+      </div>
+
   );
 };
 

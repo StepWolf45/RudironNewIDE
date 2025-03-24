@@ -43,9 +43,22 @@ export default function FileTab({children}) {
   };
 
   return (
-    <div className="file-panel" id ="BlocklyArea">
+    <div className="file-panel" 
+        id="BlocklyArea" 
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          position: 'relative'
+    }}>
       {/* Панель вкладок */}
       <Tabs
+        style={{ 
+                width: '100%', 
+                height: '100%',
+                position: 'absolute',
+                top: 0,
+                left: 0
+        }}
         type="editable-card"
         activeKey={activeFileId ? activeFileId.toString() : "add"} // Если файлов нет, активной будет вкладка "+"
         onChange={(key) => {
@@ -73,6 +86,15 @@ export default function FileTab({children}) {
             }
             key={file.id}
             closable={files.length > 0}
+            style={{
+              width: '100%',
+              height: '100%', // Учитываем высоту панели вкладок
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0
+            }}
           >
 
             {children}

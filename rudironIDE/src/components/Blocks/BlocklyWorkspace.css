@@ -11,12 +11,10 @@
   fill: #1F1F1F  !important;
   fill-opacity: 0  !important;
 }
-.BlocklyDiv{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+#blocklyDiv{
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 /* #ffe500 */
@@ -35,3 +33,13 @@
   stroke-width: 3px !important;
 }
 
+.blocklyScrollbarVertical .blocklyScrollbarHandle {
+  fill: rgba(200, 200, 200, 0.3)!important; /* Цвет ползунка */
+  rx: 3px !important; /* Закругление */
+  width: 10px !important; /* Ширина */
+}
+.blocklyScrollbarHorizontal .blocklyScrollbarHandle {
+  fill: rgba(200, 200, 200, 0.3) !important;
+  ry: 3px !important;
+  height: 10px !important;
+}

@@ -10,9 +10,9 @@ export default function SplitterWorkspace({children}){
     return (
       <Layout className="Workspace">
             <Splitter>
-                <Splitter.Panel defaultSize="80%">
+                <Splitter.Panel defaultSize="80%" style={{ position: 'relative' }}>
                 <Splitter layout="vertical" className="SplitLeft">
-                    <Splitter.Panel defaultSize="80%" collapsible min="20%" className="SplitTop">
+                    <Splitter.Panel defaultSize="80%" collapsible min="20%" className="SplitTop" style={{ position: 'relative' }}>
                       {children}
 
                     </Splitter.Panel>
