@@ -16,7 +16,42 @@ export default function FileTab({
     setActiveFileId,
     onCreateNewFile // Add onCreateNewFile prop
 }) {
+    const [tabTitles, setTabTitles] = useState(
+        files.reduce((acc, file) => {
+            acc[file.id] = file.name;
+            return acc;
+        }, {})
+    );
+
+    useEffect(() => {
+        // Check if window.electron and window.electron.ipcRenderer are defined
+        if (window.electron && window.electron.ipcRenderer) {
+            const handleFileSaved = (fileName) => {
+                setTabTitles((prevTabTitles) => ({
+                    ...prevTabTitles,
+                    [activeFileId]: fileName,
+                }));
+            };
+
+            // Listen for the 'file-saved' event from the main process
+            const unsubscribe = window.electron.ipcRenderer.on('file-saved', handleFileSaved);
+
+            return () => {
+                // Clean up the listener when the component unmounts
+                unsubscribe();
+            };
+        } else {
+            console.warn("window.electron or window.electron.ipcRenderer is not defined.");
+            return () => {}; // Return an empty cleanup function
+        }
+    }, [activeFileId]);
+
     const handleClose = (id) => {
+        if (window.electron && window.electron.ipcRenderer) {
+            window.electron.ipcRenderer.send('close-file', id); // Send the file ID to the main process
+        } else {
+            console.warn("window.electron or window.electron.ipcRenderer is not defined.");
+        }
         onCloseFile(id);
     };
 
@@ -61,7 +96,7 @@ export default function FileTab({
                     <TabPane
                         tab={
                             <div className="tab-label">
-                                <span>{file.name}</span>
+                                <span>{tabTitles[file.id] || file.name}</span>
                             </div>
                         }
                         key={file.id}

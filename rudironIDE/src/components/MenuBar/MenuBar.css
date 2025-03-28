@@ -18,7 +18,7 @@
 .custom-dropdown-menu .ant-dropdown-menu {
   background-color: #1F1F1F;
   color: #ffffff;
-  box-shadow: 0 3px 10px 3px rgba(62, 171, 204, 0.5);
+  border: 1px solid rgba(62, 171, 204, 0.5) ;
   padding: 5px;
   font-family: "Inter", sans-serif !important;
 }
@@ -41,7 +41,7 @@
 
 .ant-dropdown-menu .ant-dropdown-menu-sub {
   background-color: #1F1F1F;
-  box-shadow: 0 3px 10px 3px rgba(62, 171, 204, 0.5);
+  border: 1px solid rgba(62, 171, 204, 0.5) ;
   font-family: "Inter", sans-serif !important;
 }
 

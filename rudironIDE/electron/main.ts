@@ -1,96 +1,161 @@
-import { app, BrowserWindow } from 'electron'
-import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
-import path from 'node:path'
+// main.ts
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
+import fs from 'fs';
+import Store from 'electron-store';
 
-const require = createRequire(import.meta.url)
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.mjs
-// │
-process.env.APP_ROOT = path.join(__dirname, '..')
+process.env.APP_ROOT = path.join(__dirname, '..');
 
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
-export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
-export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
-export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
+export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
+export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron');
+export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 const { Tray, Menu } = require('electron');
 
 let tray = null;
-let win: BrowserWindow | null
+let win: BrowserWindow | null;
 
-function createWindow() {
-  win = new BrowserWindow({
-    backgroundColor: '#191919',
-    height:1080,
-    width:1920,
-    minHeight:400,
-    minWidth:650,
+const store = new Store();
 
-    titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color:'#181818',
-      symbolColor:"#ffffff",
-      height: 51,
-
-    },
-    icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
-      nodeIntegration: true,
-    },
-  })
-
-  win.removeMenu()
-  // Test active push message to Renderer-process.
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
-  })
-
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL)
-  } else {
-    // win.loadFile('dist/index.html')
-    win.loadFile(path.join(RENDERER_DIST, 'index.html'))
-  }
-
-  win.webContents.openDevTools();
+interface FilePaths {
+    [key: number]: { path: string | null; isNew: boolean };
 }
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+let currentFilePaths: FilePaths = store.get('currentFilePaths', {}) as FilePaths;
+
+function createWindow() {
+    win = new BrowserWindow({
+        backgroundColor: '#191919',
+        height: 1080,
+        width: 1920,
+        minHeight: 400,
+        minWidth: 650,
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+            color: '#181818',
+            symbolColor: '#ffffff',
+            height: 51,
+        },
+        icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.mjs'),
+            nodeIntegration: true,
+            contextIsolation: true,
+        },
+    });
+
+    win.removeMenu();
+
+    win.webContents.on('did-finish-load', () => {
+        win?.webContents.send('main-process-message', (new Date()).toLocaleString());
+    });
+
+    if (VITE_DEV_SERVER_URL) {
+        win.loadURL(VITE_DEV_SERVER_URL);
+    } else {
+        win.loadFile(path.join(RENDERER_DIST, 'index.html'));
+    }
+
+    win.webContents.openDevTools();
+}
+
+async function saveFileAs(fileId: number, fileData: any): Promise<boolean> {
+    if (!win) {
+        console.error('No window object found!');
+        return false;
+    }
+
+    const result = await dialog.showSaveDialog(win, {
+        filters: [{ name: 'JSON Files', extensions: ['json'] }],
+    });
+
+    if (result.canceled) {
+        console.log('Save As canceled');
+        return false;
+    }
+
+    const filePath = result.filePath;
+    currentFilePaths[fileId] = { path: filePath, isNew: false }; // Mark as not new after saving
+    store.set('currentFilePaths', currentFilePaths);
+
+    return saveFile(fileId, fileData, filePath);
+}
+
+async function saveFile(fileId: number, fileData: any, filePath?: string): Promise<boolean> {
+    if (!win) {
+        console.error('No window object found!');
+        return false;
+    }
+
+    const targetPath = filePath || currentFilePaths[fileId]?.path;
+
+    if (!targetPath) {
+        // If filePath is not provided and we don't have a stored path, it's a "Save As" situation
+        return saveFileAs(fileId, fileData);
+    }
+
+    try {
+        fs.writeFileSync(targetPath, JSON.stringify(fileData));
+        console.log('File saved successfully!');
+        win.webContents.send('file-saved', path.basename(targetPath));
+        return true;
+    } catch (err) {
+        console.error('Error saving file:', err);
+        dialog.showErrorBox('Error saving file', (err as Error).message);
+        return false;
+    }
+}
+
+ipcMain.on('save-file', (event, { fileId, fileData }) => {
+    saveFile(fileId, fileData);
+});
+
+ipcMain.on('save-file-as', (event, { fileId, fileData }) => {
+    saveFileAs(fileId, fileData);
+});
+
+ipcMain.on('new-file', (event, fileId) => {
+    currentFilePaths[fileId] = { path: null, isNew: true }; // Mark as a new file
+    store.set('currentFilePaths', currentFilePaths);
+});
+
+ipcMain.on('file-opened', (event, { fileId, filePath }) => {
+    currentFilePaths[fileId] = { path: filePath, isNew: false }; // Mark as not new when opened
+    store.set('currentFilePaths', currentFilePaths);
+});
+
+ipcMain.on('close-file', (event, fileId) => {
+    delete currentFilePaths[fileId];
+    store.set('currentFilePaths', currentFilePaths);
+});
+
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-    win = null
-  }
-})
+    if (process.platform !== 'darwin') {
+        app.quit();
+        win = null;
+    }
+});
+
 app.on('ready', () => {
-  try {
-    tray = new Tray(path.join(__dirname,  '../public/logo.png')); // Path to the tray icon
-  } catch (error) {
-    console.error('Failed to create tray icon:', error);
-  }
+    try {
+        tray = new Tray(path.join(__dirname, '../public/logo.png'));
+    } catch (error) {
+        console.error('Failed to create tray icon:', error);
+    }
 
-  require('electron-react-titlebar/main').initialize()
-})
+    require('electron-react-titlebar/main').initialize();
+});
+
 app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
+});
 
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
-
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
