@@ -23,6 +23,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
     },
     invoke(channel, ...args) {
       return electron.ipcRenderer.invoke(channel, ...args);
-    }
+    },
+    showInputDialog: (options) => electron.ipcRenderer.invoke("show-input-dialog", options)
   }
 });

@@ -42,17 +42,17 @@ const BlockPanel = ({
                 <Menu theme="dark" defaultSelectedKeys={[activeCategory.id]} mode="inline" items={menuItems} className='categ' />
             </Sider>
             <Workspace>
-            <FileTab
-                files={files}
-                activeFileId={activeFileId}
-                blocklyWorkspaces={blocklyWorkspaces}
-                onSaveFile={handleSave}
-                onWorkspaceMount={onWorkspaceMount}
-                onCloseFile={onCloseFile}
-                activeCategory={activeCategory}
-                workspaceStates={workspaceStates}
-                setActiveFileId = {setActiveFileId}
-                onCreateNewFile={onCreateNewFile} // Pass onCreateNewFile
+                <FileTab
+                    files={files}
+                    activeFileId={activeFileId}
+                    blocklyWorkspaces={blocklyWorkspaces}
+                    onSaveFile={handleSave}
+                    onWorkspaceMount={onWorkspaceMount}
+                    onCloseFile={onCloseFile}
+                    activeCategory={activeCategory}
+                    workspaceStates={workspaceStates}
+                    setActiveFileId={setActiveFileId}
+                    onCreateNewFile={onCreateNewFile} // Pass onCreateNewFile
                 />
             </Workspace>
         </Layout>

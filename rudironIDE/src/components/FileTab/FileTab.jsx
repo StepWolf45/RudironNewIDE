@@ -108,7 +108,6 @@ export default function FileTab({
                             onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
                             activeCategory={activeCategory}
                             onSave={onSaveFile}
-                            key={file.id} // Add a key here
                         />
                     </TabPane>
                 ))}

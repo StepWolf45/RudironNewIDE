@@ -1,5 +1,4 @@
-// main.ts
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, IpcMainEvent } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
@@ -45,7 +44,7 @@ function createWindow() {
         icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.mjs'),
-            nodeIntegration: true,
+            nodeIntegration: false,
             contextIsolation: true,
         },
     });
@@ -150,6 +149,27 @@ app.on('ready', () => {
     }
 
     require('electron-react-titlebar/main').initialize();
+
+    ipcMain.handle('show-input-dialog', async (event, options) => {
+        if (!win) return undefined;
+        
+        await win.webContents.executeJavaScript(`
+            new Promise(resolve => {
+                if (document.readyState === 'complete') resolve();
+                else window.addEventListener('load', resolve);
+            })
+        `);
+    
+        return await win.webContents.executeJavaScript(`
+            new Promise(resolve => {
+                window.showInputDialogReact({
+                    ...${JSON.stringify(options)},
+                    onOk: (value) => resolve(value),
+                    onCancel: () => resolve(undefined)
+                });
+            })
+        `);
+    });
 });
 
 app.on('activate', () => {
