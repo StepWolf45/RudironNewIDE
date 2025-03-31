@@ -11,30 +11,22 @@ const stopPropagation = (e) => {
 
 export let MenuItem1 = [
     {
-      key: '1',
-      label: (
-        <a >
-          Сохранить файл
-        </a> 
-      ),
+        key: 'new',
+        label: 'Новый файл',
     },
     {
-      key: '2',
-      label: (
-        <a >
-        Загрузить файл
-        </a>
-      ),
+        key: 'open',
+        label: 'Открыть файл',
     },
     {
-      key: '3',
-      label:(
-        <a >
-        Новый файл
-        </a>
-      )
+        key: 'save',
+        label: 'Сохранить',
     },
-  ]
+    {
+        key: 'saveAs',
+        label: 'Сохранить Как',
+    },
+];
 export let MenuItem2= [
       {
         key: '1',

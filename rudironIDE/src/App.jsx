@@ -3,7 +3,7 @@ import { Layout } from 'antd'; // Assuming you're using antd Layout
 import TitleBar from './components/TitleBar/TitleBar';
 import MenuBar from './components/MenuBar/MenuBar';
 import BlockPanel from './components/BlockPanel/BlockPanel';
-import CustomInputDialog from './components/CustomInputDialog'; // Import CustomInputDialog
+import CustomInputDialog from './components/Modal/CustomInputDialog.jsx'; // Import CustomInputDialog
 
 export default function App() {
     const [collapsed, setCollapsed] = useState(false);

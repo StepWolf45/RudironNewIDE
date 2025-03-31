@@ -42,10 +42,10 @@
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
   fill: rgba(200, 200, 200, 0.3)!important; /* Цвет ползунка */
   rx: 3px !important; /* Закругление */
-  width: 10px !important; /* Ширина */
+  width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
   fill: rgba(200, 200, 200, 0.3) !important;
   ry: 3px !important;
-  height: 10px !important;
+  height: 7px !important;
 }

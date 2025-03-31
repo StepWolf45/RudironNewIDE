@@ -1,0 +1,19 @@
+.custom-input-modal .ant-modal-content {
+    background-color: #302f2f;
+    border-radius: 8px;
+    width:450px;
+}
+.custom-input-modal .ant-modal-title{
+    background-color: #302f2f;
+    color: #ffffff !important;
+}
+
+
+.custom-input-modal .ant-btn-primary { /* Стиль для основной кнопки */
+    background-color: rgba(62, 171, 204, 0.5) ;
+}
+  
+.custom-input-modal .ant-btn-primary:hover {
+    background-color: rgba(62, 171, 204, 0.5) ;
+    border-color: #40a9ff;
+}

@@ -80,24 +80,7 @@ export default function MenuBar({ title, flag, onCreateNewFile, onOpenFile, file
     };
 
     if (flag === "1") {
-        items = [
-            {
-                key: 'new',
-                label: 'Новый файл',
-            },
-            {
-                key: 'open',
-                label: 'Загрузить файл',
-            },
-            {
-                key: 'save',
-                label: 'Сохранить',
-            },
-            {
-                key: 'saveAs',
-                label: 'Сохранить Как',
-            },
-        ];
+        items = MenuItem1;
         iconbutton = <FileOutlined />;
     }
     if (flag === "2") {

@@ -31,18 +31,6 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
     const [autoSave, setAutoSave] = useState(true);
 
     useEffect(() => {
-        // **Override Blockly.prompt using the prototype**
-          Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
-            Blockly.Events.setGroup(true); // Начать группу событий
-            
-            window.electron.ipcRenderer.invoke('show-input-dialog', {
-                title: msg,
-                defaultValue: defaultValue,
-            }).then(newValue => {
-                callback(newValue !== undefined ? newValue : defaultValue);
-                Blockly.Events.setGroup(false); // Завершить группу событий
-            });
-        });
 
         const workspace = Blockly.inject(blocklyDiv.current, {
             theme: customTheme,
@@ -82,7 +70,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             workspace.dispose();
         };
     }, [activeCategory]);
-
+    //Адаптивный blokcly workspace
     useEffect(() => {
         if (blocklyDiv.current) {
             resizeObserverRef.current = new ResizeObserver(entries => {
@@ -101,7 +89,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             }
         };
     }, []);
-
+    //Смена категорий
     useEffect(() => {
         if (workspaceRef.current && activeCategory) {
             const newToolbox = Blockly.utils.xml.textToDom(activeCategory.toolboxXML);
@@ -115,41 +103,71 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             onSave(workspaceRef.current);
         }
     }, [onSave]);
-
+    //Смена стандартного Alert на кастомный Modal для блоков переменная
     useEffect(() => {
-      Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
+        Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
           Blockly.Events.setGroup(true);
-          
-          window.electron.ipcRenderer.invoke('show-input-dialog', {
+      
+          window.electron.ipcRenderer
+            .invoke('show-input-dialog', {
               title: msg,
               defaultValue: defaultValue,
-          }).then(newValue => {
+            })
+            .then((newValue) => {
+              console.log("Received value from dialog:", newValue);
+      
               if (newValue !== undefined) {
-                  callback(newValue);
-                  // Принудительное обновление переменных
+                const newName = newValue.trim();
+      
+                if (newName) {
                   const workspace = workspaceRef.current;
-                  workspace.getAllVariables().forEach(variable => {
-                      workspace.refreshToolboxSelection();
-                  });
+      
+                  // Попробуйте сначала Blockly.utils.idGenerator.genUid()
+                  let uniqueId;
+                  if (Blockly.utils.idGenerator && typeof Blockly.utils.idGenerator.genUid === 'function') {
+                    uniqueId = Blockly.utils.idGenerator.genUid();
+                  } else {
+                    // Если это не работает, используйте Math.random()
+                    uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                    console.warn("Falling back to Math.random() for ID generation.  Consider updating Blockly.");
+                  }
+      
+                  console.log("Creating variable with ID:", uniqueId, "and name:", newName);
+      
+                  workspace.createVariable(newName, undefined, uniqueId);
+                  workspace.refreshToolboxSelection();
+      
+                  callback(newName);
+                } else {
+                  Modal.error({ content: 'Название переменной не может быть пустым!' });
+                  callback(defaultValue);
+                }
               } else {
-                  callback(defaultValue); // Если отмена, вернуть исходное значение
+                callback(defaultValue);
               }
               Blockly.Events.setGroup(false);
-          });
-      });
-  
-      // Добавьте обработчик событий VAR_RENAME
-      const workspace = workspaceRef.current;
-      const renameListener = (event) => {
+            });
+        });
+      
+        const workspace = workspaceRef.current;
+        const renameListener = (event) => {
           if (event.type === Blockly.Events.VAR_RENAME) {
-              workspace.renameVariableById(event.varId, event.newName);
-              workspace.refreshToolboxSelection();
+            const varId = event.varId;
+            const newName = event.newName;
+      
+            console.log("VAR_RENAME event - ID:", varId, "New name:", newName);
+      
+            workspace.renameVariableById(varId, newName);
+            console.log("Variable renamed successfully.");
+            workspace.refreshToolboxSelection();
+            console.log("Toolbox refreshed.");
           }
-      };
-      console.log('Renaming variable:', event.newName);
-      workspace.addChangeListener(renameListener);
-      return () => workspace.removeChangeListener(renameListener);
-  }, []);
+        };
+        workspace.addChangeListener(renameListener);
+        return () => workspace.removeChangeListener(renameListener);
+      }, []);
+      
+      
     return (
         <div id="blocklyContainer">
             <div ref={blocklyDiv} id="blocklyDiv" style={{ width: '100%', height: '100%' }} />
