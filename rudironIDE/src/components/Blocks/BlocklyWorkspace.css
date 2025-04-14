@@ -2,6 +2,7 @@
 .blocklyMainBackground {
   fill: #1F1F1F  !important;
   stroke:none !important;
+  border: none !important;
 }
 
 .blocklyScrollbarHandle {
@@ -17,6 +18,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  border:none;
 }
 #blocklyContainer{
   position: relative;

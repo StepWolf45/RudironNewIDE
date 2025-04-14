@@ -10,8 +10,6 @@ const images = {
   cat4,
 };
 
-
-
 export const categories = [
   { 
     id: '1', 
@@ -21,7 +19,7 @@ export const categories = [
       <xml>
         <block type="start"></block>
         <block type="controls_whileUntil"></block>
-        <block type="controls_repeat_ext" colour="#FFA500"></block>
+        <block type="controls_repeat_ext"></block>
       </xml>
     `
   },
@@ -60,8 +58,9 @@ export const categories = [
   image: cat3,
   toolboxXML: `
     <xml>
-        <block type="digital_pin"></block>
         <block type="text_print"></block>
+        <block type="delay"></block>
+       
     </xml>
   `
 },
