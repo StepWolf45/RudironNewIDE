@@ -10208,11 +10208,11 @@ function createWindow() {
     minHeight: 400,
     minWidth: 650,
     titleBarStyle: "hidden",
-    titleBarOverlay: {
+    ...process.platform !== "darwin" ? { titleBarOverlay: {
       color: "#181818",
       symbolColor: "#ffffff",
-      height: 51
-    },
+      height: 42
+    } } : {},
     icon: path$1.join(process.env.VITE_PUBLIC, "logo.png"),
     webPreferences: {
       preload: path$1.join(__dirname, "preload.mjs"),

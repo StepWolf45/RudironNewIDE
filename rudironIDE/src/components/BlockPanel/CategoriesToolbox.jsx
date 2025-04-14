@@ -14,7 +14,7 @@ export const categories = [
   { 
     id: '1', 
     name: 'Конструкции',
-    image: cat2,
+    image: cat4,
     toolboxXML: `
       <xml>
         <block type="start"></block>
@@ -41,11 +41,11 @@ export const categories = [
   { 
     id: '3', 
     name: 'Переменные',
-    image: cat4,
+    image: cat2,
     toolboxXML: `
       <xml>
 
-        <block type="variables_set_dynamic" ></block>
+        <block type="variables_set" ></block>
         <block type="variables_get"></block>
         <block type="math_number"></block>
         <block type="text"></block>
@@ -60,7 +60,7 @@ export const categories = [
     <xml>
         <block type="text_print"></block>
         <block type="delay"></block>
-       
+        <block type="pinmode"></block>
     </xml>
   `
 },

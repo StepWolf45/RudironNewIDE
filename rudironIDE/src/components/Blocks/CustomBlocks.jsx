@@ -4,6 +4,7 @@ import { FieldButton } from './FieldButton.js';
 
 Blockly.fieldRegistry.register('field_button', FieldButton);
 
+
 Blockly.Blocks['start'] = {
   init() {
     this.appendDummyInput()
@@ -17,6 +18,24 @@ Blockly.Blocks['start'] = {
   }
 };
 
+Blockly.Blocks['text_print'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "Напечатать %1",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "TEXT"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#33a6cc", // Новый цвет (оранжевый)
+      "tooltip": "Вывести текст",
+      "helpUrl": ""
+    });
+  }
+};
 
 Blockly.Blocks['delay'] = {
   init: function() {
@@ -33,34 +52,79 @@ Blockly.Blocks['delay'] = {
         "previousStatement":null,
         "nextStatement":null,
         "inputsInline": true,
-        "colour": 210,
+        "colour": " #5ab0c2",
+        "tooltip": "Задержка в миллисекундах"
     });
   }
 };
-// Blockly.Blocks['pinmode'] = {
-//   init: function() {
-//     this.jsonInit({
-//         "type": "pinmode",
-//         "message0": "пин %0 на %1", // Added %1 to correspond to args1
-//         "args0": [
-//             {
-//               "type": "input_value",
-//               "name": "VALUE",
-//               "check": "Number"
-//             },
-//         ],
-//         "args1": [
-//           {
-//             "type": "field_dropdown",
-//             "name": "OPERATOR",
-//             "options": [
-//               ["+", "ADD"],
-//               ["-", "SUBTRACT"],
-//             ]
-//           },
-//         ],
-//         "inputsInline": true,
-//         "colour": 210,
-//     });
-//   }
-// };
+Blockly.Blocks['variables_set'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "Присвоить %1 = %2",
+      "args0": [
+        {
+          "type": "field_variable",
+          "name": "VAR",
+          "variable": "элемент"
+        },
+        {
+          "type": "input_value",
+          "name": "VALUE"
+        }
+      ],
+      "colour": "#c359b2", 
+      "previousStatement": null,
+      "nextStatement": null,
+    });
+  }
+};
+
+Blockly.Blocks['variables_get'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_variable",
+          "name": "VAR",
+          "variable": "элемент"
+        }
+      ],
+      "output": null,
+      "colour": "#c25a7c", 
+
+    });
+  }
+};
+
+
+
+Blockly.Blocks['pinmode'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "pinmode",
+      "message0": "Поставить пин %1 на %2",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "PIN",
+          "check": "Number"
+        },
+        {
+          "type": "field_dropdown",
+          "name": "MODE",
+          "options": [
+            ["ВХОД","0"],
+            ["ВЫХОД", "1"],
+            ["ПОДТЯГИВАНИЕ", "2"]
+          ]
+        }
+      ],
+      "previousStatement":true ,
+      "nextStatement": true,
+      "inputsInline": true,
+      "colour":" #5ab0c2",
+      "tooltip": "Ставит пин в выбранный режим"
+    });
+  }
+};

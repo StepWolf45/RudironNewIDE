@@ -55,10 +55,10 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         workspaceRef.current = workspace;
         onWorkspaceMount(workspace);
 
-        // Intercept variable renaming (Optional - redundant, but keeping it for safety)
+        //Сохранение в localStorage
         workspace.addChangeListener((event) => {
             if (event.type === Blockly.Events.VAR && event.name === 'rename') {
-                event.preventDefault(); // Prevent the default alert (though it shouldn't be needed anymore)
+                event.preventDefault(); 
             }
 
             if (autoSave && !event.isUiEvent) {
@@ -103,6 +103,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             onSave(workspaceRef.current);
         }
     }, [onSave]);
+    
     //Смена стандартного Alert на кастомный Modal для блоков переменная
     useEffect(() => {
         Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
@@ -121,13 +122,12 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
       
                 if (newName) {
                   const workspace = workspaceRef.current;
-      
-                  // Попробуйте сначала Blockly.utils.idGenerator.genUid()
+
                   let uniqueId;
                   if (Blockly.utils.idGenerator && typeof Blockly.utils.idGenerator.genUid === 'function') {
                     uniqueId = Blockly.utils.idGenerator.genUid();
                   } else {
-                    // Если это не работает, используйте Math.random()
+
                     uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                     console.warn("Falling back to Math.random() for ID generation.  Consider updating Blockly.");
                   }
@@ -167,7 +167,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         return () => workspace.removeChangeListener(renameListener);
       }, []);
       
-      
+
     return (
         <div id="blocklyContainer">
             <div ref={blocklyDiv} id="blocklyDiv" style={{ width: '100%', height: '100%' }} />
