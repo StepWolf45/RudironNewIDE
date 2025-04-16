@@ -58,7 +58,7 @@ export const categories = [
   image: cat3,
   toolboxXML: `
     <xml>
-        <block type="text_print"></block>
+        <block type="write_text"></block>
         <block type="delay"></block>
         <block type="pinmode"></block>
     </xml>

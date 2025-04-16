@@ -18,7 +18,7 @@ Blockly.Blocks['start'] = {
   }
 };
 
-Blockly.Blocks['text_print'] = {
+Blockly.Blocks['write_text'] = {
   init: function() {
     this.jsonInit({
       "message0": "Напечатать %1",
@@ -104,6 +104,35 @@ Blockly.Blocks['pinmode'] = {
     this.jsonInit({
       "type": "pinmode",
       "message0": "Поставить пин %1 на %2",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "PIN",
+          "check": "Number"
+        },
+        {
+          "type": "field_dropdown",
+          "name": "MODE",
+          "options": [
+            ["ВХОД","0"],
+            ["ВЫХОД", "1"],
+            ["ПОДТЯГИВАНИЕ", "2"]
+          ]
+        }
+      ],
+      "previousStatement":true ,
+      "nextStatement": true,
+      "inputsInline": true,
+      "colour":" #5ab0c2",
+      "tooltip": "Ставит пин в выбранный режим"
+    });
+  }
+};
+Blockly.Blocks['digial_write'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "digial_write",
+      "message0": "Цифровая запись %1 пина со значением %2",
       "args0": [
         {
           "type": "input_value",

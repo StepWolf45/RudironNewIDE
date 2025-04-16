@@ -69,7 +69,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         return () => {
             workspace.dispose();
         };
-    }, [activeCategory]);
+    }, []);
     //Адаптивный blokcly workspace
     useEffect(() => {
         if (blocklyDiv.current) {
