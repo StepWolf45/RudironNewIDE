@@ -128,11 +128,12 @@ Blockly.Blocks['pinmode'] = {
     });
   }
 };
-Blockly.Blocks['digial_write'] = {
+
+Blockly.Blocks['digital_write'] = {
   init: function() {
     this.jsonInit({
-      "type": "digial_write",
-      "message0": "Цифровая запись %1 пина со значением %2",
+      "type": "digital_write",
+      "message0": "Цифровая запись пина %1 со значением %2",
       "args0": [
         {
           "type": "input_value",
@@ -143,9 +144,8 @@ Blockly.Blocks['digial_write'] = {
           "type": "field_dropdown",
           "name": "MODE",
           "options": [
-            ["ВХОД","0"],
-            ["ВЫХОД", "1"],
-            ["ПОДТЯГИВАНИЕ", "2"]
+            ["LOW","0"],
+            ["HIGH", "1"],
           ]
         }
       ],
@@ -153,7 +153,57 @@ Blockly.Blocks['digial_write'] = {
       "nextStatement": true,
       "inputsInline": true,
       "colour":" #5ab0c2",
-      "tooltip": "Ставит пин в выбранный режим"
     });
+  },
+};
+
+Blockly.Blocks['analog_write'] = {
+  init: function() {
+    this.jsonInit({
+      "type": "analog_write",
+      "message0": "Запись аналог. пина %1 со значением %2",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "PIN",
+          "check": "Number"
+        },
+        {
+          "type": "input_value",
+          "name": "VALUE",
+          "check": "Number"
+        }
+      ],
+      "previousStatement":true ,
+      "nextStatement": true,
+      "inputsInline": true,
+      "colour":" #5ab0c2",
+    });
+  },
+  onchange: function(changeEvent) {
+    if (changeEvent.type === Blockly.Events.BLOCK_MOVE ||
+        changeEvent.type === Blockly.Events.BLOCK_CHANGE) { // Check both move and change events
+
+      const pinInput = this.getInput('PIN');
+      const pinValue = this.getFieldValue('PIN') || 0; // Get field value as backup
+      const pinBlock = pinInput.connection.targetBlock();
+
+      if (pinBlock && pinBlock.type === 'math_number') {
+        const numberFieldValue = pinBlock.getFieldValue('NUM') || 0; // Get the value from the number block
+        const numValue = Number(numberFieldValue);
+
+        if (isNaN(numValue) || numValue < 0 || numValue > 255) {
+          this.setWarningText("Значение пина должно быть числом от 0 до 255.");
+          } else {
+              this.setWarningText(null); // Clear the warning.
+          }
+      } else if (pinBlock) {
+        // If connected but not a number block, show a generic warning
+        this.setWarningText("К пину можно подключить только числовое значение.");
+      } else {
+        // If nothing is connected to PIN
+        this.setWarningText(null);
+      }
+    }
   }
 };

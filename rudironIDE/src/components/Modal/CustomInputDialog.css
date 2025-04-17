@@ -21,3 +21,6 @@
     border-color: red !important;
     color:red !important ;
 }
+.custom-input {
+    border: 1px solid  rgba(62, 171, 204, 0.5) !important;
+}

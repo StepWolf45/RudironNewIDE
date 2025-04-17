@@ -61,6 +61,9 @@ export const categories = [
         <block type="write_text"></block>
         <block type="delay"></block>
         <block type="pinmode"></block>
+        <block type="digital_write"></block>
+        <block type="analog_write"></block>
+        
     </xml>
   `
 },

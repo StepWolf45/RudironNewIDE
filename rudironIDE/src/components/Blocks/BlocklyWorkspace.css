@@ -12,6 +12,11 @@
   fill: #1F1F1F  !important;
   fill-opacity: 0  !important;
 }
+.blocklyFlyout{
+  border-right:2px dashed rgba(74, 75, 76, 0.5) !important;
+
+
+}
 #blocklyDiv{
   width: 100%;
   height: 100%;
@@ -50,4 +55,29 @@
   fill: rgba(200, 200, 200, 0.3) !important;
   ry: 3px !important;
   height: 7px !important;
+}
+
+
+/* Add CSS to make the button look clickable */
+.blocklyFieldButton {
+  cursor: pointer;
+  fill: white; /* Цвет текста */
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 2px solid #4CAF50; /* Зеленая граница */
+  background-color: #4CAF50; /* Зеленый фон */
+  color: white;
+  border-radius: 5px;
+}
+
+.blocklyFieldButton:hover {
+  background-color: #367c39; /* Темно-зеленый при наведении */
+  border-color: #367c39;
+}
+
+/* Add a class for "pressed" effect */
+.button-pressed .blocklyFieldButton {
+  background-color: #2e5b30; /* Еще темнее при нажатии */
+  border-color: #2e5b30;
+  transform: translateY(2px); /* Небольшое смещение вниз */
 }

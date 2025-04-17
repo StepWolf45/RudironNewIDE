@@ -16,7 +16,7 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
         },
         'loop_blocks': {
             'colourPrimary': '#EE7475',
-            'colourTertiary': '#FFA8A8',
+            'colourTertiary': '#e94e4f',
         }
     },
 });
@@ -39,7 +39,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             zoom: {
                 controls: true,
                 wheel: true,
-                startScale: 0.9,
+                startScale: 0.8,
                 maxScale: 1.3,
                 minScale: 0.5,
                 scaleSpeed: 1.2,
