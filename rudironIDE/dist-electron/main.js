@@ -10211,7 +10211,7 @@ function createWindow() {
     ...process.platform !== "darwin" ? { titleBarOverlay: {
       color: "#181818",
       symbolColor: "#ffffff",
-      height: 42
+      height: 51
     } } : {},
     icon: path$1.join(process.env.VITE_PUBLIC, "logo.png"),
     webPreferences: {

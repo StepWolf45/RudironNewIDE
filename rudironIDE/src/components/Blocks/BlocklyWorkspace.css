@@ -1,36 +1,65 @@
 
-.blocklyMainBackground {
-  fill: #1F1F1F  !important;
-  stroke:none !important;
-  border: none !important;
+/* Значок настройки if/else */
+.blocklyIconShape {
+  fill:#2e5b30 !important;
+  height: 20px !important;
+  width: 20px !important;
+}
+circle.blocklyIconShape{
+  transform: scale(1.2);
+}
+.blocklyIconSymbol{
+  transform: scale(1.2);
 }
 
-.blocklyScrollbarHandle {
-  fill: #6c757d !important;
+
+/* Scrollbar */
+.blocklyScrollbarVertical .blocklyScrollbarHandle {
+  fill: rgb(82,83,83) !important; /* Цвет ползунка */
+  rx: 3px !important; /* Закругление */
+  width: 7px !important; /* Ширина */
 }
+.blocklyScrollbarHorizontal .blocklyScrollbarHandle {
+  fill: rgb(82,83,83) !important;
+  ry: 3px !important;
+  height: 7px !important;
+}
+
+/* Настройки toolbox */
 .blocklyFlyoutBackground {
   fill: #1F1F1F  !important;
   fill-opacity: 0  !important;
 }
 .blocklyFlyout{
   border-right:2px dashed rgba(74, 75, 76, 0.5) !important;
-
+  background-color: rgba(31, 31, 31,0.5);
 
 }
+
+/* Контейнеры для блоков */
+.blocklyMainBackground {
+  fill: #1F1F1F  !important;
+  stroke:none !important;
+  border: none !important;
+}
+
 #blocklyDiv{
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  border:none;
+
 }
 #blocklyContainer{
   position: relative;
   width: 100%;
   height: 100%;
+  border:none !important;
 }
-/* #ffe500 */
+
+
+/* Обводка блоков */
 .blocklyDraggable:hover .blocklyPath {
 
   stroke: #ffe500  !important; 
@@ -44,40 +73,4 @@
 .blocklySelected .blocklyPath {
   stroke: #ffe500  !important; /* Красная граница */
   stroke-width: 3px !important;
-}
-
-.blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: rgba(200, 200, 200, 0.3)!important; /* Цвет ползунка */
-  rx: 3px !important; /* Закругление */
-  width: 7px !important; /* Ширина */
-}
-.blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: rgba(200, 200, 200, 0.3) !important;
-  ry: 3px !important;
-  height: 7px !important;
-}
-
-
-/* Add CSS to make the button look clickable */
-.blocklyFieldButton {
-  cursor: pointer;
-  fill: white; /* Цвет текста */
-  font-weight: bold;
-  padding: 5px 10px;
-  border: 2px solid #4CAF50; /* Зеленая граница */
-  background-color: #4CAF50; /* Зеленый фон */
-  color: white;
-  border-radius: 5px;
-}
-
-.blocklyFieldButton:hover {
-  background-color: #367c39; /* Темно-зеленый при наведении */
-  border-color: #367c39;
-}
-
-/* Add a class for "pressed" effect */
-.button-pressed .blocklyFieldButton {
-  background-color: #2e5b30; /* Еще темнее при нажатии */
-  border-color: #2e5b30;
-  transform: translateY(2px); /* Небольшое смещение вниз */
 }

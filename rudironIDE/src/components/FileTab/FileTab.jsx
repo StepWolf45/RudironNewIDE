@@ -14,7 +14,7 @@ export default function FileTab({
     activeCategory,
     workspaceStates,
     setActiveFileId,
-    onCreateNewFile // Add onCreateNewFile prop
+    onCreateNewFile 
 }) {
     const [tabTitles, setTabTitles] = useState(
         files.reduce((acc, file) => {
@@ -24,7 +24,6 @@ export default function FileTab({
     );
 
     useEffect(() => {
-        // Check if window.electron and window.electron.ipcRenderer are defined
         if (window.electron && window.electron.ipcRenderer) {
             const handleFileSaved = (fileName) => {
                 setTabTitles((prevTabTitles) => ({
@@ -33,39 +32,30 @@ export default function FileTab({
                 }));
             };
 
-            // Listen for the 'file-saved' event from the main process
             const unsubscribe = window.electron.ipcRenderer.on('file-saved', handleFileSaved);
 
             return () => {
-                // Clean up the listener when the component unmounts
                 unsubscribe();
             };
         } else {
             console.warn("window.electron or window.electron.ipcRenderer is not defined.");
-            return () => {}; // Return an empty cleanup function
+            return () => {}; 
         }
     }, [activeFileId]);
 
     const handleClose = (id) => {
         if (window.electron && window.electron.ipcRenderer) {
-            window.electron.ipcRenderer.send('close-file', id); // Send the file ID to the main process
+            window.electron.ipcRenderer.send('close-file', id); 
         } else {
             console.warn("window.electron or window.electron.ipcRenderer is not defined.");
         }
         onCloseFile(id);
     };
 
-    // Memoize workspaceStates to prevent unnecessary re-renders
     const memoizedWorkspaceStates = useMemo(() => workspaceStates, [workspaceStates]);
 
     return (
-        <div className="file-panel"
-            id="BlocklyArea"
-            style={{
-                width: '100%',
-                height: '100%',
-                position: 'relative'
-            }}>
+        <div className="file-panel">
             <Tabs
                 style={{
                     width: '100%',
@@ -78,14 +68,14 @@ export default function FileTab({
                 activeKey={activeFileId ? activeFileId.toString() : "add"} // If no files, activeKey is "add"
                 onChange={(key) => {
                     if (key === "add") {
-                        onCreateNewFile(); // Call onCreateNewFile
+                        onCreateNewFile(); 
                     } else {
                         setActiveFileId(key);
                     }
                 }}
                 onEdit={(key, action) => {
                     if (action === "add") {
-                        onCreateNewFile(); // Call onCreateNewFile
+                        onCreateNewFile(); 
                     } else {
                         handleClose(Number(key));
                     }
