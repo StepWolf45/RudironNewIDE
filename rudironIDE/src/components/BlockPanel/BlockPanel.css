@@ -54,7 +54,9 @@
 
 
 .ant-layout-sider-collapsed .ant-menu-title-content {
-  display: none;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
 }
 
 /* Фикс выравнивания иконки */
