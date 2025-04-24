@@ -26,7 +26,7 @@
   margin: 0px !important;
   width: 100%;
   height: 46px;
-  align-items: center; /* Выравниваем иконку и текст по центру */
+  align-items: center; 
   display: flex;
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
