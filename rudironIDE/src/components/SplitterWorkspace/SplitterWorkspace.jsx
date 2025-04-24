@@ -10,13 +10,13 @@ export default function SplitterWorkspace({children}){
     return (
       <Layout className="Workspace">
             <Splitter>
-                <Splitter.Panel defaultSize="80%" collapsible min="60%" style={{ position: 'relative' }}>
+                <Splitter.Panel defaultSize="80%"  style={{ position: 'relative' }}>
                 <Splitter layout="vertical" className="SplitLeft">
-                    <Splitter.Panel defaultSize="80%" collapsible min="20%" className="SplitTop" style={{ position: 'relative' }}>
+                    <Splitter.Panel defaultSize="80%" className="SplitTop" style={{ position: 'relative' }}>
                       {children}
 
                     </Splitter.Panel>
-                    <Splitter.Panel  defaultSize="20%" collapsible min="10%" className="SplitBottom" >
+                    <Splitter.Panel  defaultSize="20%" collapsible min="20%" className="SplitBottom" >
                     <div className="adaptive-text-container">
                       <Paragraph>
                         <Text strong>Serial Port:</Text>
@@ -28,7 +28,7 @@ export default function SplitterWorkspace({children}){
                     </Splitter.Panel>
                 </Splitter>
                 </Splitter.Panel>
-                <Splitter.Panel defaultSize="20%"  maxSize={400} collapsible min="25%" className="SplitRight" >
+                <Splitter.Panel defaultSize="20%" maxSize={400}  collapsible min="25%" className="SplitRight" >
                   <BoardVisualization />
                 </Splitter.Panel>
             </Splitter>

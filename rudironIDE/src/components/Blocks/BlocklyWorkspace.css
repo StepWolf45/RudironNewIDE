@@ -14,7 +14,7 @@
 }
 .blocklyFlyout{
   border-right:2px dashed rgba(74, 75, 76, 0.5) !important;
-
+  background-color: rgba(31, 31, 31,0.5);
 
 }
 #blocklyDiv{
@@ -23,12 +23,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  border:none;
+
 }
 #blocklyContainer{
   position: relative;
   width: 100%;
   height: 100%;
+  border:none !important;
 }
 /* #ffe500 */
 .blocklyDraggable:hover .blocklyPath {
@@ -47,12 +48,12 @@
 }
 
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: rgba(200, 200, 200, 0.3)!important; /* Цвет ползунка */
+  fill: rgb(82,83,83) !important; /* Цвет ползунка */
   rx: 3px !important; /* Закругление */
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: rgba(200, 200, 200, 0.3) !important;
+  fill: rgb(82,83,83) !important;
   ry: 3px !important;
   height: 7px !important;
 }

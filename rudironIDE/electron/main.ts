@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, IpcMainEvent } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut  } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
@@ -39,7 +39,7 @@ function createWindow() {
         ...(process.platform !== 'darwin' ? {  titleBarOverlay: {
             color: '#181818',
             symbolColor: '#ffffff',
-            height: 42,
+            height: 51,
         },} : {}),
         icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
         webPreferences: {
@@ -142,6 +142,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
+  
     try {
         tray = new Tray(path.join(__dirname, '../public/logo.png'));
     } catch (error) {

@@ -40,7 +40,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 controls: true,
                 wheel: true,
                 startScale: 0.8,
-                maxScale: 1.3,
+                maxScale: 1,
                 minScale: 0.5,
                 scaleSpeed: 1.2,
                 pinch: true
