@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 const {Content} = Layout;
 const { Text, Paragraph } = Typography; 
 
-export default function SplitterWorkspace({children}){
+export default function  Workspace({children}){
 
     return (
       <Layout className="Workspace">

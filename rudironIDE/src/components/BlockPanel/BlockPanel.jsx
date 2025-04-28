@@ -2,7 +2,6 @@ import React, { Children, useState, useCallback, useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import "./BlockPanel.css";
 import Workspace from '../SplitterWorkspace/SplitterWorkspace.jsx';
-import BlocklyWorkspace from '../Blocks/BlocklyWorkspace.jsx';
 import FileTab from '../FileTab/FileTab.jsx';
 import { categories } from './CategoriesToolbox.jsx';
 
