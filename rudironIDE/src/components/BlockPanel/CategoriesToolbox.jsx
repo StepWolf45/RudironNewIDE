@@ -1,4 +1,4 @@
-import cat1 from '../../../public/RoundCube-Blue-Glossy.svg';
+import cat1 from '../../../public/RoundCube-Blue-Glossy.png';
 import cat2 from '../../../public/Cube-Yellow-Glossy.svg';
 import cat3 from '../../../public/RoundCube-Blue-Glossy_2.svg';
 import cat4 from '../../../public/RoundCube-Orange-Glossy.svg';

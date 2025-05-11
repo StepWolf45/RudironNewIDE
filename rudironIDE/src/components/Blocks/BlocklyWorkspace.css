@@ -15,12 +15,12 @@ circle.blocklyIconShape{
 
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: rgb(82,83,83) !important; /* Цвет ползунка */
+  fill: #2d2d2d!important; /* Цвет ползунка */
   rx: 3px !important; /* Закругление */
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: rgb(82,83,83) !important;
+  fill: #2d2d2d !important;
   ry: 3px !important;
   height: 7px !important;
 }
@@ -30,10 +30,14 @@ circle.blocklyIconShape{
   fill: #1F1F1F  !important;
   fill-opacity: 0  !important;
 }
-.blocklyFlyout{
-  border-right:2px dashed rgba(74, 75, 76, 0.5) !important;
-  background-color: rgba(31, 31, 31,0.5);
 
+.blocklyFlyout{
+
+  background-color: rgba(31, 31, 31,0.5);
+  background-image: repeating-linear-gradient(to bottom,transparent 0 3px,#2d2d2d 4px 14px);
+  background-size: 2px 98%;
+  background-position: right top;
+  background-repeat: no-repeat;
 }
 
 /* Контейнеры для блоков */
