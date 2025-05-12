@@ -3,12 +3,7 @@ import cat2 from '../../../public/Cube-Yellow-Glossy.svg';
 import cat3 from '../../../public/RoundCube-Blue-Glossy_2.svg';
 import cat4 from '../../../public/RoundCube-Orange-Glossy.svg';
 
-const images = {
-  cat1,
-  cat2,
-  cat3,
-  cat4,
-};
+
 
 export const categories = [
   { 

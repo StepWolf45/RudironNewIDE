@@ -7,7 +7,7 @@
 }
 
 #titleBarContainer {
-  height: 52px;
+  height: 44px;
   width: 100%;
   background-color:#181818;
   border-bottom:1px solid rgba(74, 75, 76, 0.5);
@@ -23,6 +23,6 @@
 }
 
 #titleBar > img{
-  height: 27px;
-  margin:12px 30px 12px 17px;
+  height: 24px;
+  margin: 10px 25px  0px 18px;
 }

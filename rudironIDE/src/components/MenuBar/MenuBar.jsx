@@ -1,18 +1,21 @@
+// src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
-import React from 'react';
-import {MenuItem1, MenuItem2, MenuItem3} from './itemsMenu.jsx';
+import React, { useContext, useRef } from 'react';
+import { MenuItem1, MenuItem2, MenuItem3 } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space, Menu } from 'antd';
-import { useRef } from 'react';
+import { FileContext } from '../../contexts/FileContext';
 
-export default function MenuBar({ title, flag, onCreateNewFile, onOpenFile, files, activeFileId, blocklyWorkspaces }) {
+
+export default function MenuBar({ title, flag }) {
     let items = [];
     let iconbutton;
     const fileInputRef = useRef(null);
+    const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces, filePaths } = useContext(FileContext);
 
     const handleMenuClick = (e) => {
         if (e.key === 'new') {
-            onCreateNewFile();
+            handleCreateNewFile();
             if (window.electron && window.electron.ipcRenderer) {
                 window.electron.ipcRenderer.send('new-file', activeFileId);
             } else {
@@ -63,11 +66,16 @@ export default function MenuBar({ title, flag, onCreateNewFile, onOpenFile, file
         reader.onload = (e) => {
             try {
                 const fileContent = JSON.parse(e.target.result);
-                const fileName = file.path;
-                onOpenFile(fileContent, file.name);
+                const fileName = file.name;
+                const filePath = file.path;
 
-                if (window.electron && window.electron.ipcRenderer && activeFileId) {
-                    window.electron.ipcRenderer.send('file-opened', { fileId: activeFileId, filePath: fileName });
+                // Сначала создаем новый файл и обновляем activeFileId
+                const newFileId = Date.now();
+                handleOpenFile(fileContent, fileName, filePath);
+
+                // Затем отправляем событие file-opened с обновленным activeFileId
+                if (window.electron && window.electron.ipcRenderer) {
+                    window.electron.ipcRenderer.send('file-opened', { fileId: newFileId, filePath: filePath });
                 }
             } catch (error) {
                 console.error('Error loading file:', error);

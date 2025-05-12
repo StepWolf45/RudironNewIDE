@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, globalShortcut  } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
@@ -26,7 +26,7 @@ interface FilePaths {
     [key: number]: { path: string | null; isNew: boolean };
 }
 
-let currentFilePaths: FilePaths = store.get('currentFilePaths', {}) as FilePaths;
+let currentFilePaths: FilePaths = {};
 
 function createWindow() {
     win = new BrowserWindow({
@@ -36,11 +36,13 @@ function createWindow() {
         minHeight: 400,
         minWidth: 650,
         titleBarStyle: 'hidden',
-        ...(process.platform !== 'darwin' ? {  titleBarOverlay: {
-            color: '#181818',
-            symbolColor: '#ffffff',
-            height: 51,
-        },} : {}),
+        ...(process.platform !== 'darwin' ? {
+            titleBarOverlay: {
+                color: '#181818',
+                symbolColor: '#ffffff',
+                height: 43,
+            },
+        } : {}),
         icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.mjs'),
@@ -142,7 +144,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', () => {
-  
     try {
         tray = new Tray(path.join(__dirname, '../public/logo.png'));
     } catch (error) {
@@ -153,14 +154,14 @@ app.on('ready', () => {
 
     ipcMain.handle('show-input-dialog', async (event, options) => {
         if (!win) return undefined;
-        
+
         await win.webContents.executeJavaScript(`
             new Promise(resolve => {
                 if (document.readyState === 'complete') resolve();
                 else window.addEventListener('load', resolve);
             })
         `);
-    
+
         return await win.webContents.executeJavaScript(`
             new Promise(resolve => {
                 window.showInputDialogReact({
