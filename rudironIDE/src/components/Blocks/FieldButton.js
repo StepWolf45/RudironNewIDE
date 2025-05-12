@@ -3,8 +3,8 @@ export class FieldButton extends Blockly.Field {
     constructor(text, onClick, optConfig) {
       super(text, optConfig);
       this.onClick = onClick;
-      this.COLOR = "#2ECC71"; // Яркий зеленый цвет
-      this.HOVER_COLOR = "#27AE60"; // Темнее при наведении
+      this.COLOR = "#30c969"; 
+      this.HOVER_COLOR = "#27AE60"; 
     }
   
     initView() {
@@ -12,17 +12,14 @@ export class FieldButton extends Blockly.Field {
     }
   
     createButtonElement() {
-      // Создаем основу кнопки
       this.buttonElement = Blockly.utils.dom.createSvgElement(
         'rect',
         {
-          'width': 80, // Ширина увеличена
+          'width': 95, // Ширина увеличена
           'height': 32, // Высота увеличена
-          'rx': 8, // Больше закругление углов
-          'ry': 8,
-          'fill': this.COLOR,
-          'stroke': '#27AE60',
-          'stroke-width': 2,
+          'rx': 6, 
+          'ry': 6,
+          'fill': "#30c969",
           'cursor': 'pointer',
           'class': 'blocklyButton'
         },
@@ -33,14 +30,14 @@ export class FieldButton extends Blockly.Field {
       this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         {
-          'x': 40, // Центрирование по ширине
-          'y': 20, // Центрирование по высоте
+          'x': 47, // Центрирование по ширине
+          'y': 17, // Центрирование по высоте
           'text-anchor': 'middle',
           'dominant-baseline': 'middle',
-          'fill': '#2ECC71"',
-          'font-size': '14px',
+          'fill': '#2ECC71',
+          'font-size': '17px',
           'font-weight': 'bold', // Жирный шрифт
-          'font-family': 'Arial, sans-serif'
+          'font-family': 'Inter, sans-serif'
         },
         this.fieldGroup_
       );
@@ -81,7 +78,7 @@ export class FieldButton extends Blockly.Field {
     }
   
     updateSize_() {
-      this.size_.width = 80;
+      this.size_.width = 100;
       this.size_.height = 32;
     }
   }

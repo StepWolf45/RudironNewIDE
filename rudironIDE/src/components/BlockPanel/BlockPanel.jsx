@@ -1,27 +1,20 @@
-import React, { Children, useState, useCallback, useEffect } from 'react';
+// src/components/BlockPanel/BlockPanel.jsx
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { Layout, Menu } from 'antd';
 import "./BlockPanel.css";
 import Workspace from '../SplitterWorkspace/SplitterWorkspace.jsx';
-import BlocklyWorkspace from '../Blocks/BlocklyWorkspace.jsx';
 import FileTab from '../FileTab/FileTab.jsx';
 import { categories } from './CategoriesToolbox.jsx';
+import { FileContext } from '../../contexts/FileContext';
 
 const { Sider } = Layout;
 
-const BlockPanel = ({
-    files,
-    activeFileId,
-    blocklyWorkspaces,
-    onSaveFile,
-    onWorkspaceMount,
-    onCloseFile,
-    workspaceStates,
-    setActiveFileId,
-    onCreateNewFile,
-}) => {
+const BlockPanel = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [activeCategory, setActiveCategory] = useState(categories[0]);
+    const { handleSaveFile, activeFileId, handleTabChange, handleWorkspaceMount } = useContext(FileContext);
 
+    //Массив для создания меню
     const menuItems = categories.map((category) => ({
         key: category.id,
         label: category.name,
@@ -29,12 +22,13 @@ const BlockPanel = ({
         onClick: () => setActiveCategory(category),
     }));
 
+    // Функция для сохранения воркспейса перед переключением категории
     const handleSave = useCallback((workspace) => {
         if (activeFileId && workspace) {
             const state = Blockly.serialization.workspaces.save(workspace);
-            onSaveFile(activeFileId, state);
+            handleSaveFile(activeFileId, state);
         }
-    }, [activeFileId, onSaveFile]);
+    }, [activeFileId, handleSaveFile]);
 
     return (
         <Layout>
@@ -43,16 +37,10 @@ const BlockPanel = ({
             </Sider>
             <Workspace>
                 <FileTab
-                    files={files}
-                    activeFileId={activeFileId}
-                    blocklyWorkspaces={blocklyWorkspaces}
-                    onSaveFile={handleSave}
-                    onWorkspaceMount={onWorkspaceMount}
-                    onCloseFile={onCloseFile}
                     activeCategory={activeCategory}
-                    workspaceStates={workspaceStates}
-                    setActiveFileId={setActiveFileId}
-                    onCreateNewFile={onCreateNewFile} // Pass onCreateNewFile
+                    onSaveFile={handleSave}
+                    setActiveFileId={handleTabChange}
+                    onWorkspaceMount={handleWorkspaceMount} 
                 />
             </Workspace>
         </Layout>

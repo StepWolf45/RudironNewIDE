@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+// src/components/Blocks/BlocklyWorkspace.jsx
+import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
 import * as Blockly from 'blockly';
 import * as Ru from 'blockly/msg/ru';
 import 'blockly/core';
@@ -6,6 +7,8 @@ import 'blockly/blocks';
 import 'blockly/javascript';
 import './BlocklyWorkspace.css';
 import './CustomBlocks.jsx';
+import { FileContext } from '../../contexts/FileContext';
+import { ModalContext } from '../../contexts/ModalContext';
 
 const customTheme = Blockly.Theme.defineTheme('myTheme', {
     'base': Blockly.Themes.Classic,
@@ -29,9 +32,9 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
     const resizeObserverRef = useRef(null);
     const [autoSave, setAutoSave] = useState(true);
+    const { showInputDialogReact } = useContext(ModalContext);
 
     useEffect(() => {
-
         const workspace = Blockly.inject(blocklyDiv.current, {
             theme: customTheme,
             renderer: 'zelos',
@@ -58,7 +61,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         //Сохранение в localStorage
         workspace.addChangeListener((event) => {
             if (event.type === Blockly.Events.VAR && event.name === 'rename') {
-                event.preventDefault(); 
+                event.preventDefault();
             }
 
             if (autoSave && !event.isUiEvent) {
@@ -70,6 +73,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             workspace.dispose();
         };
     }, []);
+
     //Адаптивный blokcly workspace
     useEffect(() => {
         if (blocklyDiv.current) {
@@ -89,6 +93,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             }
         };
     }, []);
+
     //Смена категорий
     useEffect(() => {
         if (workspaceRef.current && activeCategory) {
@@ -103,23 +108,21 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             onSave(workspaceRef.current);
         }
     }, [onSave]);
-    
+
     //Смена стандартного Alert на кастомный Modal для блоков переменная
     useEffect(() => {
         Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
           Blockly.Events.setGroup(true);
-      
-          window.electron.ipcRenderer
-            .invoke('show-input-dialog', {
-              title: msg,
-              defaultValue: defaultValue,
-            })
-            .then((newValue) => {
+
+          showInputDialogReact({
+            title: msg,
+            defaultValue: defaultValue,
+            onOk: (newValue) => {
               console.log("Received value from dialog:", newValue);
-      
+
               if (newValue !== undefined) {
                 const newName = newValue.trim();
-      
+
                 if (newName) {
                   const workspace = workspaceRef.current;
 
@@ -127,16 +130,15 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                   if (Blockly.utils.idGenerator && typeof Blockly.utils.idGenerator.genUid === 'function') {
                     uniqueId = Blockly.utils.idGenerator.genUid();
                   } else {
-
                     uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                     console.warn("Falling back to Math.random() for ID generation.  Consider updating Blockly.");
                   }
-      
+
                   console.log("Creating variable with ID:", uniqueId, "and name:", newName);
-      
+
                   workspace.createVariable(newName, undefined, uniqueId);
                   workspace.refreshToolboxSelection();
-      
+
                   callback(newName);
                 } else {
                   Modal.error({ content: 'Название переменной не может быть пустым!' });
@@ -146,17 +148,22 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 callback(defaultValue);
               }
               Blockly.Events.setGroup(false);
-            });
+            },
+            onCancel: () => {
+              callback(defaultValue);
+              Blockly.Events.setGroup(false);
+            }
+          });
         });
-      
+
         const workspace = workspaceRef.current;
         const renameListener = (event) => {
           if (event.type === Blockly.Events.VAR_RENAME) {
             const varId = event.varId;
             const newName = event.newName;
-      
+
             console.log("VAR_RENAME event - ID:", varId, "New name:", newName);
-      
+
             workspace.renameVariableById(varId, newName);
             console.log("Variable renamed successfully.");
             workspace.refreshToolboxSelection();
@@ -165,8 +172,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         };
         workspace.addChangeListener(renameListener);
         return () => workspace.removeChangeListener(renameListener);
-      }, []);
-      
+      }, [showInputDialogReact]);
 
     return (
         <div id="blocklyContainer">

@@ -1,44 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Input, Button } from 'antd';
-import './CustomInputDialog.css';
 
-const CustomInputDialog = ({ visible, title, defaultValue, onOk, onCancel }) => {
-    const [inputValue, setInputValue] = useState(defaultValue);
+import React, { useState, useEffect, useContext } from 'react';
+import { Modal, Input } from 'antd';
+import './CustomInputDialog.css';
+import { ModalContext } from '../../contexts/ModalContext'; 
+
+const CustomInputDialog = () => {
+    const {
+        isInputDialogVisible,
+        inputDialogOptions,
+        handleInputDialogOk,
+        handleInputDialogCancel,
+    } = useContext(ModalContext);
+
+    const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
-        setInputValue(defaultValue);
-    }, [defaultValue]);
+        setInputValue(inputDialogOptions.defaultValue); // Сбрасываем inputValue при открытии модального окна
+    }, [inputDialogOptions.defaultValue]);
 
     const handleOk = () => {
-      if (!inputValue.trim()) {
-          Modal.error({ content: 'Название не может быть пустым!' });
-          return;
-      }
-      onOk(inputValue.trim());
-  };
+        if (!inputValue.trim()) {
+            Modal.error({ content: 'Название не может быть пустым!' });
+            return;
+        }
+        handleInputDialogOk(inputValue.trim());
+        setInputValue('');
+    };
 
     const handleCancel = () => {
-      onCancel();
-      setInputValue(defaultValue); // Сброс значения при отмене
-  };
+        handleInputDialogCancel();
+        setInputValue('');
+    };
 
     return (
         <Modal
-            title={title}
-            visible={visible}
+            title={inputDialogOptions.title}
+            open={isInputDialogVisible}
             onOk={handleOk}
             onCancel={handleCancel}
             okText="Применить"
             cancelText="Отменить"
-            className="custom-input-modal" 
+            className="custom-input-modal"
         >
-          <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              autoFocus 
-              onPressEnter={handleOk} 
-              className="custom-input" 
-          />
+            <Input
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                autoFocus
+                onPressEnter={handleOk}
+                className="custom-input"
+            />
         </Modal>
     );
 };

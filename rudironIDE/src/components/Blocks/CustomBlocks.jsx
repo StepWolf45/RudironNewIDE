@@ -11,7 +11,7 @@ Blockly.Blocks['start'] = {
       .appendField(new FieldButton('Старт', () => {
         // alert('Кнопка в блоке нажата!');
       }), 'BUTTON');
-    this.setColour(300);
+    this.setColour("#ffd967");
     this.setTooltip('Запускает выполнение программы');
     this.setNextStatement(true);
     this.hat = 'cap';               
@@ -30,7 +30,7 @@ Blockly.Blocks['write_text'] = {
       ],
       "previousStatement": null,
       "nextStatement": null,
-      "colour": "#33a6cc", // Новый цвет (оранжевый)
+      "colour": "#33a6cc", 
       "tooltip": "Вывести текст",
       "helpUrl": ""
     });
@@ -52,7 +52,7 @@ Blockly.Blocks['delay'] = {
         "previousStatement":null,
         "nextStatement":null,
         "inputsInline": true,
-        "colour": " #5ab0c2",
+        "colour": "33a6cc",
         "tooltip": "Задержка в миллисекундах"
     });
   }
@@ -91,7 +91,7 @@ Blockly.Blocks['variables_get'] = {
         }
       ],
       "output": null,
-      "colour": "#c25a7c", 
+      "colour": "#c359b2", 
 
     });
   }
@@ -123,7 +123,7 @@ Blockly.Blocks['pinmode'] = {
       "previousStatement":true ,
       "nextStatement": true,
       "inputsInline": true,
-      "colour":" #5ab0c2",
+      "colour":240,
       "tooltip": "Ставит пин в выбранный режим"
     });
   }
@@ -152,7 +152,7 @@ Blockly.Blocks['digital_write'] = {
       "previousStatement":true ,
       "nextStatement": true,
       "inputsInline": true,
-      "colour":" #5ab0c2",
+      "colour":240,
     });
   },
 };
@@ -177,7 +177,7 @@ Blockly.Blocks['analog_write'] = {
       "previousStatement":true ,
       "nextStatement": true,
       "inputsInline": true,
-      "colour":" #5ab0c2",
+      "colour": 240,
     });
   },
   onchange: function(changeEvent) {
@@ -198,10 +198,8 @@ Blockly.Blocks['analog_write'] = {
               this.setWarningText(null); // Clear the warning.
           }
       } else if (pinBlock) {
-        // If connected but not a number block, show a generic warning
         this.setWarningText("К пину можно подключить только числовое значение.");
       } else {
-        // If nothing is connected to PIN
         this.setWarningText(null);
       }
     }
