@@ -9,7 +9,7 @@ export const FileProvider = ({ children }) => {
     const [blocklyWorkspaces, setBlocklyWorkspaces] = useState({});
     const [workspaceStates, setWorkspaceStates] = useState({});
     const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
-
+    const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
 
     const handleCreateNewFile = () => {
         const newFile = {
@@ -55,6 +55,9 @@ export const FileProvider = ({ children }) => {
             ...prevPaths,
             [newFile.id]: filePath,
         }));
+
+        // Устанавливаем текущий путь файла
+        setCurrentFilePath(filePath || fileName);
     };
 
     const handleSaveFile = (fileId, workspaceState) => {
@@ -85,12 +88,14 @@ export const FileProvider = ({ children }) => {
             const newActiveIndex = Math.max(0, closedIndex - 1);
             const newActiveFileId = updatedFiles[newActiveIndex]?.id || null;
             setActiveFileId(newActiveFileId);
+            setCurrentFilePath(filePaths[newActiveFileId] || updatedFiles[newActiveIndex]?.name || '');
         }
     };
 
     const handleTabChange = (newActiveFileId) => {
         if (newActiveFileId) {
             setActiveFileId(Number(newActiveFileId)); // Update active file ID
+            setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Update current file path or name
         }
     };
 
@@ -116,7 +121,9 @@ export const FileProvider = ({ children }) => {
         handleCloseFile,
         handleTabChange,
         handleWorkspaceMount,
-        filePaths, // Добавляем filePaths в контекст
+        filePaths, 
+        currentFilePath, 
+        setCurrentFilePath, 
     };
 
     return (

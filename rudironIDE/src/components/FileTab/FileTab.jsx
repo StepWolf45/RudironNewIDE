@@ -1,5 +1,5 @@
 // src/components/FileTab/FileTab.jsx
-import React, { useMemo, useContext, useEffect, useState } from "react";
+import React, { useMemo, useContext, useEffect } from "react";
 import { Tabs } from "antd";
 import "./FileTab.css";
 import BlocklyWorkspace from "../Blocks/BlocklyWorkspace.jsx";
@@ -7,34 +7,18 @@ import { FileContext } from '../../contexts/FileContext';
 
 const { TabPane } = Tabs;
 
-export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }) {
-    const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile } = useContext(FileContext);
-    const [tabTitles, setTabTitles] = useState(
-        files.reduce((acc, file) => {
-            acc[file.id] = file.name;
-            return acc;
-        }, {})
-    );
+export default function FileTab({
+    activeCategory,
+    onSaveFile,
+    onWorkspaceMount,
+}) {
+    const { files, activeFileId, blocklyWorkspaces, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath } = useContext(FileContext);
 
     useEffect(() => {
-        if (window.electron && window.electron.ipcRenderer) {
-            const handleFileSaved = (fileName) => {
-                setTabTitles((prevTabTitles) => ({
-                    ...prevTabTitles,
-                    [activeFileId]: fileName,
-                }));
-            };
-
-            const unsubscribe = window.electron.ipcRenderer.on('file-saved', handleFileSaved);
-
-            return () => {
-                unsubscribe();
-            };
-        } else {
-            console.warn("window.electron or window.electron.ipcRenderer is not defined.");
-            return () => {};
+        if (activeFileId) {
+            setCurrentFilePath(filePaths[activeFileId] || files.find(file => file.id === activeFileId)?.name || '');
         }
-    }, [activeFileId]);
+    }, [activeFileId, filePaths, files, setCurrentFilePath]);
 
     const handleClose = (id) => {
         if (window.electron && window.electron.ipcRenderer) {
@@ -79,7 +63,7 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
                     <TabPane
                         tab={
                             <div className="tab-label">
-                                <span>{tabTitles[file.id] || file.name}</span>
+                                <span>{file.name}</span>
                             </div>
                         }
                         key={file.id}
@@ -88,9 +72,9 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
                     >
                         <BlocklyWorkspace
                             initialXml={memoizedWorkspaceStates[file.id]}
+                            onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
                             activeCategory={activeCategory}
                             onSave={onSaveFile}
-                            onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
                         />
                     </TabPane>
                 ))}

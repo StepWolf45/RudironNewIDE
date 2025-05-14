@@ -11,7 +11,7 @@ export default function MenuBar({ title, flag }) {
     let items = [];
     let iconbutton;
     const fileInputRef = useRef(null);
-    const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces, filePaths } = useContext(FileContext);
+    const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces } = useContext(FileContext);
 
     const handleMenuClick = (e) => {
         if (e.key === 'new') {

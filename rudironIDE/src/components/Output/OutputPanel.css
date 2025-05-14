@@ -1,0 +1,83 @@
+/* src/components/ConsoleOutput/ConsoleOutput.css */
+.console-output {
+
+    padding: 5px;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Courier New', Courier, monospace;
+    height: 100%;
+    overflow: hidden;
+}
+.console-log {
+    padding: 5px 5px;
+    border-bottom: 1px solid #333;
+}
+.ReactVirtualized__Grid__innerScrollContainer pre {
+    display: block;
+    padding: 0.5em !important;
+    color: #ffffff !important; /* Черный текст */
+    background: #1e1e1e !important ; /* Светло-голубой фон */
+}
+.console-log.log {
+    color: #d4d4d4;
+    
+}
+
+.console-log.error {
+    color: #ff6b6b;
+}
+
+.console-log.warn {
+    color: #ffcc00;
+    word-wrap: break-word !important; /* Перенос строк */
+    overflow-wrap: break-word !important; /* Перенос строк */
+    white-space: pre-wrap !important;
+    text-wrap: wrap !important ;
+
+}
+.file-path {
+
+    margin: 5px 10px;
+    font-weight: bold;
+    overflow: auto;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.console-output::-webkit-scrollbar-track {
+    background: #333; /* Цвет фона трека */
+}
+
+.console-output::-webkit-scrollbar-thumb {
+    background: #888; /* Цвет ползунка */
+    border-radius: 6px; /* Скругленные углы ползунка */
+}
+
+.console-output::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Цвет ползунка при наведении */
+}
+.ReactVirtualized__Grid,
+.ReactVirtualized__List {
+    overflow: auto !important;
+}
+
+.ReactVirtualized__Grid::-webkit-scrollbar,
+.ReactVirtualized__List::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+.ReactVirtualized__Grid::-webkit-scrollbar-track,
+.ReactVirtualized__List::-webkit-scrollbar-track {
+    background: #2d2d2d; /* Цвет фона трека */
+    border-radius: 6px;
+}
+
+.ReactVirtualized__Grid::-webkit-scrollbar-thumb,
+.ReactVirtualized__List::-webkit-scrollbar-thumb {
+    background: #555; /* Цвет ползунка */
+    border-radius: 6px; /* Скругленные углы ползунка */
+}
+
+.ReactVirtualized__Grid::-webkit-scrollbar-thumb:hover,
+.ReactVirtualized__List::-webkit-scrollbar-thumb:hover {
+    /* background: #555; Цвет ползунка при наведении */
+}

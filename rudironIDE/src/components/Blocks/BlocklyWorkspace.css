@@ -15,12 +15,12 @@ circle.blocklyIconShape{
 
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: #2d2d2d!important; /* Цвет ползунка */
+  fill: #555!important; /* Цвет ползунка */
   rx: 3px !important; /* Закругление */
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: #2d2d2d !important;
+  fill: #555 !important;
   ry: 3px !important;
   height: 7px !important;
 }
