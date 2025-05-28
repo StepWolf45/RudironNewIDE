@@ -14,17 +14,10 @@
 }
 .Workspace{
   background-color: #1B1B1B;
-
+  
 }
-.ant-splitter-bar-collapse-bar-start{
-  bottom:0px !important;
-  right:0px !important;
-  border-right:none !important;
-  border-bottom:none !important;
 
-}
 .SplitTop{
-  background-color: #1F1F1F;
   padding: 0px 0px !important;
   overflow:hidden ;
   width: 100%;
@@ -32,6 +25,7 @@
   position: relative;
   overflow: hidden;
 }
+
 .SplitBottom{
   border-top:1px solid rgba(74, 75, 76, 0.5);
   background-color: #1B1B1B;
@@ -49,33 +43,57 @@
 
 .SplitLeft .ant-splitter-bar-collapse-bar{
   height:15px !important;
-  background-color: #262627!important;
-  width: 100%!important;
+  background-color: #171717!important;
+  width: 200px!important;
   border-radius: 0% !important;
   position: relative;
-  /* opacity:1 !important; */
-  border-top:1px solid rgba(74, 75, 76, 0.5);
-  border-bottom:1px solid rgba(74, 75, 76, 0.5);
-  border-left:0px;
-  border-right:0px;
+  opacity:1 !important;
+  clip-path: polygon(
+    0 0,    
+    100% 0,       
+    calc(100% - 10px) 100%,
+    10px 100%     
+  );
 }
-.ant-splitter-bar-collapse-bar{
-
-  width:15px !important;
-  background-color: #262627!important;
-  height: 100% !important;
-  border-radius: 0% !important;
+.ant-splitter-bar-collapse-bar {
+  width: 15px !important;
+  background-color: #171717 !important;
+  height: 200px !important;
+  border-radius: 0 !important;
   position: relative;
-  /* opacity:1 !important; */
-  border-left:1px solid rgba(74, 75, 76, 0.5);
-  border-right:1px solid rgba(74, 75, 76, 0.5);
+  opacity: 1 !important;
+  clip-path: polygon(
+    0 0,    
+    100% 10px,       
+    100% calc(100% - 10px), 
+    0 100%     
+  );
+}
+
+.SplitLeft .ant-splitter-bar-collapse-bar-start{
+  height:15px !important;
+  background-color: #005869 !important;
+  clip-path: polygon(
+    10px 0,    
+    calc(100% - 10px) 0,       
+    100% 100%, 
+    0 100%     
+  );
+}
+.ant-splitter-bar-collapse-bar-start {
+    background-color: #005869  !important;
+    clip-path: polygon(
+      0 10px,    
+      100% 0,       
+      100% 100%, 
+      0 calc(100% - 10px)     
+  );
 }
 
 .SplitLeft .ant-splitter-bar-dragger{
 
   height:5px !important;
 }
-
 
 
 .ant-tabs-content-holder{
@@ -89,22 +107,3 @@
 
 }
 
-
-.adaptive-text-container {
-  width: 100%;
-  height: 100%; /* Занимает всю доступную высоту панели */
-  padding: 10px; /* Отступы для текста */
-  box-sizing: border-box; /*  Чтобы padding не увеличивал ширину контейнера  */
-  display: flex; /* Используем flexbox для выравнивания по вертикали */
-  flex-direction: column; /* Контент располагается вертикально */
-  justify-content: flex-start; /* Выравнивание по вертикали: контент в начале */
-  align-items: stretch; /* Растягиваем контент по ширине */
-  padding: 15px;
-  
-}
-
-.adaptive-text-container p {
-  margin: 0; /* Убираем стандартные отступы параграфа */
-  margin-bottom: 8px; /* Добавляем отступ между параграфами */
-  color:aliceblue;
-}

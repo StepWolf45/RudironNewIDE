@@ -1,4 +1,3 @@
-// src/components/ConsoleOutput/ConsoleOutput.jsx
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -38,6 +37,10 @@ const OutputPanel = () => {
         };
     }, []);
 
+    const clearLogs = () => {
+        setLogs([]);
+    };
+
     const rowRenderer = ({ index, key, style }) => {
         const log = logs[index];
         return (
@@ -51,8 +54,17 @@ const OutputPanel = () => {
 
     return (
         <div className="console-output" ref={logContainerRef}>
-            <div className="file-path">
-                <strong>Текущий файл:</strong> {currentFilePath}
+            <div className="console-info">
+                <strong>Консоль вывода</strong>
+                <button 
+                    onClick={clearLogs} 
+                    className="clear-button"
+                >
+                    <img 
+                        src="/../../../public/мусорка.png" 
+                        className="clear-icon"
+                    />
+                </button>
             </div>
             <AutoSizer>
                 {({ height, width }) => (

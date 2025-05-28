@@ -12,16 +12,20 @@ circle.blocklyIconShape{
   transform: scale(1.2);
 }
 
+.blocklyDropDownContent{
+ overflow: hidden !important;
+
+}
 
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
   fill: #555!important; /* Цвет ползунка */
-  rx: 3px !important; /* Закругление */
+
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
   fill: #555 !important;
-  ry: 3px !important;
+
   height: 7px !important;
 }
 
@@ -53,7 +57,7 @@ circle.blocklyIconShape{
   position: absolute;
   top: 0;
   left: 0;
-
+  border:none !important;
 }
 #blocklyContainer{
   position: relative;

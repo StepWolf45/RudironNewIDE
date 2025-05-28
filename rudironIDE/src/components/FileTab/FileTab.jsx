@@ -1,5 +1,5 @@
 // src/components/FileTab/FileTab.jsx
-import React, { useMemo, useContext, useEffect } from "react";
+import React, { useMemo, useContext, useEffect, useState } from "react";
 import { Tabs } from "antd";
 import "./FileTab.css";
 import BlocklyWorkspace from "../Blocks/BlocklyWorkspace.jsx";
@@ -12,11 +12,32 @@ export default function FileTab({
     onSaveFile,
     onWorkspaceMount,
 }) {
-    const { files, activeFileId, blocklyWorkspaces, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath } = useContext(FileContext);
-
+    const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath } = useContext(FileContext);
+    const [tabTitles, setTabTitles] = useState(
+        files.reduce((acc, file) => {
+            acc[file.id] = file.name;
+            return acc;
+        }, {})
+    );
     useEffect(() => {
-        if (activeFileId) {
-            setCurrentFilePath(filePaths[activeFileId] || files.find(file => file.id === activeFileId)?.name || '');
+        if (window.electron && window.electron.ipcRenderer) {
+            const handleFileSaved = (fileName) => {
+                setTabTitles((prevTabTitles) => ({
+                    ...prevTabTitles,
+                    [activeFileId]: fileName,
+                }));
+            };
+
+            const unsubscribe = window.electron.ipcRenderer.on('file-saved', handleFileSaved);
+            if (activeFileId) {
+                    setCurrentFilePath(filePaths[activeFileId] || files.find(file => file.id === activeFileId)?.name || '');
+            }
+            return () => {
+                unsubscribe();
+            };
+        } else {
+            console.warn("window.electron or window.electron.ipcRenderer is not defined.");
+            return () => {};
         }
     }, [activeFileId, filePaths, files, setCurrentFilePath]);
 
@@ -63,7 +84,7 @@ export default function FileTab({
                     <TabPane
                         tab={
                             <div className="tab-label">
-                                <span>{file.name}</span>
+                                <span>{tabTitles[file.id] || file.name}</span>
                             </div>
                         }
                         key={file.id}

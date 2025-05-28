@@ -18,7 +18,7 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  
+  background-color: #1F1F1F;
 }
 .tab-content{
   width: 100%;
@@ -147,4 +147,17 @@
 
 .ant-tabs-tab-remove:hover{
   background-color: #2d2d2d;
+}
+.ant-tabs-content-holder{
+  box-sizing: content-box !important; 
+  overflow:hidden;
+}
+.ant-tabs-content-top{
+  box-sizing: content-box !important; 
+  border-right: 1px solid red !important;
+  border:none !important;
+  overflow:hidden;
+}
+*, *::before, *::after {
+    box-sizing: border-box; 
 }

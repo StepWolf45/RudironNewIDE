@@ -11,6 +11,7 @@ export const FileProvider = ({ children }) => {
     const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
     const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
 
+
     const handleCreateNewFile = () => {
         const newFile = {
             id: Date.now(),

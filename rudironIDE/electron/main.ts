@@ -40,7 +40,7 @@ function createWindow() {
             titleBarOverlay: {
                 color: '#181818',
                 symbolColor: '#ffffff',
-                height: 43,
+                height: 36,
             },
         } : {}),
         icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
