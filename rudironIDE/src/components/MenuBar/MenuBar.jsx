@@ -1,7 +1,7 @@
 // src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
-import React, { useContext, useRef } from 'react';
-import { MenuItem1, MenuItem2, MenuItem3 } from './itemsMenu.jsx';
+import React, { useContext, useRef, useEffect, useState } from 'react';
+import { MenuItem1, MenuItem2 } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space, Menu } from 'antd';
 import { FileContext } from '../../contexts/FileContext';
@@ -11,6 +11,7 @@ export default function MenuBar({ title, flag }) {
     let items = [];
     let iconbutton;
     const fileInputRef = useRef(null);
+    const [serialPorts, setPorts] = useState([]);
     const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces } = useContext(FileContext);
 
     const handleMenuClick = (e) => {
@@ -95,10 +96,33 @@ export default function MenuBar({ title, flag }) {
         items = MenuItem2;
         iconbutton = <AppstoreOutlined />;
     }
-    if (flag === "3") {
-        items = MenuItem3;
-        iconbutton = <ControlOutlined />;
+    if (flag == "3") {
+        items = [
+            {
+                key: '1',
+                label: 'Порт',
+                children: serialPorts
+            },
+        ]
+        iconbutton = <ControlOutlined />
+
     }
+
+    useEffect(() => {
+        const fetchDevices = async () => {
+            try {
+                const result = await window.electron.ipcRenderer.getSerialDevices("");
+                setPorts(result.map((device, index) => ({
+                    key: index,
+                    label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
+                })))
+            } catch (error) {
+                console.error('Error during IPC request:', error);
+            }
+        };
+
+        fetchDevices();
+    }, []);
 
     return (
         <div>

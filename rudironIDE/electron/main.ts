@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import path from 'path';
 import fs from 'fs';
 import Store from 'electron-store';
+import Queue from './queue';
+import { getPinValue, printBuffer, parsePinsByType } from './protocol';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -16,9 +18,12 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 const { Tray, Menu } = require('electron');
+const { SerialPort } = require('serialport');
 
 let tray = null;
 let win: BrowserWindow | null;
+
+let port: SerialPort | null = null;
 
 const store = new Store();
 
@@ -181,3 +186,105 @@ app.on('activate', () => {
 });
 
 app.whenReady().then(createWindow);
+
+// Serial part
+const RUDIRON_VID = "1a86"
+const RUDIRON_PID = "55d4"
+const RUDIRON_BAUD = 115200
+let COMMANDS_QUEUE = new Queue();
+let WAIT_FOR_RESP = false;
+let WAIT_FOR_RESP_ID = 0;
+
+ipcMain.handle('request-serial-devices', async (event, data) => {
+    try {
+        const ports = await SerialPort.list();  // With trash
+        const filteredPorts = ports.filter(port => {
+            return port.vendorId === RUDIRON_VID && port.productId === RUDIRON_PID;
+        });
+
+        return filteredPorts;
+
+    } catch (err) {
+        console.error("[FATAL] Error listing ports:", err);
+        return [];
+    }
+});
+
+ipcMain.handle('connect-serial-device', async (event, data) => {
+    console.log(`[INFO] Connecting to: ${data}`)
+    port = new SerialPort({
+        path: data,
+        baudRate: RUDIRON_BAUD, // const
+    });
+
+    console.log(`[INFO] Maybe connected to: ${data}`)
+
+    // Serial Handlers
+    port.on('open', () => {
+        console.log("[INFO] Port opened callback");
+    });
+
+    console.log("[INFO] Flow mode active; Waiting for RX");
+    port.on('data', (data) => {
+        const reversed = Buffer.from([data[0], data[1]]);
+        printBuffer(data);
+        let resp_id = reversed.readUInt16BE();
+        console.log('[INFO] RESP ID:', resp_id);
+        if (resp_id == WAIT_FOR_RESP_ID){
+            WAIT_FOR_RESP = 0;
+            WAIT_FOR_RESP_ID = 0;
+        }
+
+        // console.log("AAA:", getPinValue(data, 15));
+        win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0)});
+        win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1)});
+        // window.board_vis_analog_pin("_5", getPinValue(data, 5));
+        // console.log("PIN VAL:", );
+    });
+
+    setInterval(() => {
+        if (!COMMANDS_QUEUE.isEmpty() && !WAIT_FOR_RESP){
+            console.log('[DBG] New block exec');
+            let front = COMMANDS_QUEUE.dequeue();
+            const reversed = Buffer.from([front[0], front[1]]);
+            let exec_id = reversed.readUInt16BE();
+            port.write(front);
+            WAIT_FOR_RESP = 1;
+            WAIT_FOR_RESP_ID = exec_id;
+        }
+        
+    }, 10); // 10ms interval polling queue
+});
+
+
+ipcMain.handle('send-serial', async (event, data) => {
+
+    let id_buffer = Buffer.alloc(2);
+    id_buffer.writeUInt16BE(0);
+    
+
+    if (!COMMANDS_QUEUE.isEmpty()) {
+        const last = COMMANDS_QUEUE.items[COMMANDS_QUEUE.items.length - 1];
+        const reversed = Buffer.from([last[0], last[1]]);
+        let front_id = reversed.readUInt16BE();
+        console.log("Front id:", front_id);
+        if (front_id > 1000) front_id = 0; // TODO
+
+        id_buffer = Buffer.alloc(2);
+        id_buffer.writeUInt16BE(front_id + 1);
+    }
+
+    data[0] = id_buffer[0];
+    data[1] = id_buffer[1];
+
+    let res = data.toString('hex').match(/.{1,2}/g).map(byte => byte.padStart(2, '0')).join(' ');
+    console.log(res);
+    
+    COMMANDS_QUEUE.enqueue(data);
+    console.log(COMMANDS_QUEUE.size());
+
+
+    // port.write(Buffer.from(data), (err) => { });
+
+})
+

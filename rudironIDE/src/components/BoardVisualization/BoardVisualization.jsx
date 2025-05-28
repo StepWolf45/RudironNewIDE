@@ -8,6 +8,26 @@ const BoardVisualization = props => {
     const handleColorChange = (key, value) => {
         setPins((prevColors) => ({ ...prevColors, [key]: value }));
     };
+    const handlePwm = (key, value) => {
+        setPwm((prevColors) => ({ ...prevColors, [key]: value }));
+    };
+
+    // useEffect(() => {
+    //     window.board_vis_digital_pin = handleColorChange;
+    //     window.board_vis_analog_pin  = handlePwm;
+    // }, []);
+
+    useEffect(() => {
+        window.visualization_api.setDigitalPin((event, data) => {
+            Object.keys(data.map).forEach(key => {
+                handleColorChange(key, data.map[key]);
+              });
+        });
+        window.visualization_api.setAnalogPin((event, data) => {
+            // handlePwm(data.pin, data.value);
+            setPwm(data.map);
+        });
+      }, []);
 
 
     // All pins described
@@ -60,41 +80,41 @@ const BoardVisualization = props => {
     });
 
     const [pwmPins, setPwm] = useState({
-        _12: 255,
-        _8: 255,
-        _7: 255,
-        _5: 255,
-        _33: 255,
-        _28: 255,
-        _20: 255,
-        _29: 255,
-        _23: 255
+        _12: 0,
+        _8:  0,
+        _7:  0,
+        _5:  0,
+        _33: 0,
+        _28: 0,
+        _20: 0,
+        _29: 0,
+        _23: 0
 
 
     })
 
-    useEffect(() => {
-        // Some demo pin control only front
+    // useEffect(() => {
+    //     // Some demo pin control only front
 
-        const interval = setInterval(() => {
-            handleColorChange("_4", color)
-            handleColorChange("_6", color)
-            handleColorChange("_7", color)
-            handleColorChange("_SDB", color)
-            handleColorChange("_12", color)
-            if (color == "red") color = "green"
-            else color = "red"
-        }, 500);
+    //     const interval = setInterval(() => {
+    //         handleColorChange("_4", color)
+    //         handleColorChange("_6", color)
+    //         handleColorChange("_7", color)
+    //         handleColorChange("_SDB", color)
+    //         handleColorChange("_12", color)
+    //         if (color == "red") color = "green"
+    //         else color = "red"
+    //     }, 500);
 
-        const interval2 = setInterval(() => {
-            handleColorChange("_17", color2)
+    //     const interval2 = setInterval(() => {
+    //         handleColorChange("_17", color2)
 
-            if (color2 == "red") color2 = "green"
-            else color2 = "red"
-        }, 100);
+    //         if (color2 == "red") color2 = "green"
+    //         else color2 = "red"
+    //     }, 100);
 
-        return () => {clearInterval(interval), clearInterval(interval2)};
-    }, [])
+    //     return () => {clearInterval(interval), clearInterval(interval2)};
+    // }, [])
 
     return (
         <BoardSVG pins={pins} pwm={pwmPins} />

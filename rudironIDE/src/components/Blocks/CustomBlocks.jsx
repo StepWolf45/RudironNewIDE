@@ -4,17 +4,27 @@ import { FieldButton } from './FieldButton.js';
 
 Blockly.fieldRegistry.register('field_button', FieldButton);
 
-
 Blockly.Blocks['start'] = {
   init() {
     this.appendDummyInput()
       .appendField(new FieldButton('Старт', () => {
-        // alert('Кнопка в блоке нажата!');
+        const topBlocks = this.workspace.getTopBlocks(true);
+        const result = [];
+
+        topBlocks.forEach(topBlock => {
+          let block = topBlock;
+          while (block) {
+            result.push(block);
+            block = block.getNextBlock();
+          }
+        });
+        executeSequence(result);
+        
       }), 'BUTTON');
-    this.setColour("#ffd967");
-    this.setTooltip('Запускает выполнение программы');
-    this.setNextStatement(true);
-    this.hat = 'cap';               
+      this.setColour("#ffd967");
+      this.setTooltip('Запускает выполнение программы');
+      this.setNextStatement(true);
+      this.hat = 'cap';                         
   }
 };
 
