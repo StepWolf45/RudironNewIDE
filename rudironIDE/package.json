@@ -30,6 +30,7 @@
     "react-syntax-highlighter": "^15.6.1",
     "react-virtualized": "^9.22.6",
     "scratch-blocks": "^1.1.206",
+    "serialport": "^13.0.0",
     "vite-plugin-require": "^1.2.14"
   },
   "devDependencies": {
