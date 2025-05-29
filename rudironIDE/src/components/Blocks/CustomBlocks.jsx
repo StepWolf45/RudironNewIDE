@@ -1,6 +1,6 @@
 import * as Blockly from 'blockly';
 import { FieldButton } from './FieldButton.js';
-
+import { executeSequence } from '../BlockExecutor/BlockExecutor.jsx';
 
 Blockly.fieldRegistry.register('field_button', FieldButton);
 

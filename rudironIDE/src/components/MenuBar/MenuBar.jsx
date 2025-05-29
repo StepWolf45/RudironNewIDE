@@ -1,9 +1,9 @@
 // src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { MenuItem1, MenuItem2 } from './itemsMenu.jsx';
+import { MenuItem1, MenuItem2, stopPropagation } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Space, Menu } from 'antd';
+import { Button, Dropdown, Space, Menu, Checkbox } from 'antd';
 import { FileContext } from '../../contexts/FileContext';
 
 
