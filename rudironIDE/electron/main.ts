@@ -188,8 +188,8 @@ app.on('activate', () => {
 app.whenReady().then(createWindow);
 
 // Serial part
-const RUDIRON_VID = "1a86"
-const RUDIRON_PID = "55d4"
+const RUDIRON_VID = "067b"//"1a86"
+const RUDIRON_PID = "2303"//"55d4"
 const RUDIRON_BAUD = 115200
 let COMMANDS_QUEUE = new Queue();
 let WAIT_FOR_RESP = false;

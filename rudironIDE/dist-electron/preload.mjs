@@ -1,5 +1,24 @@
 "use strict";
 const electron = require("electron");
+let genNumberArgument = (value) => {
+  const arg_type = Buffer.from([0, 0]);
+  const buffer = Buffer.alloc(12);
+  const isNegative = value < 0;
+  const absValue = Math.abs(value);
+  const base = Math.trunc(absValue);
+  let fractional = absValue - base;
+  if (isNegative) {
+    fractional = -fractional;
+  }
+  buffer.writeBigInt64LE(BigInt(isNegative ? -base : base), 0);
+  buffer.writeFloatLE(fractional, 8);
+  let bufferRes = Buffer.concat([arg_type, buffer]);
+  return bufferRes;
+};
+let printBuffer = (bufferRes) => {
+  let res = bufferRes.toString("hex").match(/.{1,2}/g).map((byte) => byte.padStart(2, "0")).join(" ");
+  console.log(res);
+};
 electron.contextBridge.exposeInMainWorld("electron", {
   ipcRenderer: {
     on(channel, func) {

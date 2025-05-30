@@ -5,7 +5,7 @@ const onChange = (e) => {
   console.log(`checked = ${e.target.checked}`);
   
 };
-const stopPropagation = (e) => {
+export const stopPropagation = (e) => {
   e.stopPropagation(); // Предотвращаем всплытие события
 };
 

@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { genNumberArgument, printBuffer } from './protocol';
 
 contextBridge.exposeInMainWorld('electron', {
     ipcRenderer: {
