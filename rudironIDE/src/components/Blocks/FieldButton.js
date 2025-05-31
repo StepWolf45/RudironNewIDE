@@ -1,12 +1,17 @@
 
-
 export class FieldButton extends Blockly.Field {
     constructor(text, onClick, optConfig) {
       super(text, optConfig);
-      this.onClick = onClick;
-      this.COLOR = "#27AE60"; 
-      this.HOVER_COLOR = "#27AE60"; 
-      this.PRESS_COLOR = "#219653"; 
+      this.onClick = onClick || (() => {}); // Single click handler
+      this.isRunning = false;
+      this.START_COLOR = "#30c969"; 
+      this.START_HOVER_COLOR = "#27AE60"; 
+      this.START_PRESS_COLOR = "#219653";
+      this.STOP_COLOR = "#FF4D4D";
+      this.STOP_HOVER_COLOR = "#CC0000";
+      this.STOP_PRESS_COLOR = "#990000";
+      this.mouseDownPos = null; // Track mouse position for drag detection
+      this.isDragging = false;
     }
   
     initView() {
@@ -14,7 +19,6 @@ export class FieldButton extends Blockly.Field {
     }
   
     createButtonElement() {
-      // Create a group element for the entire button
       this.buttonGroup = Blockly.utils.dom.createSvgElement(
         'g',
         {
@@ -24,7 +28,6 @@ export class FieldButton extends Blockly.Field {
         this.fieldGroup_
       );
 
-      // Rectangle for the button
       this.buttonElement = Blockly.utils.dom.createSvgElement(
         'rect',
         {
@@ -32,12 +35,11 @@ export class FieldButton extends Blockly.Field {
           'height': 32,
           'rx': 6, 
           'ry': 6,
-          'fill': this.COLOR,
+          'fill': this.START_COLOR,
         },
         this.buttonGroup
       );
-      
-      // Text for the button with specific class to override CSS
+  
       this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         {
@@ -45,9 +47,11 @@ export class FieldButton extends Blockly.Field {
           'y': 17,
           'text-anchor': 'middle',
           'dominant-baseline': 'middle',
-          'class': 'blocklyButtonText', // Unique class for higher specificity
-          'font-size': '19px',
+          'class': 'blocklyButtonText',
+          'fill': '#FFFFFF',
+          'font-size': '17px',
           'font-weight': 'bold',
+          'font-family': 'Inter, sans-serif',
           'pointer-events': 'none'
         },
         this.buttonGroup
@@ -59,44 +63,81 @@ export class FieldButton extends Blockly.Field {
         this.buttonGroup,
         'mouseenter',
         this,
-        () => this.setButtonColor(this.HOVER_COLOR)
+        () => {
+          if (!this.isDragging) {
+            this.setButtonColor(this.isRunning ? this.STOP_HOVER_COLOR : this.START_HOVER_COLOR);
+          }
+        }
       );
       
       Blockly.browserEvents.conditionalBind(
         this.buttonGroup,
         'mouseleave',
         this,
-        () => this.setButtonColor(this.COLOR)
+        () => {
+          if (!this.isDragging) {
+            this.setButtonColor(this.isRunning ? this.STOP_COLOR : this.START_COLOR);
+          }
+        }
       );
   
-      // Press effect (scale down)
+      // Track mouse down for drag detection and press effect
       Blockly.browserEvents.conditionalBind(
         this.buttonGroup,
         'mousedown',
         this,
-        () => {
-          this.setButtonColor(this.PRESS_COLOR);
+        (e) => {
+          this.mouseDownPos = { x: e.clientX, y: e.clientY };
+          this.isDragging = false;
+          this.setButtonColor(this.isRunning ? this.STOP_PRESS_COLOR : this.START_PRESS_COLOR);
           this.applyScale(0.95);
         }
       );
 
+      // Detect drag by checking mouse movement
       Blockly.browserEvents.conditionalBind(
         this.buttonGroup,
-        'mouseup',
+        'mousemove',
         this,
-        () => {
-          this.setButtonColor(this.HOVER_COLOR);
-          this.applyScale(1);
+        (e) => {
+          if (this.mouseDownPos) {
+            const dx = e.clientX - this.mouseDownPos.x;
+            const dy = e.clientY - this.mouseDownPos.y;
+            if (Math.sqrt(dx * dx + dy * dy) > 5) {
+              this.isDragging = true;
+            }
+          }
         }
       );
 
+      // Handle click only if not dragging
       Blockly.browserEvents.conditionalBind(
         this.buttonGroup,
         'click',
         this,
         (e) => {
-          this.onClick();
-          e.stopPropagation();
+          if (!this.isDragging && this.sourceBlock_.isInFlyout === false) {
+            this.isRunning = !this.isRunning;
+            this.textElement_.textContent = this.isRunning ? 'СТОП' : 'СТАРТ';
+            this.setButtonColor(this.isRunning ? this.STOP_COLOR : this.START_COLOR);
+            this.onClick(this.isRunning); // Pass isRunning to the single handler
+            e.stopPropagation(); // Only for clicks, not drags
+          }
+        }
+      );
+
+      // Reset on mouse up
+      Blockly.browserEvents.conditionalBind(
+        this.buttonGroup,
+        'mouseup',
+        this,
+        () => {
+          if (!this.isDragging) {
+            this.setButtonColor(this.isRunning ? this.STOP_HOVER_COLOR : this.START_HOVER_COLOR);
+            this.applyScale(1);
+          }
+          this.mouseDownPos = null;
+          this.isDragging = false;
         }
       );
     }

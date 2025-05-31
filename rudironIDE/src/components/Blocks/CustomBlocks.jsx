@@ -8,22 +8,26 @@ Blockly.fieldRegistry.register('field_button', FieldButton);
 Blockly.Blocks['start'] = {
   init() {
     this.appendDummyInput()
-      .appendField(new FieldButton('СТАРТ', () => {
-        const topBlocks = this.workspace.getTopBlocks(true);
-        const result = [];
+      .appendField(new FieldButton('СТАРТ', (isRunning) => {
+        if (isRunning) {
+                    const topBlocks = this.workspace.getTopBlocks(true);
+          const result = [];
+          topBlocks.forEach(topBlock => {
+            let block = topBlock;
+            while (block) {
+              result.push(block);
+              block = block.getNextBlock();
+            }
+          });
+          executeSequence(result);
 
-        topBlocks.forEach(topBlock => {
-          let block = topBlock;
-          while (block) {
-            result.push(block);
-            block = block.getNextBlock();
-          }
-        });
-        executeSequence(result);
-        
+
+        } else {
+          console.log('Program stopped');
+        }
       }), 'BUTTON');
       this.setColour("#ffd967");
-      this.setTooltip('Запускает выполнение программы');
+      this.setTooltip('Запускает или останавливает выполнение программы');
       this.setNextStatement(true);
       this.hat = 'cap';                         
   }
