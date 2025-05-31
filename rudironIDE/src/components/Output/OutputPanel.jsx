@@ -12,28 +12,15 @@ const OutputPanel = () => {
 
     useEffect(() => {
         const originalConsoleLog = console.log;
-        const originalConsoleError = console.error;
-        const originalConsoleWarn = console.warn;
 
         console.log = (...args) => {
             setLogs(prevLogs => [...prevLogs, { type: 'log', message: args.join(' ') }]);
             originalConsoleLog(...args);
         };
 
-        console.error = (...args) => {
-            setLogs(prevLogs => [...prevLogs, { type: 'error', message: args.join(' ') }]);
-            originalConsoleError(...args);
-        };
-
-        console.warn = (...args) => {
-            setLogs(prevLogs => [...prevLogs, { type: 'warn', message: args.join(' ') }]);
-            originalConsoleWarn(...args);
-        };
 
         return () => {
             console.log = originalConsoleLog;
-            console.error = originalConsoleError;
-            console.warn = originalConsoleWarn;
         };
     }, []);
 

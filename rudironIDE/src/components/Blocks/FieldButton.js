@@ -1,10 +1,12 @@
-// FieldButton.js
+
+
 export class FieldButton extends Blockly.Field {
     constructor(text, onClick, optConfig) {
       super(text, optConfig);
       this.onClick = onClick;
-      this.COLOR = "#30c969"; 
+      this.COLOR = "#27AE60"; 
       this.HOVER_COLOR = "#27AE60"; 
+      this.PRESS_COLOR = "#219653"; 
     }
   
     initView() {
@@ -12,60 +14,88 @@ export class FieldButton extends Blockly.Field {
     }
   
     createButtonElement() {
-      this.buttonElement = Blockly.utils.dom.createSvgElement(
-        'rect',
+      // Create a group element for the entire button
+      this.buttonGroup = Blockly.utils.dom.createSvgElement(
+        'g',
         {
-          'width': 95, // Ширина увеличена
-          'height': 32, // Высота увеличена
-          'rx': 6, 
-          'ry': 6,
-          'fill': "#30c969",
           'cursor': 'pointer',
           'class': 'blocklyButton'
         },
         this.fieldGroup_
       );
-  
-      // Текст кнопки
+
+      // Rectangle for the button
+      this.buttonElement = Blockly.utils.dom.createSvgElement(
+        'rect',
+        {
+          'width': 95,
+          'height': 32,
+          'rx': 6, 
+          'ry': 6,
+          'fill': this.COLOR,
+        },
+        this.buttonGroup
+      );
+      
+      // Text for the button with specific class to override CSS
       this.textElement_ = Blockly.utils.dom.createSvgElement(
         'text',
         {
-          'x': 47, // Центрирование по ширине
-          'y': 17, // Центрирование по высоте
+          'x': 47,
+          'y': 17,
           'text-anchor': 'middle',
           'dominant-baseline': 'middle',
-          'fill': '#2ECC71',
-          'font-size': '17px',
-          'font-weight': 'bold', // Жирный шрифт
-          'font-family': 'Inter, sans-serif'
+          'class': 'blocklyButtonText', // Unique class for higher specificity
+          'font-size': '19px',
+          'font-weight': 'bold',
+          'pointer-events': 'none'
         },
-        this.fieldGroup_
+        this.buttonGroup
       );
       this.textElement_.textContent = this.getText();
   
-      // Анимация при наведении
+      // Hover effect
       Blockly.browserEvents.conditionalBind(
-        this.buttonElement,
+        this.buttonGroup,
         'mouseenter',
         this,
         () => this.setButtonColor(this.HOVER_COLOR)
       );
       
       Blockly.browserEvents.conditionalBind(
-        this.buttonElement,
+        this.buttonGroup,
         'mouseleave',
         this,
         () => this.setButtonColor(this.COLOR)
       );
   
-      // Обработчик клика
+      // Press effect (scale down)
       Blockly.browserEvents.conditionalBind(
-        this.buttonElement,
+        this.buttonGroup,
+        'mousedown',
+        this,
+        () => {
+          this.setButtonColor(this.PRESS_COLOR);
+          this.applyScale(0.95);
+        }
+      );
+
+      Blockly.browserEvents.conditionalBind(
+        this.buttonGroup,
+        'mouseup',
+        this,
+        () => {
+          this.setButtonColor(this.HOVER_COLOR);
+          this.applyScale(1);
+        }
+      );
+
+      Blockly.browserEvents.conditionalBind(
+        this.buttonGroup,
         'click',
         this,
         (e) => {
           this.onClick();
-          this.setButtonColor(this.COLOR);
           e.stopPropagation();
         }
       );
@@ -76,9 +106,15 @@ export class FieldButton extends Blockly.Field {
         this.buttonElement.setAttribute('fill', color);
       }
     }
+
+    applyScale(scale) {
+      if (this.buttonGroup) {
+        this.buttonGroup.setAttribute('transform', `scale(${scale}) translate(${47 * (1 - scale)}, ${16 * (1 - scale)})`);
+      }
+    }
   
     updateSize_() {
       this.size_.width = 100;
       this.size_.height = 32;
     }
-  }
+}

@@ -68,12 +68,12 @@ export function executeBlock(block) {
 }
 
 export function executeSequence(blocks) {
-    console.log(`[EXECUTOR] Task recieved`);
+    console.log(`[Обработчик] Код получен`);
 
     blocks.forEach(block => {
         executeBlock(block);
     });
 
-    console.log(`[EXECUTOR] Task finished`);
+    console.log(`[Обработчик] Код выполнен`);
 
 }

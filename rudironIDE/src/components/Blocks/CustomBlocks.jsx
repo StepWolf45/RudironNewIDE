@@ -1,13 +1,14 @@
 import * as Blockly from 'blockly';
 import { FieldButton } from './FieldButton.js';
 import { executeSequence } from '../BlockExecutor/BlockExecutor.jsx';
+import './BlocklyWorkspace.css';
 
 Blockly.fieldRegistry.register('field_button', FieldButton);
 
 Blockly.Blocks['start'] = {
   init() {
     this.appendDummyInput()
-      .appendField(new FieldButton('Старт', () => {
+      .appendField(new FieldButton('СТАРТ', () => {
         const topBlocks = this.workspace.getTopBlocks(true);
         const result = [];
 
@@ -190,28 +191,28 @@ Blockly.Blocks['analog_write'] = {
       "colour": 240,
     });
   },
-  onchange: function(changeEvent) {
-    if (changeEvent.type === Blockly.Events.BLOCK_MOVE ||
-        changeEvent.type === Blockly.Events.BLOCK_CHANGE) { // Check both move and change events
+  // onchange: function(changeEvent) {
+  //   if (changeEvent.type === Blockly.Events.BLOCK_MOVE ||
+  //       changeEvent.type === Blockly.Events.BLOCK_CHANGE) { // Check both move and change events
 
-      const pinInput = this.getInput('PIN');
-      const pinValue = this.getFieldValue('PIN') || 0; // Get field value as backup
-      const pinBlock = pinInput.connection.targetBlock();
+  //     const pinInput = this.getInput('PIN');
+  //     const pinValue = this.getFieldValue('PIN') || 0; // Get field value as backup
+  //     const pinBlock = pinInput.connection.targetBlock();
 
-      if (pinBlock && pinBlock.type === 'math_number') {
-        const numberFieldValue = pinBlock.getFieldValue('NUM') || 0; // Get the value from the number block
-        const numValue = Number(numberFieldValue);
+  //     if (pinBlock && pinBlock.type === 'math_number') {
+  //       const numberFieldValue = pinBlock.getFieldValue('NUM') || 0; // Get the value from the number block
+  //       const numValue = Number(numberFieldValue);
 
-        if (isNaN(numValue) || numValue < 0 || numValue > 255) {
-          this.setWarningText("Значение пина должно быть числом от 0 до 255.");
-          } else {
-              this.setWarningText(null); // Clear the warning.
-          }
-      } else if (pinBlock) {
-        this.setWarningText("К пину можно подключить только числовое значение.");
-      } else {
-        this.setWarningText(null);
-      }
-    }
-  }
+  //       if (isNaN(numValue) || numValue < 0 || numValue > 255) {
+  //         this.setWarningText("Значение пина должно быть числом от 0 до 255.");
+  //         } else {
+  //             this.setWarningText(null); // Clear the warning.
+  //         }
+  //     } else if (pinBlock) {
+  //       this.setWarningText("К пину можно подключить только числовое значение.");
+  //     } else {
+  //       this.setWarningText(null);
+  //     }
+  //   }
+  // }
 };
