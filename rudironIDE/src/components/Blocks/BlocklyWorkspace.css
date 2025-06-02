@@ -49,7 +49,10 @@ circle.blocklyIconShape{
   background-position: right top;
   background-repeat: no-repeat;
 }
+.blocklyMenu{
+  padding: 0px 0px !important;
 
+}
 /* Контейнеры для блоков */
 .blocklyMainBackground {
   fill: #1F1F1F  !important;
