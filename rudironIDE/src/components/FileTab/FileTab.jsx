@@ -69,9 +69,8 @@ export default function FileTab({
                         handleCreateNewFile();
                     } else {
                         setActiveFileId(key);
-                        handleWorkspaceCenter(key);
-                    }
-                }}
+
+                }}}
                 onEdit={(key, action) => {
                     if (action === "add") {
                         handleCreateNewFile();

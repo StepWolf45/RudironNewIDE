@@ -54,7 +54,9 @@ circle.blocklyIconShape{
 .blocklyMainBackground {
   fill: #1F1F1F  !important;
   stroke: #1F1F1F !important;
+  stroke-width: 2px !important;
   border: none !important;
+  box-sizing: border-box !important;
 }
 
 #blocklyDiv{

@@ -76,14 +76,15 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         };
     }, []);
 
-    //Адаптивный blokcly workspace
+    //Адаптивный blockly workspace
     useEffect(() => {
         if (blocklyDiv.current) {
             resizeObserverRef.current = new ResizeObserver(entries => {
                 const { width, height } = entries[0].contentRect;
                 setContainerSize({ width, height });
                 if (workspaceRef.current) {
-                    Blockly.svgResize(workspaceRef.current);
+                    Blockly.svgResize(workspaceRef.current); 
+                    workspaceRef.current.scrollCenter();
                 }
             });
             resizeObserverRef.current.observe(blocklyDiv.current);

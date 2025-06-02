@@ -100,25 +100,13 @@ export const FileProvider = ({ children }) => {
         }
 
     };
-    const handleWorkspaceCenter = useCallback((fileId) => {
-        console.log("Centering workspace for fileId:", fileId);
-        const tryToCenter = (attempt = 0) => {
-            const workspace = blocklyWorkspaces[fileId];
-            if (workspace?.rendered) {
-            workspace.scrollCenter();
-            } else if (attempt < 3) {
-            requestAnimationFrame(() => tryToCenter(attempt + 1));
-            }
-        };
-        tryToCenter();
-    }, [blocklyWorkspaces]);
+
 
     const handleWorkspaceMount = (fileId, workspace) => {
         setBlocklyWorkspaces(prevWorkspaces => ({
             ...prevWorkspaces,
             [fileId]: workspace,
         }));
-
     };
 
     const value = {
@@ -136,7 +124,6 @@ export const FileProvider = ({ children }) => {
         handleCloseFile,
         handleTabChange,
         handleWorkspaceMount,
-        handleWorkspaceCenter,
         filePaths, 
         currentFilePath, 
         setCurrentFilePath, 

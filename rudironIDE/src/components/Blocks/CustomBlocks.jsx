@@ -46,7 +46,7 @@ Blockly.Blocks['write_text'] = {
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#33a6cc", 
-      "tooltip": "Вывести текст",
+      "tooltip": "Выводит текст",
       "helpUrl": ""
     });
   }
