@@ -1,4 +1,7 @@
-
+import 'blockly/blocks';
+import 'blockly/javascript';
+import 'blockly/msg/ru'; // Русская локализация
+import * as Blockly from 'blockly/core';
 export class FieldButton extends Blockly.Field {
     constructor(text, onClick, optConfig) {
       super(text, optConfig);

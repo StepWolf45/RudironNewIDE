@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 .console-output {
 
-    padding: 10px;
+    padding: 5px 5px 10px 10px;
     background-color: #1e1e1e;
     color: #d4d4d4;
     font-family: 'Courier New', Courier, monospace;
@@ -101,7 +101,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-
     transition: background-color 0.2s, box-shadow 0.2s;
 }
 
@@ -111,5 +110,5 @@
 }
 .clear-icon {
     width: 1.4em;
-    height: 1.3em;
+    height: 1.4em;
 }

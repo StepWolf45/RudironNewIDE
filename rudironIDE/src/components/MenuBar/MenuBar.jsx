@@ -1,5 +1,6 @@
 // src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
+import * as Blockly from 'blockly';
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { MenuItem1, MenuItem2, stopPropagation } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';

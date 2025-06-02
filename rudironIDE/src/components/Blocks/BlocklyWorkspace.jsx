@@ -48,16 +48,18 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 scaleSpeed: 1.1,
                 pinch: true
             },
-            toolbox: activeCategory?.toolboxXML || ''
+            toolbox: activeCategory?.toolboxXML || '',
+            media: '../../../public/'
         });
 
         if (initialXml) {
             Blockly.serialization.workspaces.load(initialXml, workspace);
+            workspace.scrollCenter()
         }
 
         workspaceRef.current = workspace;
-        onWorkspaceMount(workspace);
 
+        onWorkspaceMount(workspace);
         //Сохранение в localStorage
         workspace.addChangeListener((event) => {
             if (event.type === Blockly.Events.VAR && event.name === 'rename') {
