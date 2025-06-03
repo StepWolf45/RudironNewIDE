@@ -44,7 +44,7 @@
 .SplitLeft .ant-splitter-bar-collapse-bar{
   height:15px !important;
   background-color: #171717!important;
-  width: 200px!important;
+  width: 20%!important;
   border-radius: 0% !important;
   position: relative;
   opacity:1 !important;
@@ -58,7 +58,7 @@
 .ant-splitter-bar-collapse-bar {
   width: 15px !important;
   background-color: #171717 !important;
-  height: 200px !important;
+  height: 20% !important;
   border-radius: 0 !important;
   position: relative;
   opacity: 1 !important;
@@ -107,3 +107,11 @@
 
 }
 
+.ant-tabs-content-holder{
+
+  background-image: url("../../../public/Logo_AQ.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+
+}

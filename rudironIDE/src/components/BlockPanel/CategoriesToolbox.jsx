@@ -58,6 +58,8 @@ export const categories = [
         <block type="pinmode"></block>
         <block type="digital_write"></block>
         <block type="analog_write"></block>
+        <block type="analog_read"></block>
+        <block type="digital_read"></block>
         
     </xml>
   `

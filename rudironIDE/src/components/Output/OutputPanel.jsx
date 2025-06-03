@@ -14,26 +14,34 @@ const OutputPanel = () => {
         const originalConsoleLog = console.log;
         const originalConsoleError = console.error;
         const originalConsoleWarn = console.warn;
+        const originalConsoleInfo = console.info;
 
-        console.log = (...args) => {
+        // console.log = (...args) => {
+        //     setLogs(prevLogs => [...prevLogs, { type: 'log', message: args.join(' ') }]);
+        //     originalConsoleLog(...args);
+        // };
+
+        // console.error = (...args) => {
+        //     setLogs(prevLogs => [...prevLogs, { type: 'error', message: args.join(' ') }]);
+        //     originalConsoleError(...args);
+        // };
+
+        // console.warn = (...args) => {
+        //     setLogs(prevLogs => [...prevLogs, { type: 'warn', message: args.join(' ') }]);
+        //     originalConsoleWarn(...args);
+        // };
+
+        console.info = (...args) => {
             setLogs(prevLogs => [...prevLogs, { type: 'log', message: args.join(' ') }]);
             originalConsoleLog(...args);
         };
 
-        console.error = (...args) => {
-            setLogs(prevLogs => [...prevLogs, { type: 'error', message: args.join(' ') }]);
-            originalConsoleError(...args);
-        };
-
-        console.warn = (...args) => {
-            setLogs(prevLogs => [...prevLogs, { type: 'warn', message: args.join(' ') }]);
-            originalConsoleWarn(...args);
-        };
 
         return () => {
-            console.log = originalConsoleLog;
-            console.error = originalConsoleError;
-            console.warn = originalConsoleWarn;
+            console.info = originalConsoleInfo;
+            // console.log = originalConsoleLog;
+            // console.error = originalConsoleError;
+            // console.warn = originalConsoleWarn;
         };
     }, []);
 
@@ -55,7 +63,7 @@ const OutputPanel = () => {
     return (
         <div className="console-output" ref={logContainerRef}>
             <div className="console-info">
-                <strong>Консоль вывода</strong>
+                <strong>Монитор порта</strong>
                 <button 
                     onClick={clearLogs} 
                     className="clear-button"

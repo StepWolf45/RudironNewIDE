@@ -15,7 +15,7 @@ export const FileProvider = ({ children }) => {
     const handleCreateNewFile = () => {
         const newFile = {
             id: Date.now(),
-            name: `new-file-${files.length + 1}.json`,
+            name: `new-file-${files.length + 1}.rud`,
             content: null,
         };
         setFiles([...files, newFile]);
@@ -40,7 +40,6 @@ export const FileProvider = ({ children }) => {
         };
         setFiles([...files, newFile]);
         setActiveFileId(newFile.id);
-
         setBlocklyWorkspaces(prevWorkspaces => ({
             ...prevWorkspaces,
             [newFile.id]: fileContent,
@@ -94,11 +93,14 @@ export const FileProvider = ({ children }) => {
     };
 
     const handleTabChange = (newActiveFileId) => {
+
         if (newActiveFileId) {
             setActiveFileId(Number(newActiveFileId)); // Update active file ID
             setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Update current file path or name
         }
+
     };
+
 
     const handleWorkspaceMount = (fileId, workspace) => {
         setBlocklyWorkspaces(prevWorkspaces => ({

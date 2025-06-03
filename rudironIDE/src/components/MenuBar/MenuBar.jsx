@@ -1,5 +1,6 @@
 // src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
+import * as Blockly from 'blockly';
 import React, { useContext, useRef, useEffect, useState } from 'react';
 import { MenuItem1, MenuItem2, stopPropagation } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
@@ -101,28 +102,30 @@ export default function MenuBar({ title, flag }) {
             {
                 key: '1',
                 label: 'Порт',
-                children: serialPorts
+                children: serialPorts.length > 0 
+                    ? serialPorts 
+                    : [{ key: 'no-devices', label: <span style={{ color: 'white' }}>Нет подключенных плат</span> }]
             },
-        ]
-        iconbutton = <ControlOutlined />
-
+        ];
+        iconbutton = <ControlOutlined />;
     }
 
-    useEffect(() => {
-        const fetchDevices = async () => {
-            try {
-                const result = await window.electron.ipcRenderer.getSerialDevices("");
-                setPorts(result.map((device, index) => ({
-                    key: index,
-                    label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
-                })))
-            } catch (error) {
-                console.error('Error during IPC request:', error);
-            }
-        };
+        useEffect(() => {
+                const fetchDevices = async () => {
+                    try {
+                        const result = await window.electron.ipcRenderer.getSerialDevices("");
+                        setPorts(result.map((device, index) => ({
+                            key: index,
+                            label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
+                        })));
+                    } catch (error) {
+                        console.error('Error during IPC request:', error);
+                        setPorts([]); // Устанавливаем пустой массив в случае ошибки
+                    }
+                };
 
-        fetchDevices();
-    }, []);
+                fetchDevices();
+        }, []);
 
     return (
         <div>

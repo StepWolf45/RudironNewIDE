@@ -4,7 +4,7 @@ import * as Blockly from 'blockly';
 import * as Ru from 'blockly/msg/ru';
 import 'blockly/core';
 import 'blockly/blocks';
-import 'blockly/javascript';
+import * as JavaScript from 'blockly/javascript';
 import './BlocklyWorkspace.css';
 import './CustomBlocks.jsx';
 import { FileContext } from '../../contexts/FileContext';
@@ -25,6 +25,7 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
 });
 
 Blockly.setLocale(Ru);
+
 
 const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave }) => {
     const blocklyDiv = useRef(null);
@@ -157,6 +158,8 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         });
 
         const workspace = workspaceRef.current;
+        
+
         const renameListener = (event) => {
           if (event.type === Blockly.Events.VAR_RENAME) {
             const varId = event.varId;

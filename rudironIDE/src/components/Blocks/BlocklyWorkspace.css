@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=WDXL+Lubrifont+TC&display=swap');
+
+
 
 /* Значок настройки if/else */
 .blocklyIconShape {
@@ -16,7 +19,10 @@ circle.blocklyIconShape{
  overflow: hidden !important;
 
 }
-
+.blocklyButtonText {
+    fill: #FFFFFF !important;
+    font-family: "WDXL Lubrifont TC", sans-serif !important;
+}
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
   fill: #555!important; /* Цвет ползунка */
@@ -47,8 +53,10 @@ circle.blocklyIconShape{
 /* Контейнеры для блоков */
 .blocklyMainBackground {
   fill: #1F1F1F  !important;
-  stroke:none !important;
+  stroke: #1F1F1F !important;
+  stroke-width: 2px !important;
   border: none !important;
+  box-sizing: border-box !important;
 }
 
 #blocklyDiv{

@@ -10393,12 +10393,10 @@ app$1.on("activate", () => {
   }
 });
 app$1.whenReady().then(createWindow);
-const RUDIRON_VID = "067b";
-const RUDIRON_PID = "2303";
+const RUDIRON_VID = "1a86";
+const RUDIRON_PID = "55d4";
 const RUDIRON_BAUD = 115200;
 let COMMANDS_QUEUE = new Queue();
-let WAIT_FOR_RESP = false;
-let WAIT_FOR_RESP_ID = 0;
 ipcMain$1.handle("request-serial-devices", async (event, data) => {
   try {
     const ports = await SerialPort.list();
@@ -10423,29 +10421,6 @@ ipcMain$1.handle("connect-serial-device", async (event, data) => {
     console.log("[INFO] Port opened callback");
   });
   console.log("[INFO] Flow mode active; Waiting for RX");
-  port.on("data", (data2) => {
-    const reversed = Buffer.from([data2[0], data2[1]]);
-    printBuffer(data2);
-    let resp_id = reversed.readUInt16BE();
-    console.log("[INFO] RESP ID:", resp_id);
-    if (resp_id == WAIT_FOR_RESP_ID) {
-      WAIT_FOR_RESP = 0;
-      WAIT_FOR_RESP_ID = 0;
-    }
-    win.webContents.send("board_visualization_digital", { map: parsePinsByType(data2, 0) });
-    win.webContents.send("board_visualization_analog", { map: parsePinsByType(data2, 1) });
-  });
-  setInterval(() => {
-    if (!COMMANDS_QUEUE.isEmpty() && !WAIT_FOR_RESP) {
-      console.log("[DBG] New block exec");
-      let front = COMMANDS_QUEUE.dequeue();
-      const reversed = Buffer.from([front[0], front[1]]);
-      let exec_id = reversed.readUInt16BE();
-      port.write(front);
-      WAIT_FOR_RESP = 1;
-      WAIT_FOR_RESP_ID = exec_id;
-    }
-  }, 10);
 });
 ipcMain$1.handle("send-serial", async (event, data) => {
   let id_buffer = Buffer.alloc(2);
@@ -10465,6 +10440,46 @@ ipcMain$1.handle("send-serial", async (event, data) => {
   console.log(res);
   COMMANDS_QUEUE.enqueue(data);
   console.log(COMMANDS_QUEUE.size());
+});
+function sendCommand(command, wait_packets_cnt = 1) {
+  return new Promise((resolve2, reject) => {
+    let timeout;
+    let received = 0;
+    let received_packets = [];
+    const onData = (data) => {
+      received += 1;
+      received_packets.push(data);
+      if (received == 1) {
+        win.webContents.send("board_visualization_digital", { map: parsePinsByType(data, 0) });
+        win.webContents.send("board_visualization_analog", { map: parsePinsByType(data, 1) });
+      }
+      if (received == wait_packets_cnt) {
+        clearTimeout(timeout);
+        port.off("data", onData);
+        printBuffer(data);
+        resolve2(received_packets);
+      }
+    };
+    port.on("data", onData);
+    port.write(command, (err) => {
+      if (err) {
+        port.off("data", onData);
+        return reject(err.message);
+      }
+      timeout = setTimeout(() => {
+        port.off("data", onData);
+        reject("Timeout waiting for response");
+      }, 1e4);
+    });
+  });
+}
+ipcMain$1.handle("send-and-wait", async (event, command, wait_packets_cnt) => {
+  try {
+    const response = await sendCommand(command, wait_packets_cnt);
+    return { success: true, data: response };
+  } catch (error2) {
+    return { success: false, error: error2 };
+  }
 });
 export {
   MAIN_DIST,

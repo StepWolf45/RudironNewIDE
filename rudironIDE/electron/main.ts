@@ -7,6 +7,7 @@ import Store from 'electron-store';
 import Queue from './queue';
 import { getPinValue, printBuffer, parsePinsByType } from './protocol';
 
+
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -188,8 +189,8 @@ app.on('activate', () => {
 app.whenReady().then(createWindow);
 
 // Serial part
-const RUDIRON_VID = "067b"//"1a86"
-const RUDIRON_PID = "2303"//"55d4"
+const RUDIRON_VID = "1a86"
+const RUDIRON_PID = "55d4"
 const RUDIRON_BAUD = 115200
 let COMMANDS_QUEUE = new Queue();
 let WAIT_FOR_RESP = false;
@@ -225,35 +226,37 @@ ipcMain.handle('connect-serial-device', async (event, data) => {
     });
 
     console.log("[INFO] Flow mode active; Waiting for RX");
-    port.on('data', (data) => {
-        const reversed = Buffer.from([data[0], data[1]]);
-        printBuffer(data);
-        let resp_id = reversed.readUInt16BE();
-        console.log('[INFO] RESP ID:', resp_id);
-        if (resp_id == WAIT_FOR_RESP_ID){
-            WAIT_FOR_RESP = 0;
-            WAIT_FOR_RESP_ID = 0;
-        }
+    // test_34
+    // port.write(Buffer.from([0xFE, 0xDE, 0x23, 0x00, 0x58, 0x02, 0x01, 0x02, 0xCC, 0x00, 0x02, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+    // port.on('data', (data) => {
+    //     const reversed = Buffer.from([data[0], data[1]]);
+    //     console.log("RX:", data);
+    //     // let resp_id = reversed.readUInt16BE();
+    //     // console.log('[INFO] RESP ID:', resp_id);
+    //     // if (resp_id == WAIT_FOR_RESP_ID) {
+    //     //     WAIT_FOR_RESP = 0;
+    //     //     WAIT_FOR_RESP_ID = 0;
+    //     // }
 
-        // console.log("AAA:", getPinValue(data, 15));
-        win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0)});
-        win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1)});
-        // window.board_vis_analog_pin("_5", getPinValue(data, 5));
-        // console.log("PIN VAL:", );
-    });
+    //     // // console.log("AAA:", getPinValue(data, 15));
+    //     // win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0) });
+    //     // win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1) });
+    //     // // window.board_vis_analog_pin("_5", getPinValue(data, 5));
+    //     // // console.log("PIN VAL:", );
+    // });
 
-    setInterval(() => {
-        if (!COMMANDS_QUEUE.isEmpty() && !WAIT_FOR_RESP){
-            console.log('[DBG] New block exec');
-            let front = COMMANDS_QUEUE.dequeue();
-            const reversed = Buffer.from([front[0], front[1]]);
-            let exec_id = reversed.readUInt16BE();
-            port.write(front);
-            WAIT_FOR_RESP = 1;
-            WAIT_FOR_RESP_ID = exec_id;
-        }
-        
-    }, 10); // 10ms interval polling queue
+    // setInterval(() => {
+    //     if (!COMMANDS_QUEUE.isEmpty() && !WAIT_FOR_RESP) {
+    //         console.log('[DBG] New block exec');
+    //         let front = COMMANDS_QUEUE.dequeue();
+    //         const reversed = Buffer.from([front[0], front[1]]);
+    //         let exec_id = reversed.readUInt16BE();
+    //         port.write(front);
+    //         WAIT_FOR_RESP = 1;
+    //         WAIT_FOR_RESP_ID = exec_id;
+    //     }
+
+    // }, 10); // 10ms interval polling queue
 });
 
 
@@ -261,7 +264,7 @@ ipcMain.handle('send-serial', async (event, data) => {
 
     let id_buffer = Buffer.alloc(2);
     id_buffer.writeUInt16BE(0);
-    
+
 
     if (!COMMANDS_QUEUE.isEmpty()) {
         const last = COMMANDS_QUEUE.items[COMMANDS_QUEUE.items.length - 1];
@@ -279,7 +282,7 @@ ipcMain.handle('send-serial', async (event, data) => {
 
     let res = data.toString('hex').match(/.{1,2}/g).map(byte => byte.padStart(2, '0')).join(' ');
     console.log(res);
-    
+
     COMMANDS_QUEUE.enqueue(data);
     console.log(COMMANDS_QUEUE.size());
 
@@ -287,4 +290,59 @@ ipcMain.handle('send-serial', async (event, data) => {
     // port.write(Buffer.from(data), (err) => { });
 
 })
+
+function sendCommand(command, wait_packets_cnt = 1) {
+    return new Promise((resolve, reject) => {
+        let timeout;
+        let received = 0;
+
+        // Define the data handler
+        let received_packets = [];
+        const onData = (data) => {
+            received += 1;
+            received_packets.push(data);
+            if (received == 1) {
+                win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0) });
+                win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1) });
+
+            }
+            if (received == wait_packets_cnt) {
+                clearTimeout(timeout);
+                port.off('data', onData);
+                // console.log("RX:", data);
+                printBuffer(data);
+                resolve(received_packets);
+            }
+        };
+
+        // Add listener
+        port.on('data', onData);
+
+        // Write the command
+        port.write(command, (err) => {
+            if (err) {
+                port.off('data', onData);
+                return reject(err.message);
+            }
+
+            // Timeout protection
+            timeout = setTimeout(() => {
+                port.off('data', onData);
+                reject('Timeout waiting for response');
+            }, 10000);
+        });
+    });
+
+
+}
+ipcMain.handle('send-and-wait', async (event, command, wait_packets_cnt) => {
+    try {
+        const response = await sendCommand(command, wait_packets_cnt);
+        return { success: true, data: response };
+    } catch (error) {
+        return { success: false, error };
+    }
+});
+
+
 
