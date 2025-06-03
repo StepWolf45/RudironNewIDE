@@ -89,6 +89,19 @@ export default function MenuBar({ title, flag }) {
         reader.readAsText(file);
     };
 
+    const fetchDevices = async () => {
+        try {
+            const result = await window.electron.ipcRenderer.getSerialDevices("");
+            setPorts(result.map((device, index) => ({
+                key: index,
+                label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
+            })));
+        } catch (error) {
+            console.error('Error during IPC request:', error);
+            setPorts([]); // Устанавливаем пустой массив в случае ошибки
+        }
+    };
+
     if (flag === "1") {
         items = MenuItem1;
         iconbutton = <FileOutlined />;
@@ -106,23 +119,19 @@ export default function MenuBar({ title, flag }) {
                     ? serialPorts 
                     : [{ key: 'no-devices', label: <span style={{ color: 'white' }}>Нет подключенных плат</span> }]
             },
+            {
+                key: '2',
+                label: ((<span onClick={() => {
+                    fetchDevices();
+
+                }}>Обновить</span>) )
+            },
         ];
         iconbutton = <ControlOutlined />;
     }
 
         useEffect(() => {
-                const fetchDevices = async () => {
-                    try {
-                        const result = await window.electron.ipcRenderer.getSerialDevices("");
-                        setPorts(result.map((device, index) => ({
-                            key: index,
-                            label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
-                        })));
-                    } catch (error) {
-                        console.error('Error during IPC request:', error);
-                        setPorts([]); // Устанавливаем пустой массив в случае ошибки
-                    }
-                };
+                
 
                 fetchDevices();
         }, []);
