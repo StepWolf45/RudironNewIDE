@@ -20,6 +20,12 @@ export class FieldButton extends Blockly.Field {
     initView() {
       this.createButtonElement();
     }
+
+    toggle(){
+      this.isRunning = !this.isRunning;
+      this.textElement_.textContent = this.isRunning ? 'СТОП' : 'СТАРТ';
+      this.setButtonColor(this.isRunning ? this.STOP_COLOR : this.START_COLOR);
+    }
   
     createButtonElement() {
       this.buttonGroup = Blockly.utils.dom.createSvgElement(
