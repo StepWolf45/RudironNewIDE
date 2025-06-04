@@ -54,6 +54,7 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.mjs'),
             nodeIntegration: false,
             contextIsolation: true,
+
         },
     });
 
@@ -189,8 +190,9 @@ app.on('activate', () => {
 app.whenReady().then(createWindow);
 
 // Serial part
-const RUDIRON_VID = "1a86"
-const RUDIRON_PID = "55d4"
+const RUDIRON_VID = "1A86"
+const RUDIRON_PID = "55D4"
+
 const RUDIRON_BAUD = 115200
 let COMMANDS_QUEUE = new Queue();
 let WAIT_FOR_RESP = false;
