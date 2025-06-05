@@ -60,7 +60,6 @@ export class FieldButton extends Blockly.Field {
           'fill': '#FFFFFF',
           'font-size': '17px',
           'font-weight': 'bold',
-          'font-family': 'Inter, sans-serif',
           'pointer-events': 'none'
         },
         this.buttonGroup

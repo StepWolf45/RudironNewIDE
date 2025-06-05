@@ -10397,8 +10397,8 @@ app$1.on("activate", () => {
   }
 });
 app$1.whenReady().then(createWindow);
-const RUDIRON_VID = "1a86";
-const RUDIRON_PID = "55d4";
+const RUDIRON_VID = "1A86";
+const RUDIRON_PID = "55D4";
 const RUDIRON_BAUD = 115200;
 let COMMANDS_QUEUE = new Queue();
 ipcMain$1.handle("request-serial-devices", async (event, data) => {

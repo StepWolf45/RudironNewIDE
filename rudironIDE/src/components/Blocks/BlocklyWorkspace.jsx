@@ -61,6 +61,20 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         workspaceRef.current = workspace;
 
         onWorkspaceMount(workspace);
+
+        // if (Blockly.ContextMenuRegistry.registry.getItem('custom_menu_item')) {
+        //     Blockly.ContextMenuRegistry.registry.unregister('custom_menu_item');
+        // }
+        // if (Blockly.ContextMenuRegistry.registry.getItem('custom_if_menu_item')) {
+        //     Blockly.ContextMenuRegistry.registry.unregister('custom_if_menu_item');
+        // }
+        if (Blockly.ContextMenuRegistry.registry.getItem('blockHelp')) {
+            Blockly.ContextMenuRegistry.registry.unregister('blockHelp');
+        }
+
+        // registerCustomContextMenu();
+        // registerCustomContextMenuForIfBlock();
+
         //Сохранение в localStorage
         workspace.addChangeListener((event) => {
             if (event.type === Blockly.Events.VAR && event.name === 'rename') {
@@ -179,6 +193,41 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         workspace.addChangeListener(renameListener);
         return () => workspace.removeChangeListener(renameListener);
       }, [showInputDialogReact]);
+      
+    //   function registerCustomContextMenu() {
+    //     const customMenuItem = {
+    //         displayText: 'Новый пункт',
+    //         preconditionFn: function(scope) {
+    //             return 'enabled';
+    //         },
+    //         callback: function(scope) {
+    //             alert('Новый пункт выбран!');
+    //         },
+    //         scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    //         id: 'custom_menu_item',
+    //         weight: 100
+    //     };
+
+    //     Blockly.ContextMenuRegistry.registry.register(customMenuItem);
+    // }
+
+    // Функция для регистрации нового контекстного меню для блока if
+    // function registerCustomContextMenuForIfBlock() {
+    //     const customIfMenuItem = {
+    //         displayText: 'Специальный пункт для блока if',
+    //         preconditionFn: function(scope) {
+    //             return scope.block.type === 'controls_if' ? 'enabled' : 'hidden';
+    //         },
+    //         callback: function(scope) {
+    //             alert('Специальный пункт для блока if выбран!');
+    //         },
+    //         scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
+    //         id: 'custom_if_menu_item',
+    //         weight: 100
+    //     };
+
+    //     Blockly.ContextMenuRegistry.registry.register(customIfMenuItem);
+    // }
 
     return (
         <div id="blocklyContainer">
