@@ -22,6 +22,33 @@ export let genNumberArgument = (value) => {
     return bufferRes;
 }
 
+export let genVarNameArgument = (value) => {
+    let str = Buffer.from(value, 'ascii');
+    return Buffer.concat([
+        Buffer.from([0x1]),
+        str, 
+        Buffer.from([0x0])
+    ])
+}
+
+export let genStringArgument = (value) => {
+    let str = Buffer.from(value, 'ascii');
+    return Buffer.concat([
+        Buffer.from([0x0, 0x1]),
+        str, 
+        Buffer.from([0x0])
+    ])
+}
+
+
+export let bufferSize2 = (buffer, subs) => {
+    const bufferLength = buffer.length - subs;
+    const sizeBuffer = Buffer.alloc(2);
+    sizeBuffer.writeUInt16BE(bufferLength);
+    return sizeBuffer;
+
+}
+
 export function parsePinsByType(buffer, type) {
     const digitalPinsMap = [16, 15, 11, 10, 6, 4, 1, 0, 35, 34, 32, 31, 30, 19, 18, 17];
     const analogPinsMap = [5, 7, 8, 9, 12, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 33];
