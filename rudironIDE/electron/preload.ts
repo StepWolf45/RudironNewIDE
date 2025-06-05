@@ -2,18 +2,19 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { bufferSize2, genNumberArgument, genVarNameArgument, genStringArgument, printBuffer } from './protocol';
 
 
-let logicalSyms = {"==": Buffer.from([0x02, 0x64, 0x00]), 
-    ">":  Buffer.from([0x02, 0x65, 0x00]), 
-    "<":  Buffer.from([0x02, 0x66, 0x00]),
+let logicalSyms = {
+    "==": Buffer.from([0x02, 0x64, 0x00]),
+    ">": Buffer.from([0x02, 0x65, 0x00]),
+    "<": Buffer.from([0x02, 0x66, 0x00]),
     ">=": Buffer.from([0x02, 0x67, 0x00]),
     "<=": Buffer.from([0x02, 0x68, 0x00]),
     "&&": Buffer.from([0x02, 0x69, 0x00]),
     "||": Buffer.from([0x02, 0x6A, 0x00]),
     "!a": Buffer.from([0x02, 0x6B, 0x00]),
-    "+":  Buffer.from([0x02, 0xC9, 0x00]),
-    "-":  Buffer.from([0x02, 0xCA, 0x00]),
-    "*":  Buffer.from([0x02, 0xCB, 0x00]),
-    "/":  Buffer.from([0x02, 0xCC, 0x00]),
+    "+": Buffer.from([0x02, 0xC9, 0x00]),
+    "-": Buffer.from([0x02, 0xCA, 0x00]),
+    "*": Buffer.from([0x02, 0xCB, 0x00]),
+    "/": Buffer.from([0x02, 0xCC, 0x00]),
 };
 
 function generateExpressionBuffer(bufferRes, value) {
@@ -62,7 +63,7 @@ contextBridge.exposeInMainWorld('electron', {
             return await ipcRenderer.invoke("connect-serial-device", message);
         },
         writeSerial: (data) => ipcRenderer.invoke('send-serial', data),
-        writeSerialAndWait: (data, wait_packets_cnt=1) => ipcRenderer.invoke("send-and-wait", data, wait_packets_cnt)
+        writeSerialAndWait: (data, wait_packets_cnt = 1) => ipcRenderer.invoke("send-and-wait", data, wait_packets_cnt)
 
 
         // genPinMode: (pin, mode) => {
@@ -150,7 +151,7 @@ contextBridge.exposeInMainWorld('api', {
             bufferRes[3] = size[0];
             return bufferRes;
         },
-        set_var: (name, value, expression=1) => {
+        set_var: (name, value, expression = 1) => {
             let name_buffer = genVarNameArgument(name);
             let bufferRes = Buffer.concat([
                 Buffer.from([0xFE, 0xDE, 0xFF, 0xFF, 0x91, 0x01, 0x02]),
@@ -174,7 +175,7 @@ contextBridge.exposeInMainWorld('api', {
             // }else {
             //     
             // }
-            
+
             let size = bufferSize2(bufferRes, 4)
             bufferRes[2] = size[1];
             bufferRes[3] = size[0];
@@ -182,7 +183,7 @@ contextBridge.exposeInMainWorld('api', {
             return bufferRes;
         },
 
-        set_var_as_pin: (name, pin, mode=0)  => {
+        set_var_as_pin: (name, pin, mode = 0) => {
             let name_buffer = genVarNameArgument(name);
             let bufferRes = Buffer.concat([
                 Buffer.from([0xFE, 0xDE, 0xFF, 0xFF, 0x91, 0x01, 0x02]),
@@ -195,7 +196,7 @@ contextBridge.exposeInMainWorld('api', {
                 val_buf = Buffer.concat([Buffer.from([0x02, 0xF8, 0x01, 0x01]), genNumberArgument(pin)]);
             } // analog
 
-            
+
 
             bufferRes = Buffer.concat([
                 bufferRes,
@@ -272,7 +273,7 @@ contextBridge.exposeInMainWorld('api', {
             let bufferRes = Buffer.from([0xFE, 0xDE, 0xFF, 0xFF, 0x2D, 0x01, 0x04, 0x01, 0x69, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x66, 0x00, 0x02, 0x01, 0x69, 0x00]);
             bufferRes = generateExpressionBuffer(bufferRes, exp);
             bufferRes = Buffer.concat([bufferRes, Buffer.from([0x02, 0xC9, 0x00, 0x02, 0x01, 0x69, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])]);
-            
+
             let size = bufferSize2(bufferRes, 4)
             bufferRes[2] = size[1];
             bufferRes[3] = size[0];
@@ -300,6 +301,9 @@ contextBridge.exposeInMainWorld('visualization_api', {
     setAnalogPin: (callback) => ipcRenderer.on('board_visualization_analog', callback)
 })
 
+contextBridge.exposeInMainWorld('board_connection', {
+    checkConnected: () => ipcRenderer.invoke('check_connected')
+});
 
 
 declare global {
