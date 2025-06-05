@@ -21,7 +21,7 @@ circle.blocklyIconShape{
 }
 .blocklyButtonText {
     fill: #FFFFFF !important;
-    font-family: "WDXL Lubrifont TC", sans-serif !important;
+        font-family: "Jost", sans-serif !important;
 }
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
@@ -49,8 +49,21 @@ circle.blocklyIconShape{
   background-position: right top;
   background-repeat: no-repeat;
 }
-.blocklyMenu{
-  padding: 0px 0px !important;
+.blocklyWidgetDiv .blocklyMenu {
+  padding: 0px 0px 5px 0px!important;
+  background-color: #333 !important;
+  border: 1px solid rgba(62, 171, 204, 0.5) !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden;
+}
+.blocklyContextMenu .blocklyMenuItem {
+
+  padding: 6px 15px 6px 15px !important;
+  color: white !important;
+
+}
+.blocklyContextMenu .blocklyMenuItemDisabled {
+  color: #555 !important;
 
 }
 /* Контейнеры для блоков */

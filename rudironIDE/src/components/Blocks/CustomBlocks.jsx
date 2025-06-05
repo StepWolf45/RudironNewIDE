@@ -8,7 +8,7 @@ Blockly.fieldRegistry.register('field_button', FieldButton);
 Blockly.Blocks['start'] = {
   init() {
     window.stop_flag = false;
-    const fieldBtn = new FieldButton('Старт', () => {
+    const fieldBtn = new FieldButton('СТАРТ', () => {
       console.log("Is running: ", fieldBtn.isRunning);
       
       if (fieldBtn.isRunning) { // Start
