@@ -8,30 +8,38 @@ Blockly.fieldRegistry.register('field_button', FieldButton);
 Blockly.Blocks['start'] = {
   init() {
     window.stop_flag = false;
-    const fieldBtn = new FieldButton('СТАРТ', () => {
-      console.log("Is running: ", fieldBtn.isRunning);
-      
-      if (fieldBtn.isRunning) { // Start
-        window.stop_flag = false;
-        window.Blockly.JavaScript.init(this.workspace);
+    const fieldBtn = new FieldButton('Старт', () => {
+      window.board_connection.checkConnected().then((data) => {
+        if (data) {
+          console.log("Is running: ", fieldBtn.isRunning);
 
-        const topBlocks = this.workspace.getTopBlocks(true);
-        const result = [];
+          if (fieldBtn.isRunning) { // Start
+            window.stop_flag = false;
+            window.Blockly.JavaScript.init(this.workspace);
 
-        topBlocks.forEach(topBlock => {
-          let block = topBlock;
-          while (block) {
-            result.push(block);
-            block = block.getNextBlock();
+            const topBlocks = this.workspace.getTopBlocks(true);
+            const result = [];
+
+            topBlocks.forEach(topBlock => {
+              let block = topBlock;
+              while (block) {
+                result.push(block);
+                block = block.getNextBlock();
+              }
+            });
+            executeSequence(result, fieldBtn);
+          } else {
+            window.stop_flag = true;
+            console.log("STOP");
+            resetBlock();
+            fieldBtn.toggle();
           }
-        });
-        executeSequence(result, fieldBtn);
-      } else {
-        window.stop_flag = true;
-        console.log("STOP");
-        resetBlock();
-        fieldBtn.toggle();
-      }
+        } else {
+          alert("Подключите плату");
+          fieldBtn.toggle();
+        }
+      })
+
 
     })
     this.appendDummyInput().appendField(fieldBtn, 'BUTTON');

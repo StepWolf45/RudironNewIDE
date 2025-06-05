@@ -10261,6 +10261,7 @@ const RENDERER_DIST = path$1.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path$1.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 const { Tray, Menu } = require2("electron");
 const { SerialPort } = require2("serialport");
+let board_connected = true;
 let tray = null;
 let win;
 let port = null;
@@ -10355,6 +10356,9 @@ ipcMain$1.on("close-file", (event, fileId) => {
   delete currentFilePaths[fileId];
   store.set("currentFilePaths", currentFilePaths);
 });
+ipcMain$1.handle("check_connected", () => {
+  return board_connected;
+});
 app$1.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app$1.quit();
@@ -10420,7 +10424,8 @@ ipcMain$1.handle("connect-serial-device", async (event, data) => {
   port.on("open", () => {
     console.log("[INFO] Port opened callback");
   });
-  console.log("[INFO] Flow mode active; Waiting for RX");
+  console.log("[INFO] Flow mode active; Wailting for RX");
+  board_connected = true;
 });
 ipcMain$1.handle("send-serial", async (event, data) => {
   let id_buffer = Buffer.alloc(2);

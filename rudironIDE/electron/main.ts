@@ -21,11 +21,12 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 const { Tray, Menu } = require('electron');
 const { SerialPort } = require('serialport');
 
+let board_connected = false;
+
 let tray = null;
 let win: BrowserWindow | null;
 
 let port: SerialPort | null = null;
-
 const store = new Store();
 
 interface FilePaths {
@@ -143,6 +144,10 @@ ipcMain.on('close-file', (event, fileId) => {
     store.set('currentFilePaths', currentFilePaths);
 });
 
+ipcMain.handle('check_connected', () => {
+    return board_connected;
+});
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -198,6 +203,10 @@ let COMMANDS_QUEUE = new Queue();
 let WAIT_FOR_RESP = false;
 let WAIT_FOR_RESP_ID = 0;
 
+
+
+
+
 ipcMain.handle('request-serial-devices', async (event, data) => {
     try {
         const ports = await SerialPort.list();  // With trash
@@ -214,6 +223,7 @@ ipcMain.handle('request-serial-devices', async (event, data) => {
 });
 
 ipcMain.handle('connect-serial-device', async (event, data) => {
+    
     console.log(`[INFO] Connecting to: ${data}`)
     port = new SerialPort({
         path: data,
@@ -227,7 +237,9 @@ ipcMain.handle('connect-serial-device', async (event, data) => {
         console.log("[INFO] Port opened callback");
     });
 
-    console.log("[INFO] Flow mode active; Waiting for RX");
+    console.log("[INFO] Flow mode active; Wailting for RX");
+    board_connected = true;
+
     // test_34
     // port.write(Buffer.from([0xFE, 0xDE, 0x23, 0x00, 0x58, 0x02, 0x01, 0x02, 0xCC, 0x00, 0x02, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
     // port.on('data', (data) => {
