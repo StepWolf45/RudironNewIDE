@@ -290,3 +290,6 @@ electron.contextBridge.exposeInMainWorld("visualization_api", {
   setDigitalPin: (callback) => electron.ipcRenderer.on("board_visualization_digital", callback),
   setAnalogPin: (callback) => electron.ipcRenderer.on("board_visualization_analog", callback)
 });
+electron.contextBridge.exposeInMainWorld("board_connection", {
+  checkConnected: () => electron.ipcRenderer.invoke("check_connected")
+});

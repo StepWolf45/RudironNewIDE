@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { Layout, Menu } from 'antd';
 import "./BlockPanel.css";
+import * as Blockly from 'blockly';
 import Workspace from '../SplitterWorkspace/SplitterWorkspace.jsx';
 import FileTab from '../FileTab/FileTab.jsx';
 import { categories } from './CategoriesToolbox.jsx';

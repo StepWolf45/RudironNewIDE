@@ -275,7 +275,8 @@ export async function executeBlock(block) {
 }
 
 export async function executeSequence(blocks, button) {
-    console.log(`[EXECUTOR] Task recieved`);
+    console.log(`[Обработчик] Код получен`);
+
 
 
 
@@ -286,12 +287,12 @@ export async function executeSequence(blocks, button) {
         }
     }
 
-
-    console.log(`[EXECUTOR] Task finished`);
+    console.log(`[Обработчик] Код выполнен`);
     // button.textElement_.textContent = 'СТАРТ';
     button.toggle();
 
 }
+
 
 export async function resetBlock() {
     window.electron.ipcRenderer.writeSerialAndWait(window.api.generators.reset_block());
