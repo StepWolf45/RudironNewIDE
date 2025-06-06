@@ -131,8 +131,6 @@ export default function MenuBar({ title, flag }) {
     }
 
         useEffect(() => {
-                
-
                 fetchDevices();
         }, []);
 

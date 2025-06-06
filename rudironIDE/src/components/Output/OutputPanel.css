@@ -1,7 +1,6 @@
 /* src/components/ConsoleOutput/ConsoleOutput.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 .console-output {
-
     padding: 5px 5px 10px 10px;
     background-color: #1e1e1e;
     color: #d4d4d4;
@@ -17,72 +16,58 @@
     white-space: pre-wrap;
     text-wrap: wrap;
 }
-
 .console-log.log {
     color: #d4d4d4;
-    
 }
-
 .console-log.error {
     color: #ff6b6b;
 }
-
 .console-log.warn {
     color: #ffcc00;
-    word-wrap: break-word !important; /* Перенос строк */
-    overflow-wrap: break-word !important; /* Перенос строк */
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
     white-space: pre-wrap !important;
-    text-wrap: wrap !important ;
-
+    text-wrap: wrap !important;
 }
 .console-info {
-
     vertical-align: bottom;
-    padding: 4px 6px 4px 7px ;
+    padding: 4px 6px 4px 7px;
     overflow: auto;
     font-size: 1.1em;
-    font-family: "Jost", sans-serif !important;
+    font-family: "Inter", sans-serif !important;
 }
-
 .console-output::-webkit-scrollbar-track {
-    background: #333; /* Цвет фона трека */
+    background: #333;
 }
-
 .console-output::-webkit-scrollbar-thumb {
-    background: #333333; /* Цвет ползунка */
-    border-radius: 6px; /* Скругленные углы ползунка */
+    background: #333333;
+    border-radius: 6px;
 }
-
 .console-output::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Цвет ползунка при наведении */
+    background: #555;
 }
 .ReactVirtualized__Grid,
 .ReactVirtualized__List {
     overflow: auto !important;
 }
-
 .ReactVirtualized__Grid::-webkit-scrollbar,
 .ReactVirtualized__List::-webkit-scrollbar {
-    width: 8px; /* Ширина скроллбара */
+    width: 8px;
 }
-
 .ReactVirtualized__Grid::-webkit-scrollbar-track,
 .ReactVirtualized__List::-webkit-scrollbar-track {
-    background: #2d2d2d; /* Цвет фона трека */
+    background: #2d2d2d;
     border-radius: 6px;
 }
-
 .ReactVirtualized__Grid::-webkit-scrollbar-thumb,
 .ReactVirtualized__List::-webkit-scrollbar-thumb {
-    background: #555; /* Цвет ползунка */
-    border-radius: 6px; /* Скругленные углы ползунка */
+    background: #555;
+    border-radius: 6px;
 }
-
 .ReactVirtualized__Grid::-webkit-scrollbar-thumb:hover,
 .ReactVirtualized__List::-webkit-scrollbar-thumb:hover {
-    /* background: #555; Цвет ползунка при наведении */
+    /* background: #555; */
 }
-
 .ReactVirtualized__Grid__innerScrollContainer pre {
     display: block;
     color: #ffffff !important;
@@ -94,21 +79,27 @@
     margin: 0 !important;
 }
 .clear-button {
-    padding: 0px 2px ;
+    padding: 0px 2px;
     margin-left: 8px;
     background-color: #212121;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
 }
-
 .clear-button:hover {
     background-color: #555;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+.clear-button:active {
+    transform: scale(0.9);
+}
 .clear-icon {
     width: 1.4em;
     height: 1.4em;
+    transition: transform 0.1s;
+}
+.clear-button:active .clear-icon {
+    transform: scale(0.95);
 }

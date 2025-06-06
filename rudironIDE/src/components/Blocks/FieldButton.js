@@ -59,7 +59,6 @@ export class FieldButton extends Blockly.Field {
           'class': 'blocklyButtonText',
           'fill': '#FFFFFF',
           'font-size': '17px',
-          'font-weight': 'bold',
           'pointer-events': 'none'
         },
         this.buttonGroup
@@ -134,16 +133,14 @@ export class FieldButton extends Blockly.Field {
         }
       );
 
-      // Reset on mouse up
+      // Reset on mouse up, regardless of dragging
       Blockly.browserEvents.conditionalBind(
         this.buttonGroup,
         'mouseup',
         this,
         () => {
-          if (!this.isDragging) {
-            this.setButtonColor(this.isRunning ? this.STOP_HOVER_COLOR : this.START_HOVER_COLOR);
-            this.applyScale(1);
-          }
+          this.setButtonColor(this.isRunning ? this.STOP_COLOR : this.START_COLOR);
+          this.applyScale(1);
           this.mouseDownPos = null;
           this.isDragging = false;
         }
