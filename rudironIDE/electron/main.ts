@@ -203,10 +203,6 @@ let COMMANDS_QUEUE = new Queue();
 let WAIT_FOR_RESP = false;
 let WAIT_FOR_RESP_ID = 0;
 
-
-
-
-
 ipcMain.handle('request-serial-devices', async (event, data) => {
     try {
         const ports = await SerialPort.list();  // With trash
@@ -314,7 +310,7 @@ function sendCommand(command, wait_packets_cnt = 1) {
         let received_packets = [];
         const onData = (data) => {
             received += 1;
-            received_packets.push(data);
+            received_packets.push(data.slice(4));
             if (received == 1) {
                 win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0) });
                 win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1) });
@@ -351,7 +347,9 @@ function sendCommand(command, wait_packets_cnt = 1) {
 }
 ipcMain.handle('send-and-wait', async (event, command, wait_packets_cnt) => {
     try {
-        const response = await sendCommand(command, wait_packets_cnt);
+        // Start signature
+        let header = Buffer.from([0x72, 0x75, 0x06, 0x64]);
+        const response = await sendCommand(Buffer.concat([header, command]), wait_packets_cnt);
         return { success: true, data: response };
     } catch (error) {
         return { success: false, error };
