@@ -1,35 +1,37 @@
-export default class Queue {
+export default class Queue<T = any> {
+    private items: T[];
+
     constructor() {
         this.items = [];
     }
 
-    enqueue(item) {
+    enqueue(item: T): void {
         this.items.push(item);
     }
 
-    dequeue() {
+    dequeue(): T | string {
         if (this.isEmpty()) {
             return 'Queue is empty';
         }
-        return this.items.shift();
+        return this.items.shift() as T;
     }
 
-    front() {
+    front(): T | string {
         if (this.isEmpty()) {
             return 'Queue is empty';
         }
         return this.items[0];
     }
 
-    isEmpty() {
+    isEmpty(): boolean {
         return this.items.length === 0;
     }
 
-    size() {
+    size(): number {
         return this.items.length;
     }
 
-    print() {
+    print(): void {
         console.log(this.items.join(', '));
     }
 }
