@@ -1,11 +1,11 @@
-import { app, BrowserWindow, ipcMain, dialog, globalShortcut } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
 import fs from 'fs';
 import Store from 'electron-store';
 import Queue from './queue';
-import { getPinValue, printBuffer, parsePinsByType } from './protocol';
+import {printBuffer, parsePinsByType } from './protocol';
 
 
 const require = createRequire(import.meta.url);
@@ -18,9 +18,8 @@ export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron');
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
-const { Tray, Menu } = require('electron');
+const { Tray } = require('electron');
 const { SerialPort } = require('serialport');
-
 let board_connected = false;
 
 let tray = null;
@@ -47,7 +46,7 @@ function createWindow() {
             titleBarOverlay: {
                 color: '#181818',
                 symbolColor: '#ffffff',
-                height: 36,
+                height: 43,
             },
         } : {}),
         icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
@@ -58,7 +57,7 @@ function createWindow() {
 
         },
     });
-
+    win.maximize()
     win.removeMenu();
 
     win.webContents.on('did-finish-load', () => {

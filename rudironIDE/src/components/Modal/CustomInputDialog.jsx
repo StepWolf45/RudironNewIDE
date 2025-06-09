@@ -19,10 +19,7 @@ const CustomInputDialog = () => {
     }, [inputDialogOptions.defaultValue]);
 
     const handleOk = () => {
-        if (!inputValue.trim()) {
-            Modal.error({ content: 'Название не может быть пустым!' });
-            return;
-        }
+
         handleInputDialogOk(inputValue.trim());
         setInputValue('');
     };

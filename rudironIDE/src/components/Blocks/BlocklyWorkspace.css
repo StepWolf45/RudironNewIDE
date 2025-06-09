@@ -27,7 +27,7 @@
 .blocklyButtonText {
     fill: #FFFFFF !important;
     font-family: "Roboto", sans-serif !important;
-    font-weight: 900;
+    font-weight: 800;
 }
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {

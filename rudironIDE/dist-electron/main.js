@@ -10259,7 +10259,7 @@ const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 const MAIN_DIST = path$1.join(process.env.APP_ROOT, "dist-electron");
 const RENDERER_DIST = path$1.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path$1.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
-const { Tray, Menu } = require2("electron");
+const { Tray } = require2("electron");
 const { SerialPort } = require2("serialport");
 let board_connected = false;
 let tray = null;
@@ -10279,7 +10279,7 @@ function createWindow() {
       titleBarOverlay: {
         color: "#181818",
         symbolColor: "#ffffff",
-        height: 36
+        height: 43
       }
     } : {},
     icon: path$1.join(process.env.VITE_PUBLIC, "logo.png"),
@@ -10289,6 +10289,7 @@ function createWindow() {
       contextIsolation: true
     }
   });
+  win.maximize();
   win.removeMenu();
   win.webContents.on("did-finish-load", () => {
     win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());

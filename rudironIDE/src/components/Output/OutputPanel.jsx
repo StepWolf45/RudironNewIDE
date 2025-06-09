@@ -69,7 +69,7 @@ const OutputPanel = () => {
                     className="clear-button"
                 >
                     <img 
-                        src="/../../../public/мусорка.png" 
+                        src="мусорка.png" 
                         className="clear-icon"
                     />
                 </button>

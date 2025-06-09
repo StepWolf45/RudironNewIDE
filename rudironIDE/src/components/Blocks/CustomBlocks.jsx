@@ -8,7 +8,7 @@ Blockly.fieldRegistry.register('field_button', FieldButton);
 Blockly.Blocks['start'] = {
   init() {
     window.stop_flag = false;
-    const fieldBtn = new FieldButton('Старт', () => {
+    const fieldBtn = new FieldButton('СТАРТ', () => {
       window.board_connection.checkConnected().then((data) => {
         if (data) {
           console.log("Is running: ", fieldBtn.isRunning);
@@ -216,8 +216,8 @@ Blockly.Blocks['analog_write'] = {
     if (changeEvent.type === Blockly.Events.BLOCK_MOVE ||
       changeEvent.type === Blockly.Events.BLOCK_CHANGE) { // Check both move and change events
 
-      const pinInput = this.getInput('PIN');
-      const pinValue = this.getFieldValue('PIN') || 0; // Get field value as backup
+      const pinInput = this.getInput('VALUE');
+      const pinValue = this.getFieldValue('VALUE') || 0; // Get field value as backup
       const pinBlock = pinInput.connection.targetBlock();
 
       if (pinBlock && pinBlock.type === 'math_number') {

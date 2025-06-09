@@ -33,7 +33,7 @@
     vertical-align: bottom;
     padding: 4px 6px 4px 7px;
     overflow: auto;
-    font-size: 1.1em;
+    font-size: 1.0em;
     font-family: "Inter", sans-serif !important;
 }
 .console-output::-webkit-scrollbar-track {

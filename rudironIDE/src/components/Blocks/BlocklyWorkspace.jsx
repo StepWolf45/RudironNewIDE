@@ -50,7 +50,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 pinch: true
             },
             toolbox: activeCategory?.toolboxXML || '',
-            media: '../../../public/'
+            media: 'blockly/'
         });
 
         if (initialXml) {
