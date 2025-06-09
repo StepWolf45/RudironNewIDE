@@ -194,8 +194,8 @@ app.on('activate', () => {
 app.whenReady().then(createWindow);
 
 // Serial part
-const RUDIRON_VID = "1A86"
-const RUDIRON_PID = "55D4"
+const RUDIRON_VID = "1a86"
+const RUDIRON_PID = "55d4"
 
 const RUDIRON_BAUD = 115200
 let COMMANDS_QUEUE = new Queue();
@@ -205,8 +205,11 @@ let WAIT_FOR_RESP_ID = 0;
 ipcMain.handle('request-serial-devices', async (event, data) => {
     try {
         const ports = await SerialPort.list();  // With trash
+        console.log(ports);
         const filteredPorts = ports.filter(port => {
-            return port.vendorId === RUDIRON_VID && port.productId === RUDIRON_PID;
+            if (port.vendorId && port.productId){
+                return port.vendorId.toLowerCase() === RUDIRON_VID && port.productId.toLowerCase() === RUDIRON_PID;
+            }
         });
 
         return filteredPorts;
@@ -311,8 +314,8 @@ function sendCommand(command, wait_packets_cnt = 1) {
             received += 1;
             received_packets.push(data.slice(4));
             if (received == 1) {
-                win.webContents.send('board_visualization_digital', { map: parsePinsByType(data, 0) });
-                win.webContents.send('board_visualization_analog', { map: parsePinsByType(data, 1) });
+                win.webContents.send('board_visualization_digital', { map: parsePinsByType(data.slice(4), 0) });
+                win.webContents.send('board_visualization_analog', { map: parsePinsByType(data.slice(4), 1) });
 
             }
             if (received == wait_packets_cnt) {
