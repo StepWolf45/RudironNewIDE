@@ -70,7 +70,6 @@ function createWindow() {
         win.loadFile(path.join(RENDERER_DIST, 'index.html'));
     }
 
-    win.webContents.openDevTools();
 }
 
 async function saveFileAs(fileId: number, fileData: any): Promise<boolean> {

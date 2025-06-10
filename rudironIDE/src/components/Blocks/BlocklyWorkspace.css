@@ -24,10 +24,11 @@
  overflow: hidden !important;
 
 }
+
 .blocklyButtonText {
     fill: #FFFFFF !important;
     font-family: "Roboto", sans-serif !important;
-    font-weight: 800;
+    font-weight: 900;
 }
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {

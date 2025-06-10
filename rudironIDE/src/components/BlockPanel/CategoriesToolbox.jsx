@@ -1,5 +1,5 @@
 import cat1 from '/RoundCube-Blue-Glossy.png';
-import cat2 from '/Cube-Yellow-Glossy.svg';
+import cat2 from '/Cube-Yellow-Glossy.png';
 import cat3 from '/RoundCube-Blue-Glossy_2.svg';
 import cat4 from '/RoundCube-Orange-Glossy.svg';
 

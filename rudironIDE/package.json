@@ -6,9 +6,9 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:win": "vite build && electron-builder --win"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
@@ -54,9 +54,6 @@
   "build": {
     "appId": "ru.aq.rudironide",
     "productName": "RudironIDE",
-    "directories": {
-      "buildResources": "public"
-    },
     "files": [
       "dist/**/*",
       "dist-electron/**/*",
@@ -88,6 +85,5 @@
       }
     ]
   }
-  
 
 }
