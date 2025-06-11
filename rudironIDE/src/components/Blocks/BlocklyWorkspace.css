@@ -19,7 +19,6 @@
 
 
 
-
 .blocklyDropDownContent{
  overflow: hidden !important;
 
@@ -51,7 +50,7 @@
 .blocklyFlyout{
 
   background-color: rgba(31, 31, 31,0.5);
-  background-image: repeating-linear-gradient(to bottom,transparent 0 3px,#2d2d2d 4px 14px);
+  background-image: repeating-linear-gradient(to bottom,transparent 0 2px,#2d2d2d 4px 12px);
   background-size: 2px 98%;
   background-position: right top;
   background-repeat: no-repeat;

@@ -42,6 +42,14 @@
   margin: 0px !important;
 
 }
+.ant-tabs-nav .ant-tabs-tab-active{
+color:rgba(62, 171, 204,1) !important;
+
+}
+.ant-tabs-tab-btn:active{
+color:rgba(62, 171, 204,1) !important;
+  
+}
 .anticon svg {
   display: inline-block;
   color:#fff;
