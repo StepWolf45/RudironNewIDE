@@ -1,9 +1,7 @@
 import "./SplitterWorkspace.css";
 import BoardVisualization from "../BoardVisualization/BoardVisualization.jsx";
-import {Splitter,Layout,Typography  } from 'antd';
-import React, { useState } from 'react';
-const {Content} = Layout;
-const { Text, Paragraph } = Typography; 
+import {Splitter,Layout  } from 'antd';
+import OutputPanel from "../Output/OutputPanel.jsx";
 
 export default function  Workspace({children}){
 
@@ -17,19 +15,14 @@ export default function  Workspace({children}){
 
                     </Splitter.Panel>
                     <Splitter.Panel  defaultSize="20%" collapsible min="20%" className="SplitBottom" >
-                    <div className="adaptive-text-container">
-                      <Paragraph>
-                        <Text strong>Serial Port:</Text>
-                      </Paragraph>
-                      <Paragraph>
-                         Это пример текста, использующего компоненты Typography от Ant Design.
-                      </Paragraph>
-                    </div>
+                        <OutputPanel/>
                     </Splitter.Panel>
                 </Splitter>
                 </Splitter.Panel>
-                <Splitter.Panel defaultSize="20%" maxSize={400}  collapsible min="25%" className="SplitRight" >
-                  <BoardVisualization />
+                <Splitter.Panel defaultSize="20%" maxSize={400}  collapsible max="35%" min="15%" className="SplitRight" >
+                    <div className="Board">
+                      <BoardVisualization />
+                    </div>
                 </Splitter.Panel>
             </Splitter>
       </Layout>

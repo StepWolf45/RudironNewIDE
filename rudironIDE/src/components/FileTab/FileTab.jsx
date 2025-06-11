@@ -7,15 +7,18 @@ import { FileContext } from '../../contexts/FileContext';
 
 const { TabPane } = Tabs;
 
-export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }) {
-    const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile } = useContext(FileContext);
+export default function FileTab({
+    activeCategory,
+    onSaveFile,
+    onWorkspaceMount,
+}) {
+    const { files, activeFileId, workspaceStates, blocklyWorkspaces, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath,handleWorkspaceCenter  } = useContext(FileContext);
     const [tabTitles, setTabTitles] = useState(
         files.reduce((acc, file) => {
             acc[file.id] = file.name;
             return acc;
         }, {})
     );
-
     useEffect(() => {
         if (window.electron && window.electron.ipcRenderer) {
             const handleFileSaved = (fileName) => {
@@ -26,7 +29,9 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
             };
 
             const unsubscribe = window.electron.ipcRenderer.on('file-saved', handleFileSaved);
-
+            if (activeFileId) {
+                    setCurrentFilePath(filePaths[activeFileId] || files.find(file => file.id === activeFileId)?.name || '');
+            }
             return () => {
                 unsubscribe();
             };
@@ -34,7 +39,7 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
             console.warn("window.electron or window.electron.ipcRenderer is not defined.");
             return () => {};
         }
-    }, [activeFileId]);
+    }, [activeFileId, filePaths, files, setCurrentFilePath]);
 
     const handleClose = (id) => {
         if (window.electron && window.electron.ipcRenderer) {
@@ -64,8 +69,8 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
                         handleCreateNewFile();
                     } else {
                         setActiveFileId(key);
-                    }
-                }}
+
+                }}}
                 onEdit={(key, action) => {
                     if (action === "add") {
                         handleCreateNewFile();
@@ -88,9 +93,9 @@ export default function FileTab({ activeCategory, onSaveFile, onWorkspaceMount }
                     >
                         <BlocklyWorkspace
                             initialXml={memoizedWorkspaceStates[file.id]}
+                            onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
                             activeCategory={activeCategory}
                             onSave={onSaveFile}
-                            onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
                         />
                     </TabPane>
                 ))}

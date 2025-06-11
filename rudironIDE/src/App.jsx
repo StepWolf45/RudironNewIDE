@@ -13,7 +13,7 @@ export default function App() {
                 <Layout style={{ minHeight: '100vh', maxHeight: '100vh' }}>
                     <TitleBar>
                         <MenuBar title="Файл" flag="1" />
-                        <MenuBar title="Вид" flag="2" />
+                        {/* <MenuBar title="Вид" flag="2" /> */}
                         <MenuBar title="Подключение" flag="3" />
                     </TitleBar>
                         <ModalProvider>

@@ -9,12 +9,13 @@ export const FileProvider = ({ children }) => {
     const [blocklyWorkspaces, setBlocklyWorkspaces] = useState({});
     const [workspaceStates, setWorkspaceStates] = useState({});
     const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
+    const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
 
 
     const handleCreateNewFile = () => {
         const newFile = {
             id: Date.now(),
-            name: `new-file-${files.length + 1}.json`,
+            name: `new-file-${files.length + 1}.rud`,
             content: null,
         };
         setFiles([...files, newFile]);
@@ -39,7 +40,6 @@ export const FileProvider = ({ children }) => {
         };
         setFiles([...files, newFile]);
         setActiveFileId(newFile.id);
-
         setBlocklyWorkspaces(prevWorkspaces => ({
             ...prevWorkspaces,
             [newFile.id]: fileContent,
@@ -55,6 +55,9 @@ export const FileProvider = ({ children }) => {
             ...prevPaths,
             [newFile.id]: filePath,
         }));
+
+        // Устанавливаем текущий путь файла
+        setCurrentFilePath(filePath || fileName);
     };
 
     const handleSaveFile = (fileId, workspaceState) => {
@@ -85,14 +88,19 @@ export const FileProvider = ({ children }) => {
             const newActiveIndex = Math.max(0, closedIndex - 1);
             const newActiveFileId = updatedFiles[newActiveIndex]?.id || null;
             setActiveFileId(newActiveFileId);
+            setCurrentFilePath(filePaths[newActiveFileId] || updatedFiles[newActiveIndex]?.name || '');
         }
     };
 
     const handleTabChange = (newActiveFileId) => {
+
         if (newActiveFileId) {
             setActiveFileId(Number(newActiveFileId)); // Update active file ID
+            setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Update current file path or name
         }
+
     };
+
 
     const handleWorkspaceMount = (fileId, workspace) => {
         setBlocklyWorkspaces(prevWorkspaces => ({
@@ -116,7 +124,9 @@ export const FileProvider = ({ children }) => {
         handleCloseFile,
         handleTabChange,
         handleWorkspaceMount,
-        filePaths, // Добавляем filePaths в контекст
+        filePaths, 
+        currentFilePath, 
+        setCurrentFilePath, 
     };
 
     return (

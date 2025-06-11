@@ -1,9 +1,10 @@
 // src/components/MenuBar/MenuBar.jsx
 import "./MenuBar.css";
-import React, { useContext, useRef } from 'react';
-import { MenuItem1, MenuItem2, MenuItem3 } from './itemsMenu.jsx';
+import * as Blockly from 'blockly';
+import React, { useContext, useRef, useEffect, useState } from 'react';
+import { MenuItem1, MenuItem2, stopPropagation } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Space, Menu } from 'antd';
+import { Button, Dropdown, Space, Menu, Checkbox } from 'antd';
 import { FileContext } from '../../contexts/FileContext';
 
 
@@ -11,7 +12,8 @@ export default function MenuBar({ title, flag }) {
     let items = [];
     let iconbutton;
     const fileInputRef = useRef(null);
-    const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces, filePaths } = useContext(FileContext);
+    const [serialPorts, setPorts] = useState([]);
+    const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces } = useContext(FileContext);
 
     const handleMenuClick = (e) => {
         if (e.key === 'new') {
@@ -87,6 +89,19 @@ export default function MenuBar({ title, flag }) {
         reader.readAsText(file);
     };
 
+    const fetchDevices = async () => {
+        try {
+            const result = await window.electron.ipcRenderer.getSerialDevices("");
+            setPorts(result.map((device, index) => ({
+                key: index,
+                label: (<span onClick={stopPropagation}><Checkbox onChange={() => { window.electron.ipcRenderer.connectSerialDevice(device.path) }} className="custom-checkbox">{device.path}</Checkbox></span>)
+            })));
+        } catch (error) {
+            console.error('Error during IPC request:', error);
+            setPorts([]); // Устанавливаем пустой массив в случае ошибки
+        }
+    };
+
     if (flag === "1") {
         items = MenuItem1;
         iconbutton = <FileOutlined />;
@@ -95,10 +110,29 @@ export default function MenuBar({ title, flag }) {
         items = MenuItem2;
         iconbutton = <AppstoreOutlined />;
     }
-    if (flag === "3") {
-        items = MenuItem3;
+    if (flag == "3") {
+        items = [
+            {
+                key: '1',
+                label: 'Порт',
+                children: serialPorts.length > 0 
+                    ? serialPorts 
+                    : [{ key: 'no-devices', label: <span style={{ color: 'white' }}>Нет подключенных плат</span> }]
+            },
+            {
+                key: '2',
+                label: ((<span onClick={() => {
+                    fetchDevices();
+
+                }}>Обновить</span>) )
+            },
+        ];
         iconbutton = <ControlOutlined />;
     }
+
+        useEffect(() => {
+                fetchDevices();
+        }, []);
 
     return (
         <div>

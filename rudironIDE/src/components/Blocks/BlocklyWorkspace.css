@@ -1,27 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=WDXL+Lubrifont+TC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
 
 /* Значок настройки if/else */
-.blocklyIconShape {
+.blocklyMutatorIcon .blocklyIconShape {
   fill:#2e5b30 !important;
   height: 20px !important;
   width: 20px !important;
 }
-circle.blocklyIconShape{
+.blocklyMutatorIcon circle.blocklyIconShape{
   transform: scale(1.2);
 }
-.blocklyIconSymbol{
+.blocklyMutatorIcon .blocklyIconSymbol{
   transform: scale(1.2);
 }
 
 
+
+.blocklyDropDownContent{
+ overflow: hidden !important;
+
+}
+
+.blocklyButtonText {
+    fill: #FFFFFF !important;
+    font-family: "Roboto", sans-serif !important;
+    font-weight: 900;
+}
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: #2d2d2d!important; /* Цвет ползунка */
-  rx: 3px !important; /* Закругление */
+  fill: #555!important; /* Цвет ползунка */
+
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: #2d2d2d !important;
-  ry: 3px !important;
+  fill: #555 !important;
+
   height: 7px !important;
 }
 
@@ -34,17 +50,35 @@ circle.blocklyIconShape{
 .blocklyFlyout{
 
   background-color: rgba(31, 31, 31,0.5);
-  background-image: repeating-linear-gradient(to bottom,transparent 0 3px,#2d2d2d 4px 14px);
+  background-image: repeating-linear-gradient(to bottom,transparent 0 2px,#2d2d2d 4px 12px);
   background-size: 2px 98%;
   background-position: right top;
   background-repeat: no-repeat;
 }
+.blocklyWidgetDiv .blocklyMenu {
+  padding: 0px 0px 5px 0px!important;
+  background-color: #333 !important;
+  border: 1px solid rgba(62, 171, 204, 0.5) !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden;
+}
+.blocklyContextMenu .blocklyMenuItem {
 
+  padding: 6px 15px 6px 15px !important;
+  color: white !important;
+
+}
+.blocklyContextMenu .blocklyMenuItemDisabled {
+  color: #555 !important;
+
+}
 /* Контейнеры для блоков */
 .blocklyMainBackground {
   fill: #1F1F1F  !important;
-  stroke:none !important;
+  stroke: #1F1F1F !important;
+  stroke-width: 2px !important;
   border: none !important;
+  box-sizing: border-box !important;
 }
 
 #blocklyDiv{
@@ -53,7 +87,7 @@ circle.blocklyIconShape{
   position: absolute;
   top: 0;
   left: 0;
-
+  border:none !important;
 }
 #blocklyContainer{
   position: relative;

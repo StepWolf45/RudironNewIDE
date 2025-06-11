@@ -1,7 +1,7 @@
-import cat1 from '../../../public/RoundCube-Blue-Glossy.png';
-import cat2 from '../../../public/Cube-Yellow-Glossy.svg';
-import cat3 from '../../../public/RoundCube-Blue-Glossy_2.svg';
-import cat4 from '../../../public/RoundCube-Orange-Glossy.svg';
+import cat1 from '/RoundCube-Blue-Glossy.png';
+import cat2 from '/Cube-Yellow-Glossy.png';
+import cat3 from '/RoundCube-Blue-Glossy_2.svg';
+import cat4 from '/RoundCube-Orange-Glossy.svg';
 
 
 
@@ -53,13 +53,14 @@ export const categories = [
   image: cat3,
   toolboxXML: `
     <xml>
-        <block type="write_text"></block>
-        <block type="delay"></block>
-        <block type="pinmode"></block>
         <block type="digital_write"></block>
         <block type="analog_write"></block>
-        
-    </xml>
+        <block type="pinmode"></block>
+        <block type="write_text"></block>
+        <block type="delay"></block>
+        <block type="analog_read"></block>
+        <block type="digital_read"></block>
+     </xml>
   `
 },
   
