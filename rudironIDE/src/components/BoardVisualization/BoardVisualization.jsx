@@ -1,7 +1,79 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react';
 import BoardSVG from './BoardSVG';
+import './BoardVisualization.css';
 
 const BoardVisualization = props => {
+    const boardRef = useRef(null);
+    const [transform, setTransform] = useState({
+        scale: 1,
+        x: 0,
+        y: 0
+    });
+    const [isDragging, setIsDragging] = useState(false);
+    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+
+    // Обработчики для масштабирования
+    const handleWheel = (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.9 : 1.1; // Уменьшение или увеличение масштаба
+        const newScale = Math.min(Math.max(transform.scale * delta, 0.5), 3); // Ограничиваем масштаб
+
+        // Масштабируем относительно позиции курсора
+        const rect = boardRef.current.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        const x = offsetX - (offsetX - transform.x) * (newScale / transform.scale);
+        const y = offsetY - (offsetY - transform.y) * (newScale / transform.scale);
+
+        setTransform({
+            scale: newScale,
+            x,
+            y
+        });
+    };
+
+    // Обработчики для перемещения
+    const handleMouseDown = (e) => {
+        if (e.button !== 0) return; // Только левая кнопка мыши
+        setIsDragging(true);
+        setStartPos({
+            x: e.clientX - transform.x,
+            y: e.clientY - transform.y
+        });
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+
+        const rect = boardRef.current.getBoundingClientRect();
+        const containerWidth = rect.width;
+        const containerHeight = rect.height;
+
+        const newX = e.clientX - startPos.x;
+        const newY = e.clientY - startPos.y;
+
+        // Ограничиваем перемещение, чтобы видимая часть не составляла менее 10%
+        const minVisibleWidth = containerWidth * 0.1;
+        const minVisibleHeight = containerHeight * 0.1;
+
+        const maxX = minVisibleWidth - containerWidth;
+        const maxY = minVisibleHeight - containerHeight;
+
+        const clampedX = Math.max(Math.min(newX, maxX), -maxX);
+        const clampedY = Math.max(Math.min(newY, maxY), -maxY);
+
+        setTransform({
+            ...transform,
+            x: clampedX,
+            y: clampedY
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
     let color = "red";
     let color2 = "red";
 
@@ -12,11 +84,6 @@ const BoardVisualization = props => {
         setPwm((prevColors) => ({ ...prevColors, [key]: value }));
     };
 
-    // useEffect(() => {
-    //     window.board_vis_digital_pin = handleColorChange;
-    //     window.board_vis_analog_pin  = handlePwm;
-    // }, []);
-
     useEffect(() => {
         window.visualization_api.setDigitalPin((event, data) => {
             Object.keys(data.map).forEach(key => {
@@ -24,13 +91,10 @@ const BoardVisualization = props => {
               });
         });
         window.visualization_api.setAnalogPin((event, data) => {
-            // handlePwm(data.pin, data.value);
             setPwm(data.map);
         });
       }, []);
 
-
-    // All pins described
     const [pins, setPins] = useState({
         // Top left pins bank
         _11: "#E5C065",
@@ -89,36 +153,31 @@ const BoardVisualization = props => {
         _20: 0,
         _29: 0,
         _23: 0
-
-
-    })
-
-    // useEffect(() => {
-    //     // Some demo pin control only front
-
-    //     const interval = setInterval(() => {
-    //         handleColorChange("_4", color)
-    //         handleColorChange("_6", color)
-    //         handleColorChange("_7", color)
-    //         handleColorChange("_SDB", color)
-    //         handleColorChange("_12", color)
-    //         if (color == "red") color = "green"
-    //         else color = "red"
-    //     }, 500);
-
-    //     const interval2 = setInterval(() => {
-    //         handleColorChange("_17", color2)
-
-    //         if (color2 == "red") color2 = "green"
-    //         else color2 = "red"
-    //     }, 100);
-
-    //     return () => {clearInterval(interval), clearInterval(interval2)};
-    // }, [])
+    });
 
     return (
-        <BoardSVG pins={pins} pwm={pwmPins} />
+        <div
+            ref={boardRef}
+            className="board-container"
+            onWheel={handleWheel}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            style={{
+                cursor: isDragging ? 'grabbing' : 'grab',
+            }}
+        >
+            <div
+                style={{
+                    transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                    transformOrigin: '0 0',
+                }}
+            >
+                <BoardSVG pins={pins} pwm={pwmPins} />
+            </div>
+        </div>
     );
 }
 
-export default BoardVisualization
+export default BoardVisualization;

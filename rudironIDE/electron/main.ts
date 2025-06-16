@@ -59,6 +59,7 @@ function createWindow() {
     });
     win.maximize()
     win.removeMenu();
+    win.openDevTools();
     win.webContents.on('did-finish-load', () => {
         win?.webContents.send('main-process-message', (new Date()).toLocaleString());
     });

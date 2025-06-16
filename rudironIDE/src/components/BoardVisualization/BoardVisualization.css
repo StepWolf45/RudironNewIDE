@@ -1,4 +1,19 @@
-.Board{
-    width:8vw;
-    height: 13vh;
+
+.board-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+}
+.board-container, .board-container * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Для SVG элементов внутри платы */
+.board-container svg, .board-container svg * {
+    pointer-events: none;
 }
