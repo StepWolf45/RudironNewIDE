@@ -113,3 +113,16 @@
   stroke-width: 3px !important;
 }
 
+.blockly-minimap {
+    position: absolute;
+    border: grey 1px solid;
+    width: 15vw;
+    height: 15vh;
+    top: 5px;
+    right: 2vw;
+}
+.blockly-focus-region{
+
+  border: 1px solid rgba(62, 171, 204, 0.5) ;
+
+}

@@ -9,6 +9,7 @@ import './BlocklyWorkspace.css';
 import './CustomBlocks.jsx';
 import { FileContext } from '../../contexts/FileContext';
 import { ModalContext } from '../../contexts/ModalContext';
+import {Minimap} from '@blockly/workspace-minimap';
 
 const customTheme = Blockly.Theme.defineTheme('myTheme', {
     'base': Blockly.Themes.Classic,
@@ -40,6 +41,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             theme: customTheme,
             renderer: 'zelos',
             scrollbars: true,
+            maxBlocks:800,
             zoom: {
                 controls: true,
                 wheel: true,
@@ -49,10 +51,18 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 scaleSpeed: 1.1,
                 pinch: true
             },
+            grid:
+                {spacing: 20,
+                length: 3,
+                colour: '#ccc',
+                snap: true},
             toolbox: activeCategory?.toolboxXML || '',
             media: 'blockly/'
         });
-
+        
+        const minimap = new Minimap(workspace);
+        minimap.init();
+        minimap.enableFocusRegion;
         if (initialXml) {
             Blockly.serialization.workspaces.load(initialXml, workspace);
             workspace.scrollCenter()

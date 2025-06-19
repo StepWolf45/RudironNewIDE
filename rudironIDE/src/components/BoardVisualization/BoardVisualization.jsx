@@ -11,7 +11,7 @@ const BoardVisualization = props => {
     });
     const [isDragging, setIsDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-    const [minScale, setMinScale] = useState(0.5); // Начальное значение, будет пересчитано
+    const [minScale, setMinScale] = useState(1); // Начальное значение, будет пересчитано
 
     // Рассчитываем минимальный масштаб при изменении размеров контейнера
     useEffect(() => {
@@ -55,7 +55,6 @@ const BoardVisualization = props => {
     }, []);
 
     const handleWheel = (e) => {
-        e.preventDefault();
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
         const newScale = Math.min(
             Math.max(transform.scale * delta, minScale), // Минимальный масштаб зависит от контейнера

@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
     "@blockly/dev-tools": "^8.0.12",
+    "@blockly/workspace-minimap": "^0.3.1",
     "@fontsource/inter": "^5.2.5",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "ant-design": "^1.0.0",
@@ -84,5 +85,4 @@
       }
     ]
   }
-
 }
