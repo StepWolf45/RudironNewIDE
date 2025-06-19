@@ -99,7 +99,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 setContainerSize({ width, height });
                 if (workspaceRef.current) {
                     Blockly.svgResize(workspaceRef.current); 
-                    workspaceRef.current.scrollCenter();
+
                 }
             });
             resizeObserverRef.current.observe(blocklyDiv.current);

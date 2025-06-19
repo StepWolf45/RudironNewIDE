@@ -11,21 +11,64 @@ const BoardVisualization = props => {
     });
     const [isDragging, setIsDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [minScale, setMinScale] = useState(0.5); // Начальное значение, будет пересчитано
 
-    // Обработчики для масштабирования
+    // Рассчитываем минимальный масштаб при изменении размеров контейнера
+    useEffect(() => {
+        const updateMinScale = () => {
+            if (boardRef.current && boardRef.current.firstChild) {
+                const container = boardRef.current;
+                const svg = boardRef.current.firstChild.firstChild; // Получаем SVG элемент
+                
+                if (svg) {
+                    const containerWidth = container.clientWidth;
+                    const containerHeight = container.clientHeight;
+                    const svgWidth = svg.clientWidth || svg.width.baseVal.value;
+                    const svgHeight = svg.clientHeight || svg.height.baseVal.value;
+                    
+                    // Рассчитываем минимальный масштаб, чтобы SVG полностью помещался в контейнер
+                    const scaleX = containerWidth / svgWidth;
+                    const scaleY = containerHeight / svgHeight;
+                    const newMinScale = Math.min(scaleX, scaleY) * 0.9; // 0.9 - небольшой отступ
+                    
+                    setMinScale(Math.min(newMinScale, 0.1)); // Не меньше 10% от исходного размера
+                    
+                    // Если текущий масштаб меньше нового минимального, корректируем его
+                    if (transform.scale < newMinScale) {
+                        setTransform(prev => ({
+                            ...prev,
+                            scale: newMinScale,
+                            x: containerWidth / 2 - (containerWidth / 2 - prev.x) * (newMinScale / prev.scale),
+                            y: containerHeight / 2 - (containerHeight / 2 - prev.y) * (newMinScale / prev.scale)
+                        }));
+                    }
+                }
+            }
+        };
+
+        updateMinScale();
+        window.addEventListener('resize', updateMinScale);
+        
+        return () => {
+            window.removeEventListener('resize', updateMinScale);
+        };
+    }, []);
+
     const handleWheel = (e) => {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? 0.9 : 1.1; // Уменьшение или увеличение масштаба
-        const newScale = Math.min(Math.max(transform.scale * delta, 0.5), 3); // Ограничиваем масштаб
-
-        // Масштабируем относительно позиции курсора
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        const newScale = Math.min(
+            Math.max(transform.scale * delta, minScale), // Минимальный масштаб зависит от контейнера
+            3 // Максимальный масштаб
+        );
+        
         const rect = boardRef.current.getBoundingClientRect();
         const offsetX = e.clientX - rect.left;
         const offsetY = e.clientY - rect.top;
-
+        
         const x = offsetX - (offsetX - transform.x) * (newScale / transform.scale);
         const y = offsetY - (offsetY - transform.y) * (newScale / transform.scale);
-
+        
         setTransform({
             scale: newScale,
             x,
@@ -33,9 +76,9 @@ const BoardVisualization = props => {
         });
     };
 
-    // Обработчики для перемещения
+    // Остальные обработчики остаются без изменений
     const handleMouseDown = (e) => {
-        if (e.button !== 0) return; // Только левая кнопка мыши
+        if (e.button !== 0) return;
         setIsDragging(true);
         setStartPos({
             x: e.clientX - transform.x,
@@ -45,28 +88,10 @@ const BoardVisualization = props => {
 
     const handleMouseMove = (e) => {
         if (!isDragging) return;
-
-        const rect = boardRef.current.getBoundingClientRect();
-        const containerWidth = rect.width;
-        const containerHeight = rect.height;
-
-        const newX = e.clientX - startPos.x;
-        const newY = e.clientY - startPos.y;
-
-        // Ограничиваем перемещение, чтобы видимая часть не составляла менее 10%
-        const minVisibleWidth = containerWidth * 0.1;
-        const minVisibleHeight = containerHeight * 0.1;
-
-        const maxX = minVisibleWidth - containerWidth;
-        const maxY = minVisibleHeight - containerHeight;
-
-        const clampedX = Math.max(Math.min(newX, maxX), -maxX);
-        const clampedY = Math.max(Math.min(newY, maxY), -maxY);
-
         setTransform({
             ...transform,
-            x: clampedX,
-            y: clampedY
+            x: e.clientX - startPos.x,
+            y: e.clientY - startPos.y
         });
     };
 
@@ -169,6 +194,7 @@ const BoardVisualization = props => {
             }}
         >
             <div
+                className="board-content"
                 style={{
                     transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
                     transformOrigin: '0 0',
