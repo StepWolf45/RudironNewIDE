@@ -23,6 +23,10 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
             'colourTertiary': '#e94e4f',
         }
     },
+    componentStyles: { 
+      workspaceBackgroundColour: '#1F1F1F'
+
+  },
 });
 
 Blockly.setLocale(Ru);
@@ -52,8 +56,8 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 pinch: true
             },
             grid:
-                {spacing: 20,
-                length: 3,
+                {spacing: 30,
+                length: 5,
                 colour: '#ccc',
                 snap: true},
             toolbox: activeCategory?.toolboxXML || '',
@@ -61,8 +65,9 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         });
         
         const minimap = new Minimap(workspace);
+        minimap.enableFocusRegion();
         minimap.init();
-        minimap.enableFocusRegion;
+
         if (initialXml) {
             Blockly.serialization.workspaces.load(initialXml, workspace);
             workspace.scrollCenter()
