@@ -11,48 +11,40 @@ const BoardVisualization = props => {
     });
     const [isDragging, setIsDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-    const [minScale, setMinScale] = useState(1); // Начальное значение, будет пересчитано
+    const [minScale, setMinScale] = useState(0.5); // Начальное значение, будет пересчитано
 
     // Рассчитываем минимальный масштаб при изменении размеров контейнера
     useEffect(() => {
         const updateMinScale = () => {
-            if (boardRef.current && boardRef.current.firstChild) {
-                const container = boardRef.current;
-                const svg = boardRef.current.firstChild.firstChild; // Получаем SVG элемент
-                
-                if (svg) {
-                    const containerWidth = container.clientWidth;
-                    const containerHeight = container.clientHeight;
-                    const svgWidth = svg.clientWidth || svg.width.baseVal.value;
-                    const svgHeight = svg.clientHeight || svg.height.baseVal.value;
-                    
-                    // Рассчитываем минимальный масштаб, чтобы SVG полностью помещался в контейнер
-                    const scaleX = containerWidth / svgWidth;
-                    const scaleY = containerHeight / svgHeight;
-                    const newMinScale = Math.min(scaleX, scaleY) * 0.9; // 0.9 - небольшой отступ
-                    
-                    setMinScale(Math.min(newMinScale, 0.1)); // Не меньше 10% от исходного размера
-                    
-                    // Если текущий масштаб меньше нового минимального, корректируем его
-                    if (transform.scale < newMinScale) {
-                        setTransform(prev => ({
-                            ...prev,
-                            scale: newMinScale,
-                            x: containerWidth / 2 - (containerWidth / 2 - prev.x) * (newMinScale / prev.scale),
-                            y: containerHeight / 2 - (containerHeight / 2 - prev.y) * (newMinScale / prev.scale)
-                        }));
-                    }
+            if (boardRef.current) {
+                const containerWidth = boardRef.current.clientWidth;
+                const containerHeight = boardRef.current.clientHeight;
+
+                // Минимальный масштаб, чтобы плата не была меньше 50% от ширины контейнера
+                const newMinScale = 0.7;
+
+                setMinScale(newMinScale);
+
+                // Если текущий масштаб меньше нового минимального, корректируем его
+                if (transform.scale < newMinScale) {
+                    setTransform(prev => ({
+                        ...prev,
+                        scale: newMinScale,
+                        x: containerWidth / 2 - (containerWidth / 2 - prev.x) * (newMinScale / prev.scale),
+                        y: containerHeight / 2 - (containerHeight / 2 - prev.y) * (newMinScale / prev.scale)
+                    }));
                 }
             }
         };
 
         updateMinScale();
         window.addEventListener('resize', updateMinScale);
-        
+
         return () => {
             window.removeEventListener('resize', updateMinScale);
         };
     }, []);
+
 
     const handleWheel = (e) => {
         const delta = e.deltaY > 0 ? 0.9 : 1.1;

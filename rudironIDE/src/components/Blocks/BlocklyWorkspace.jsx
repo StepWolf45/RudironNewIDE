@@ -143,71 +143,64 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
     }, [onSave]);
 
     //Смена стандартного Alert на кастомный Modal для блоков переменная
-    useEffect(() => {
-        Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
-          Blockly.Events.setGroup(true);
+    // Update the dialog prompt handler in BlocklyWorkspace.jsx
+  useEffect(() => {
+    Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
+        Blockly.Events.setGroup(true);
 
-          showInputDialogReact({
+        showInputDialogReact({
             title: msg,
             defaultValue: defaultValue,
             onOk: (newValue) => {
-              console.log("Received value from dialog:", newValue);
+                console.log("Received value from dialog:", newValue);
 
-              if (newValue !== undefined) {
-                const newName = newValue.trim();
+                if (newValue !== undefined) {
+                    const newName = newValue.trim();
 
-                if (newName) {
-                  const workspace = workspaceRef.current;
-
-                  let uniqueId;
-                  if (Blockly.utils.idGenerator && typeof Blockly.utils.idGenerator.genUid === 'function') {
-                    uniqueId = Blockly.utils.idGenerator.genUid();
-                  } else {
-                    uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                    console.warn("Falling back to Math.random() for ID generation.  Consider updating Blockly.");
-                  }
-
-                  console.log("Creating variable with ID:", uniqueId, "and name:", newName);
-
-                  workspace.createVariable(newName, undefined, uniqueId);
-                  workspace.refreshToolboxSelection();
-
-                  callback(newName);
+                    if (newName) {
+                        const workspace = workspaceRef.current;
+                        
+                        // Check if this is a rename operation
+                        if (defaultValue && defaultValue !== newName) {
+                            // Find the existing variable by name
+                            const existingVar = workspace.getVariableByName(defaultValue);
+                            if (existingVar) {
+                                // Rename the existing variable
+                                workspace.renameVariable(existingVar.getId(), newName);
+                                callback(newName);
+                            } else {
+                                // Fallback to creating new variable
+                                const newVar = workspace.createVariable(newName);
+                                callback(newName);
+                            }
+                        } else {
+                            // Create new variable
+                            const newVar = workspace.createVariable(newName);
+                            callback(newName);
+                        }
+                        
+                        workspace.refreshToolboxSelection();
+                    } else {
+                        Modal.error({ content: 'Название переменной не может быть пустым!' });
+                        callback(defaultValue);
+                    }
                 } else {
-                  Modal.error({ content: 'Название переменной не может быть пустым!' });
-                  callback(defaultValue);
+                    callback(defaultValue);
                 }
-              } else {
-                callback(defaultValue);
-              }
-              Blockly.Events.setGroup(false);
+                Blockly.Events.setGroup(false);
             },
             onCancel: () => {
-              callback(defaultValue);
-              Blockly.Events.setGroup(false);
+                callback(defaultValue);
+                Blockly.Events.setGroup(false);
             }
-          });
         });
+    });
 
-        const workspace = workspaceRef.current;
-        
-
-        const renameListener = (event) => {
-          if (event.type === Blockly.Events.VAR_RENAME) {
-            const varId = event.varId;
-            const newName = event.newName;
-
-            console.log("VAR_RENAME event - ID:", varId, "New name:", newName);
-
-            workspace.renameVariableById(varId, newName);
-            console.log("Variable renamed successfully.");
-            workspace.refreshToolboxSelection();
-            console.log("Toolbox refreshed.");
-          }
-        };
-        workspace.addChangeListener(renameListener);
-        return () => workspace.removeChangeListener(renameListener);
-      }, [showInputDialogReact]);
+    // Remove the separate rename listener as it's now handled in the prompt
+    return () => {
+        Blockly.dialog.setPrompt(null);
+    };
+  }, [showInputDialogReact]);
       
     //   function registerCustomContextMenu() {
     //     const customMenuItem = {
