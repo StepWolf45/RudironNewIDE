@@ -1,4 +1,3 @@
-// src/components/FileTab/FileTab.jsx
 import React, { useMemo, useContext, useEffect, useState } from "react";
 import { Tabs } from "antd";
 import "./FileTab.css";
@@ -7,12 +6,8 @@ import { FileContext } from '../../contexts/FileContext';
 
 const { TabPane } = Tabs;
 
-export default function FileTab({
-    activeCategory,
-    onSaveFile,
-    onWorkspaceMount,
-}) {
-    const { files, activeFileId, workspaceStates, blocklyWorkspaces, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath,handleWorkspaceCenter  } = useContext(FileContext);
+export default function FileTab() {
+    const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath, handleWorkspaceMount } = useContext(FileContext);
     const [tabTitles, setTabTitles] = useState(
         files.reduce((acc, file) => {
             acc[file.id] = file.name;
@@ -93,9 +88,7 @@ export default function FileTab({
                     >
                         <BlocklyWorkspace
                             initialXml={memoizedWorkspaceStates[file.id]}
-                            onWorkspaceMount={(workspace) => onWorkspaceMount(file.id, workspace)}
-                            activeCategory={activeCategory}
-                            onSave={onSaveFile}
+                            onWorkspaceMount={(workspace) => handleWorkspaceMount(file.id, workspace)}
                         />
                     </TabPane>
                 ))}

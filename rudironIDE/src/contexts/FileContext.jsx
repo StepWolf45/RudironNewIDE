@@ -1,9 +1,8 @@
 // src/contexts/FileContext.jsx
 import React, { createContext, useState, useCallback, useEffect, useRef } from 'react';
+import { categories } from '../components/BlockPanel/CategoriesToolbox.jsx';
 
 export const FileContext = createContext();
-
-
 
 export const FileProvider = ({ children }) => {
     
@@ -13,6 +12,7 @@ export const FileProvider = ({ children }) => {
     const [workspaceStates, setWorkspaceStates] = useState({});
     const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
     const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
+    const [activeCategory, setActiveCategory] = useState(categories[0]); // Активная категория блоков
 
     
     const handleCreateNewFile = () => {
@@ -129,7 +129,9 @@ export const FileProvider = ({ children }) => {
         handleWorkspaceMount,
         filePaths, 
         currentFilePath, 
-        setCurrentFilePath, 
+        setCurrentFilePath,
+        activeCategory,
+        setActiveCategory,
     };
 
     return (

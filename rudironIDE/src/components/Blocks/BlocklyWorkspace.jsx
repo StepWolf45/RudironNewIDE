@@ -1,4 +1,3 @@
-// src/components/Blocks/BlocklyWorkspace.jsx
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
 import * as Blockly from 'blockly';
 import * as Ru from 'blockly/msg/ru';
@@ -7,6 +6,7 @@ import 'blockly/blocks';
 import './BlocklyWorkspace.css';
 import './CustomBlocks.jsx';
 import { ModalContext } from '../../contexts/ModalContext';
+import { FileContext } from '../../contexts/FileContext';
 import {Minimap} from '@blockly/workspace-minimap';
 
 
@@ -30,13 +30,14 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
 
 Blockly.setLocale(Ru);
 
-const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave }) => {
+const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
     const blocklyDiv = useRef(null);
     const workspaceRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
     const resizeObserverRef = useRef(null);
     const [autoSave, setAutoSave] = useState(true);
     const { showInputDialogReact } = useContext(ModalContext);
+    const { activeCategory, activeFileId, handleSaveFile } = useContext(FileContext);
 
     useEffect(() => {
         const workspace = Blockly.inject(blocklyDiv.current, {
@@ -122,13 +123,13 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             workspaceRef.current.updateToolbox(newToolbox);
         }
     }, [activeCategory]);
-
+    //Сохранение при переключение файла
     const saveToStorage = useCallback(() => {
-        if (workspaceRef.current) {
+        if (workspaceRef.current && activeFileId) {
             const state = Blockly.serialization.workspaces.save(workspaceRef.current);
-            onSave(workspaceRef.current);
+            handleSaveFile(activeFileId, state);
         }
-    }, [onSave]);
+    }, [activeFileId, handleSaveFile]);
 
     //Смена стандартного Alert на кастомный Modal для блоков переменная
     useEffect(() => {
