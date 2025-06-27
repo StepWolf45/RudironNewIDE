@@ -20,6 +20,7 @@
     "antd": "^5.24.2",
     "blockly": "^12.0.0",
     "chart.js": "^4.4.8",
+    "docusaurus": "^1.14.7",
     "electron-packager": "^17.1.2",
     "electron-react-titlebar": "^1.2.1",
     "electron-store": "^10.0.1",
@@ -34,6 +35,7 @@
     "react-virtualized": "^9.22.6",
     "scratch-blocks": "^1.1.206",
     "serialport": "^13.0.0",
+    "typedoc": "^0.28.5",
     "vite-plugin-require": "^1.2.14"
   },
   "devDependencies": {
@@ -42,9 +44,11 @@
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "docdash": "^2.0.2",
     "electron": "^30.0.1",
     "electron-builder": "^24.13.3",
     "eslint": "^8.57.0",
+    "eslint-plugin-jsdoc": "^51.2.3",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",

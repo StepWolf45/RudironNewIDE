@@ -2,9 +2,9 @@
 import "./MenuBar.css";
 import * as Blockly from 'blockly';
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { MenuItem1, MenuItem2, stopPropagation } from './itemsMenu.jsx';
+import { MenuItem1, stopPropagation } from './itemsMenu.jsx';
 import { FileOutlined, AppstoreOutlined, ControlOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Space, Menu, Checkbox } from 'antd';
+import { Button, Dropdown, Space, Checkbox } from 'antd';
 import { FileContext } from '../../contexts/FileContext';
 
 
@@ -98,7 +98,7 @@ export default function MenuBar({ title, flag }) {
             })));
         } catch (error) {
             console.error('Error during IPC request:', error);
-            setPorts([]); // Устанавливаем пустой массив в случае ошибки
+            setPorts([]);
         }
     };
 

@@ -214,20 +214,20 @@ Blockly.Blocks['analog_write'] = {
   },
   onchange: function (changeEvent) {
     if (changeEvent.type === Blockly.Events.BLOCK_MOVE ||
-      changeEvent.type === Blockly.Events.BLOCK_CHANGE) { // Check both move and change events
+      changeEvent.type === Blockly.Events.BLOCK_CHANGE) { 
 
       const pinInput = this.getInput('VALUE');
-      const pinValue = this.getFieldValue('VALUE') || 0; // Get field value as backup
+      const pinValue = this.getFieldValue('VALUE') || 0; 
       const pinBlock = pinInput.connection.targetBlock();
 
       if (pinBlock && pinBlock.type === 'math_number') {
-        const numberFieldValue = pinBlock.getFieldValue('NUM') || 0; // Get the value from the number block
+        const numberFieldValue = pinBlock.getFieldValue('NUM') || 0; 
         const numValue = Number(numberFieldValue);
 
         if (isNaN(numValue) || numValue < 0 || numValue > 255) {
           this.setWarningText("Значение пина должно быть числом от 0 до 255.");
         } else {
-          this.setWarningText(null); // Clear the warning.
+          this.setWarningText(null); 
         }
       } else if (pinBlock) {
         this.setWarningText("К пину можно подключить только числовое значение.");
@@ -238,8 +238,6 @@ Blockly.Blocks['analog_write'] = {
   }
 };
 
-
-// Operators
 
 Blockly.Blocks['digital_read'] = {
   init: function () {

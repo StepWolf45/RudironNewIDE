@@ -11,7 +11,7 @@ const BoardVisualization = props => {
     });
     const [isDragging, setIsDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-    const [minScale, setMinScale] = useState(0.5); // Начальное значение, будет пересчитано
+    const [minScale, setMinScale] = useState(0.5);
 
     // Рассчитываем минимальный масштаб при изменении размеров контейнера
     useEffect(() => {
@@ -20,12 +20,11 @@ const BoardVisualization = props => {
                 const containerWidth = boardRef.current.clientWidth;
                 const containerHeight = boardRef.current.clientHeight;
 
-                // Минимальный масштаб, чтобы плата не была меньше 50% от ширины контейнера
+                // Минимальный масштаб, чтобы плата не была меньше 70% от ширины контейнера
                 const newMinScale = 0.7;
 
                 setMinScale(newMinScale);
 
-                // Если текущий масштаб меньше нового минимального, корректируем его
                 if (transform.scale < newMinScale) {
                     setTransform(prev => ({
                         ...prev,
@@ -67,7 +66,6 @@ const BoardVisualization = props => {
         });
     };
 
-    // Остальные обработчики остаются без изменений
     const handleMouseDown = (e) => {
         if (e.button !== 0) return;
         setIsDragging(true);

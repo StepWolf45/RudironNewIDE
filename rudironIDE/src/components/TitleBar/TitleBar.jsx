@@ -7,8 +7,6 @@ export default function TitleBar({children}) {
               <img src="logo.svg" alt="" />
               {children}
           </div>
-
-          
     </div>
 
   )
