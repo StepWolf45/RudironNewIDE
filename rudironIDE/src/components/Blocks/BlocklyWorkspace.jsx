@@ -4,11 +4,11 @@ import * as Blockly from 'blockly';
 import * as Ru from 'blockly/msg/ru';
 import 'blockly/core';
 import 'blockly/blocks';
-import * as JavaScript from 'blockly/javascript';
 import './BlocklyWorkspace.css';
 import './CustomBlocks.jsx';
-import { FileContext } from '../../contexts/FileContext';
 import { ModalContext } from '../../contexts/ModalContext';
+import {Minimap} from '@blockly/workspace-minimap';
+
 
 const customTheme = Blockly.Theme.defineTheme('myTheme', {
     'base': Blockly.Themes.Classic,
@@ -22,10 +22,13 @@ const customTheme = Blockly.Theme.defineTheme('myTheme', {
             'colourTertiary': '#e94e4f',
         }
     },
+    componentStyles: { 
+      workspaceBackgroundColour: '#1F1F1F'
+
+  },
 });
 
 Blockly.setLocale(Ru);
-
 
 const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave }) => {
     const blocklyDiv = useRef(null);
@@ -40,6 +43,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
             theme: customTheme,
             renderer: 'zelos',
             scrollbars: true,
+            maxBlocks:800,
             zoom: {
                 controls: true,
                 wheel: true,
@@ -49,9 +53,18 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 scaleSpeed: 1.1,
                 pinch: true
             },
+            grid:
+                {spacing: 30,
+                length: 5,
+                colour: '#ccc',
+                snap: true},
             toolbox: activeCategory?.toolboxXML || '',
             media: 'blockly/'
         });
+        
+        const minimap = new Minimap(workspace);
+        minimap.enableFocusRegion();
+        minimap.init();
 
         if (initialXml) {
             Blockly.serialization.workspaces.load(initialXml, workspace);
@@ -61,19 +74,9 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
         workspaceRef.current = workspace;
 
         onWorkspaceMount(workspace);
-
-        // if (Blockly.ContextMenuRegistry.registry.getItem('custom_menu_item')) {
-        //     Blockly.ContextMenuRegistry.registry.unregister('custom_menu_item');
-        // }
-        // if (Blockly.ContextMenuRegistry.registry.getItem('custom_if_menu_item')) {
-        //     Blockly.ContextMenuRegistry.registry.unregister('custom_if_menu_item');
-        // }
         if (Blockly.ContextMenuRegistry.registry.getItem('blockHelp')) {
             Blockly.ContextMenuRegistry.registry.unregister('blockHelp');
         }
-
-        // registerCustomContextMenu();
-        // registerCustomContextMenuForIfBlock();
 
         //Сохранение в localStorage
         workspace.addChangeListener((event) => {
@@ -99,7 +102,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
                 setContainerSize({ width, height });
                 if (workspaceRef.current) {
                     Blockly.svgResize(workspaceRef.current); 
-                    workspaceRef.current.scrollCenter();
+
                 }
             });
             resizeObserverRef.current.observe(blocklyDiv.current);
@@ -130,104 +133,60 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount, activeCategory, onSave
     //Смена стандартного Alert на кастомный Modal для блоков переменная
     useEffect(() => {
         Blockly.dialog.setPrompt((msg, defaultValue, callback) => {
-          Blockly.Events.setGroup(true);
+            Blockly.Events.setGroup(true);
 
-          showInputDialogReact({
-            title: msg,
-            defaultValue: defaultValue,
-            onOk: (newValue) => {
-              console.log("Received value from dialog:", newValue);
+            showInputDialogReact({
+                title: msg,
+                defaultValue: defaultValue,
+                onOk: (newValue) => {
+                    console.log("Received value from dialog:", newValue);
 
-              if (newValue !== undefined) {
-                const newName = newValue.trim();
+                    if (newValue !== undefined) {
+                        const newName = newValue.trim();
 
-                if (newName) {
-                  const workspace = workspaceRef.current;
+                        if (newName) {
+                            const workspace = workspaceRef.current;
+                            
 
-                  let uniqueId;
-                  if (Blockly.utils.idGenerator && typeof Blockly.utils.idGenerator.genUid === 'function') {
-                    uniqueId = Blockly.utils.idGenerator.genUid();
-                  } else {
-                    uniqueId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                    console.warn("Falling back to Math.random() for ID generation.  Consider updating Blockly.");
-                  }
-
-                  console.log("Creating variable with ID:", uniqueId, "and name:", newName);
-
-                  workspace.createVariable(newName, undefined, uniqueId);
-                  workspace.refreshToolboxSelection();
-
-                  callback(newName);
-                } else {
-                  Modal.error({ content: 'Название переменной не может быть пустым!' });
-                  callback(defaultValue);
+                            if (defaultValue && defaultValue !== newName) {
+                                
+                                const existingVar = workspace.getVariableByName(defaultValue);
+                                if (existingVar) {
+                                   
+                                    workspace.renameVariable(existingVar.getId(), newName);
+                                    callback(newName);
+                                } else {
+                                   
+                                    const newVar = workspace.createVariable(newName);
+                                    callback(newName);
+                                }
+                            } else {
+                                
+                                const newVar = workspace.createVariable(newName);
+                                callback(newName);
+                            }
+                            
+                            workspace.refreshToolboxSelection();
+                        } else {
+                            Modal.error({ content: 'Название переменной не может быть пустым!' });
+                            callback(defaultValue);
+                        }
+                    } else {
+                        callback(defaultValue);
+                    }
+                    Blockly.Events.setGroup(false);
+                },
+                onCancel: () => {
+                    callback(defaultValue);
+                    Blockly.Events.setGroup(false);
                 }
-              } else {
-                callback(defaultValue);
-              }
-              Blockly.Events.setGroup(false);
-            },
-            onCancel: () => {
-              callback(defaultValue);
-              Blockly.Events.setGroup(false);
-            }
-          });
+            });
         });
 
-        const workspace = workspaceRef.current;
-        
-
-        const renameListener = (event) => {
-          if (event.type === Blockly.Events.VAR_RENAME) {
-            const varId = event.varId;
-            const newName = event.newName;
-
-            console.log("VAR_RENAME event - ID:", varId, "New name:", newName);
-
-            workspace.renameVariableById(varId, newName);
-            console.log("Variable renamed successfully.");
-            workspace.refreshToolboxSelection();
-            console.log("Toolbox refreshed.");
-          }
+        return () => {
+            Blockly.dialog.setPrompt(null);
         };
-        workspace.addChangeListener(renameListener);
-        return () => workspace.removeChangeListener(renameListener);
-      }, [showInputDialogReact]);
-      
-    //   function registerCustomContextMenu() {
-    //     const customMenuItem = {
-    //         displayText: 'Новый пункт',
-    //         preconditionFn: function(scope) {
-    //             return 'enabled';
-    //         },
-    //         callback: function(scope) {
-    //             alert('Новый пункт выбран!');
-    //         },
-    //         scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-    //         id: 'custom_menu_item',
-    //         weight: 100
-    //     };
-
-    //     Blockly.ContextMenuRegistry.registry.register(customMenuItem);
-    // }
-
-    // Функция для регистрации нового контекстного меню для блока if
-    // function registerCustomContextMenuForIfBlock() {
-    //     const customIfMenuItem = {
-    //         displayText: 'Специальный пункт для блока if',
-    //         preconditionFn: function(scope) {
-    //             return scope.block.type === 'controls_if' ? 'enabled' : 'hidden';
-    //         },
-    //         callback: function(scope) {
-    //             alert('Специальный пункт для блока if выбран!');
-    //         },
-    //         scopeType: Blockly.ContextMenuRegistry.ScopeType.BLOCK,
-    //         id: 'custom_if_menu_item',
-    //         weight: 100
-    //     };
-
-    //     Blockly.ContextMenuRegistry.registry.register(customIfMenuItem);
-    // }
+    }, [showInputDialogReact]);
 
     return (
         <div id="blocklyContainer">

@@ -1,30 +1,59 @@
-# React + TypeScript + Vite
+# Введение и описание продукта
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Rudiron IDE** — это блочная интегрированная среда разработки (IDE), созданная для программирования контроллера Rudiron от компании Aquarius. Конечный продукт представляет собой кроссплатформенное десктопное приложение, разработанное с использованием React JS, Electron JS и других современных технологий.
 
-Currently, two official plugins are available:
+IDE предоставляет интуитивно понятный визуальный интерфейс для создания программ с помощью блочного программирования для взаимодействия с аппаратной платформой Rudiron. Она обеспечивает полный цикл программирования — от создания кода до его выполнения на контроллере, что делает её особенно полезной для образовательных целей и начинающих программистов.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Руководство по запуску и деплою RudironIDE
 
-## Expanding the ESLint configuration
+## Требования
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Node.js (рекомендуется версия 18.x или выше)
+- npm (рекомендуется последняя версия)
+- ОС: Windows или Linux
 
-- Configure the top-level `parserOptions` property like this:
+## Установка зависимостей
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Запуск в режиме разработки
+
+```bash
+npm run dev
+```
+
+После выполнения команды откроется окно Electron с вашим приложением. 
+
+> **Примечание:**
+> Папка `dist-electron` — это папка, куда автоматически помещается уже собранный (скомпилированный и преобразованный) код из папки `electron`. Она содержит итоговые файлы (`main.js`, `preload.mjs` и др.), которые Electron использует для запуска приложения.
+
+## Сборка и деплой
+
+### Windows
+
+```bash
+npm run build:win
+```
+
+После выполнения команды будет создан установщик в папке `dist`
+
+### Linux
+
+(Добавьте аналогичную команду для Linux, если потребуется, например через electron-builder.)
+
+## Генерация документации
+
+```bash
+npm run docs:generate
+```
+
+Документация появится в папке `docs/api`.
+
+## Просмотр документации
+
+```bash
+npm run docs:serve
+```
+Откроется локальный сервер на http://127.0.0.1:8080

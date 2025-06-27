@@ -1,7 +1,93 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react';
 import BoardSVG from './BoardSVG';
+import './BoardVisualization.css';
 
 const BoardVisualization = props => {
+    const boardRef = useRef(null);
+    const [transform, setTransform] = useState({
+        scale: 1,
+        x: 0,
+        y: 0
+    });
+    const [isDragging, setIsDragging] = useState(false);
+    const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+    const [minScale, setMinScale] = useState(0.5);
+
+    // Рассчитываем минимальный масштаб при изменении размеров контейнера
+    useEffect(() => {
+        const updateMinScale = () => {
+            if (boardRef.current) {
+                const containerWidth = boardRef.current.clientWidth;
+                const containerHeight = boardRef.current.clientHeight;
+
+                // Минимальный масштаб, чтобы плата не была меньше 70% от ширины контейнера
+                const newMinScale = 0.7;
+
+                setMinScale(newMinScale);
+
+                if (transform.scale < newMinScale) {
+                    setTransform(prev => ({
+                        ...prev,
+                        scale: newMinScale,
+                        x: containerWidth / 2 - (containerWidth / 2 - prev.x) * (newMinScale / prev.scale),
+                        y: containerHeight / 2 - (containerHeight / 2 - prev.y) * (newMinScale / prev.scale)
+                    }));
+                }
+            }
+        };
+
+        updateMinScale();
+        window.addEventListener('resize', updateMinScale);
+
+        return () => {
+            window.removeEventListener('resize', updateMinScale);
+        };
+    }, []);
+
+
+    const handleWheel = (e) => {
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        const newScale = Math.min(
+            Math.max(transform.scale * delta, minScale), // Минимальный масштаб зависит от контейнера
+            3 // Максимальный масштаб
+        );
+        
+        const rect = boardRef.current.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+        
+        const x = offsetX - (offsetX - transform.x) * (newScale / transform.scale);
+        const y = offsetY - (offsetY - transform.y) * (newScale / transform.scale);
+        
+        setTransform({
+            scale: newScale,
+            x,
+            y
+        });
+    };
+
+    const handleMouseDown = (e) => {
+        if (e.button !== 0) return;
+        setIsDragging(true);
+        setStartPos({
+            x: e.clientX - transform.x,
+            y: e.clientY - transform.y
+        });
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        setTransform({
+            ...transform,
+            x: e.clientX - startPos.x,
+            y: e.clientY - startPos.y
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
     let color = "red";
     let color2 = "red";
 
@@ -12,11 +98,6 @@ const BoardVisualization = props => {
         setPwm((prevColors) => ({ ...prevColors, [key]: value }));
     };
 
-    // useEffect(() => {
-    //     window.board_vis_digital_pin = handleColorChange;
-    //     window.board_vis_analog_pin  = handlePwm;
-    // }, []);
-
     useEffect(() => {
         window.visualization_api.setDigitalPin((event, data) => {
             Object.keys(data.map).forEach(key => {
@@ -24,13 +105,10 @@ const BoardVisualization = props => {
               });
         });
         window.visualization_api.setAnalogPin((event, data) => {
-            // handlePwm(data.pin, data.value);
             setPwm(data.map);
         });
       }, []);
 
-
-    // All pins described
     const [pins, setPins] = useState({
         // Top left pins bank
         _11: "#E5C065",
@@ -89,36 +167,32 @@ const BoardVisualization = props => {
         _20: 0,
         _29: 0,
         _23: 0
-
-
-    })
-
-    // useEffect(() => {
-    //     // Some demo pin control only front
-
-    //     const interval = setInterval(() => {
-    //         handleColorChange("_4", color)
-    //         handleColorChange("_6", color)
-    //         handleColorChange("_7", color)
-    //         handleColorChange("_SDB", color)
-    //         handleColorChange("_12", color)
-    //         if (color == "red") color = "green"
-    //         else color = "red"
-    //     }, 500);
-
-    //     const interval2 = setInterval(() => {
-    //         handleColorChange("_17", color2)
-
-    //         if (color2 == "red") color2 = "green"
-    //         else color2 = "red"
-    //     }, 100);
-
-    //     return () => {clearInterval(interval), clearInterval(interval2)};
-    // }, [])
+    });
 
     return (
-        <BoardSVG pins={pins} pwm={pwmPins} />
+        <div
+            ref={boardRef}
+            className="board-container"
+            onWheel={handleWheel}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            style={{
+                cursor: isDragging ? 'grabbing' : 'grab',
+            }}
+        >
+            <div
+                className="board-content"
+                style={{
+                    transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                    transformOrigin: '0 0',
+                }}
+            >
+                <BoardSVG pins={pins} pwm={pwmPins} />
+            </div>
+        </div>
     );
 }
 
-export default BoardVisualization
+export default BoardVisualization;

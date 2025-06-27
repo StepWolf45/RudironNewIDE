@@ -19,10 +19,7 @@
 
 
 
-.blocklyDropDownContent{
- overflow: hidden !important;
 
-}
 
 .blocklyButtonText {
     fill: #FFFFFF !important;
@@ -31,12 +28,12 @@
 }
 /* Scrollbar */
 .blocklyScrollbarVertical .blocklyScrollbarHandle {
-  fill: #555!important; /* Цвет ползунка */
+  fill: #757575 !important; /* Цвет ползунка */
 
   width: 7px !important; /* Ширина */
 }
 .blocklyScrollbarHorizontal .blocklyScrollbarHandle {
-  fill: #555 !important;
+  fill:#757575 !important;
 
   height: 7px !important;
 }
@@ -44,13 +41,12 @@
 /* Настройки toolbox */
 .blocklyFlyoutBackground {
   fill: #1F1F1F  !important;
-  fill-opacity: 0  !important;
+  fill-opacity: 80%  !important;
 }
 
 .blocklyFlyout{
-
   background-color: rgba(31, 31, 31,0.5);
-  background-image: repeating-linear-gradient(to bottom,transparent 0 2px,#2d2d2d 4px 12px);
+  /* background-image: repeating-linear-gradient(to bottom,transparent 0 2px,#555 4px 12px); */
   background-size: 2px 98%;
   background-position: right top;
   background-repeat: no-repeat;
@@ -72,9 +68,8 @@
   color: #555 !important;
 
 }
-/* Контейнеры для блоков */
+
 .blocklyMainBackground {
-  fill: #1F1F1F  !important;
   stroke: #1F1F1F !important;
   stroke-width: 2px !important;
   border: none !important;
@@ -113,3 +108,22 @@
   stroke-width: 3px !important;
 }
 
+.blockly-minimap {
+    position: absolute;
+    border: #757575 1px solid;
+    box-shadow: none !important;
+    width: 15vw;
+    height: 15vh;
+    top: 5px;
+    right: 2vw;
+}
+
+.blockly-focus-region{
+
+  fill: #2d2d2d!important;
+}
+.blocklyZoom>image{
+  opacity: 1;
+
+
+}

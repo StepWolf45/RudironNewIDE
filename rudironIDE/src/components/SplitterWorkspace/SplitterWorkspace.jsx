@@ -19,10 +19,8 @@ export default function  Workspace({children}){
                     </Splitter.Panel>
                 </Splitter>
                 </Splitter.Panel>
-                <Splitter.Panel defaultSize="20%" maxSize={400}  collapsible max="35%" min="15%" className="SplitRight" >
-                    <div className="Board">
+                <Splitter.Panel defaultSize="20%" collapsible max="35%" min="15%" className="SplitRight" >
                       <BoardVisualization />
-                    </div>
                 </Splitter.Panel>
             </Splitter>
       </Layout>

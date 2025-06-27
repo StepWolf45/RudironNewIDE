@@ -7,10 +7,13 @@
 }
 
 #titleBarContainer {
-  height: 44px;
+  height: 43px;
   width: 100%;
+  min-height: 43px;
+  max-height: 43px;
   background-color:#181818;
   border-bottom:1px solid rgba(74, 75, 76, 0.5);
+  box-sizing: border-box;
 }
 
 #titleBar {

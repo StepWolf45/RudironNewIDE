@@ -3,7 +3,10 @@ import React, { createContext, useState, useCallback, useEffect, useRef } from '
 
 export const FileContext = createContext();
 
+
+
 export const FileProvider = ({ children }) => {
+    
     const [files, setFiles] = useState([]);
     const [activeFileId, setActiveFileId] = useState(null);
     const [blocklyWorkspaces, setBlocklyWorkspaces] = useState({});
@@ -11,7 +14,7 @@ export const FileProvider = ({ children }) => {
     const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
     const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
 
-
+    
     const handleCreateNewFile = () => {
         const newFile = {
             id: Date.now(),
