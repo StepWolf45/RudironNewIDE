@@ -8,6 +8,7 @@ const { TabPane } = Tabs;
 
 export default function FileTab() {
     const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath, handleWorkspaceMount } = useContext(FileContext);
+    
     const [tabTitles, setTabTitles] = useState(
         files.reduce((acc, file) => {
             acc[file.id] = file.name;

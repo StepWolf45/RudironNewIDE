@@ -16,9 +16,23 @@ export const FileProvider = ({ children }) => {
 
     
     const handleCreateNewFile = () => {
+        // Генерируем уникальное имя файла
+        const generateUniqueFileName = () => {
+            let counter = 1;
+            let fileName = `new-file-${counter}.rud`;
+            
+            // Проверяем, существует ли файл с таким именем
+            while (files.some(file => file.name === fileName)) {
+                counter++;
+                fileName = `new-file-${counter}.rud`;
+            }
+            
+            return fileName;
+        };
+
         const newFile = {
             id: Date.now(),
-            name: `new-file-${files.length + 1}.rud`,
+            name: generateUniqueFileName(),
             content: null,
         };
         setFiles([...files, newFile]);
@@ -86,9 +100,23 @@ export const FileProvider = ({ children }) => {
         const { [id]: removedPath, ...remainingPaths } = filePaths;
         setFilePaths(remainingPaths);
 
-        if (id === activeFileId) {
+        if (String(id) === String(activeFileId)) {
             const closedIndex = files.findIndex((file) => file.id === id);
-            const newActiveIndex = Math.max(0, closedIndex - 1);
+            
+            let newActiveIndex;
+            
+            // Определяем новый активный индекс
+            if (closedIndex === 0) {
+                // Если удаляем первый файл, выбираем новый первый (бывший второй)
+                newActiveIndex = 0;
+            } else if (closedIndex === files.length - 1) {
+                // Если удаляем последний файл, выбираем предыдущий
+                newActiveIndex = closedIndex - 1;
+            } else {
+                // Если удаляем файл из середины, выбираем предыдущий (слева)
+                newActiveIndex = closedIndex - 1;
+            }
+            
             const newActiveFileId = updatedFiles[newActiveIndex]?.id || null;
             setActiveFileId(newActiveFileId);
             setCurrentFilePath(filePaths[newActiveFileId] || updatedFiles[newActiveIndex]?.name || '');

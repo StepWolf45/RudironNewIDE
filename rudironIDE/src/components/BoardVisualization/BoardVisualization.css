@@ -14,7 +14,44 @@
     -ms-user-select: none;
 }
 
-/* Для SVG элементов внутри платы */
+
 .board-container svg, .board-container svg * {
+    pointer-events: none;
+}
+
+/* Кнопка "Вернуть в центр" */
+.center-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px;
+    height:35px;
+    border-radius: 50%;
+    background-color: #555;
+    border: 1px solid #333;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.center-button:hover {
+    background-color: rgba(62, 171, 204, 0.5);
+    border-color: rgba(255, 255, 255, 1);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    color: white;
+}
+
+.center-button:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.center-button svg {
     pointer-events: none;
 }
