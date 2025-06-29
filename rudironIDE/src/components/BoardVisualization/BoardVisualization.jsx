@@ -12,6 +12,63 @@ const BoardVisualization = props => {
     const [isDragging, setIsDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
     const [minScale, setMinScale] = useState(0.5);
+    const [isContentVisible, setIsContentVisible] = useState(true);
+
+    // Функция для центрирования содержимого с минимальным масштабом
+    const centerContent = () => {
+        if (boardRef.current) {
+            const containerWidth = boardRef.current.clientWidth;
+            const containerHeight = boardRef.current.clientHeight;
+            
+            // Получаем размеры содержимого (BoardSVG)
+            const content = boardRef.current.querySelector('.board-content');
+            if (content) {
+                const contentRect = content.getBoundingClientRect();
+                const contentWidth = contentRect.width / transform.scale; // Реальная ширина без масштаба
+                const contentHeight = contentRect.height / transform.scale; // Реальная высота без масштаба
+                
+                // Вычисляем позицию для центрирования
+                const centerX = (containerWidth - contentWidth * minScale) / 2;
+                const centerY = (containerHeight - contentHeight * minScale) / 2;
+                
+                setTransform({
+                    scale: minScale,
+                    x: centerX,
+                    y: centerY
+                });
+            } else {
+                // Fallback если не удалось получить размеры содержимого
+                setTransform({
+                    scale: minScale,
+                    x: containerWidth / 2,
+                    y: containerHeight / 2
+                });
+            }
+        }
+    };
+
+    // Функция для проверки видимости содержимого
+    const checkContentVisibility = () => {
+        if (boardRef.current) {
+            const container = boardRef.current;
+            const content = container.querySelector('.board-content');
+            
+            if (content) {
+                const containerRect = container.getBoundingClientRect();
+                const contentRect = content.getBoundingClientRect();
+                
+                // Проверяем, видно ли содержимое в контейнере
+                const isVisible = !(
+                    contentRect.right < containerRect.left ||
+                    contentRect.left > containerRect.right ||
+                    contentRect.bottom < containerRect.top ||
+                    contentRect.top > containerRect.bottom
+                );
+                
+                setIsContentVisible(isVisible);
+            }
+        }
+    };
 
     // Рассчитываем минимальный масштаб при изменении размеров контейнера
     useEffect(() => {
@@ -44,6 +101,10 @@ const BoardVisualization = props => {
         };
     }, []);
 
+    // Проверяем видимость содержимого при изменении transform
+    useEffect(() => {
+        checkContentVisibility();
+    }, [transform]);
 
     const handleWheel = (e) => {
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
@@ -191,6 +252,19 @@ const BoardVisualization = props => {
             >
                 <BoardSVG pins={pins} pwm={pwmPins} />
             </div>
+            
+            {/* Кнопка "Вернуть в центр" */}
+            {!isContentVisible && (
+                <button
+                    className="center-button"
+                    onClick={centerContent}
+                    title="Вернуть плату в центр"
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4V20M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                </button>
+            )}
         </div>
     );
 }

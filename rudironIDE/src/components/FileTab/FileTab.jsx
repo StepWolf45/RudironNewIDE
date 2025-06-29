@@ -7,7 +7,8 @@ import { FileContext } from '../../contexts/FileContext';
 const { TabPane } = Tabs;
 
 export default function FileTab() {
-    const { files, activeFileId, workspaceStates, setActiveFileId, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath, handleWorkspaceMount } = useContext(FileContext);
+    const { files, activeFileId, workspaceStates, handleTabChange, handleCreateNewFile, handleCloseFile, filePaths, setCurrentFilePath, handleWorkspaceMount } = useContext(FileContext);
+    
     const [tabTitles, setTabTitles] = useState(
         files.reduce((acc, file) => {
             acc[file.id] = file.name;
@@ -63,9 +64,9 @@ export default function FileTab() {
                     if (key === "add") {
                         handleCreateNewFile();
                     } else {
-                        setActiveFileId(key);
-
-                }}}
+                        handleTabChange(key);
+                    }
+                }}
                 onEdit={(key, action) => {
                     if (action === "add") {
                         handleCreateNewFile();
