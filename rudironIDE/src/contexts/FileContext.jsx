@@ -10,12 +10,29 @@ export const FileProvider = ({ children }) => {
     const [activeFileId, setActiveFileId] = useState(null);
     const [blocklyWorkspaces, setBlocklyWorkspaces] = useState({});
     const [workspaceStates, setWorkspaceStates] = useState({});
-    const [filePaths, setFilePaths] = useState({}); // Сохраняем пути к файлам в памяти
-    const [currentFilePath, setCurrentFilePath] = useState(''); // Сохраняем текущий путь файла
-    const [activeCategory, setActiveCategory] = useState(categories[0]); // Активная категория блоков
+    const [filePaths, setFilePaths] = useState({}); 
+    const [currentFilePath, setCurrentFilePath] = useState(''); 
+    const [activeCategory, setActiveCategory] = useState(categories[0]); 
+    const [scrollPositions, setScrollPositions] = useState({}); 
 
-    
+    // Вспомогательная функция для сохранения позиции скролла текущего активного файла
+    const saveCurrentScrollPosition = () => {
+        if (activeFileId && blocklyWorkspaces[activeFileId]) {
+            const workspace = blocklyWorkspaces[activeFileId];
+            const scrollX = workspace.scrollX;
+            const scrollY = workspace.scrollY;
+            
+            setScrollPositions(prevPositions => ({
+                ...prevPositions,
+                [activeFileId]: { x: scrollX, y: scrollY }
+            }));
+        }
+    };
+
     const handleCreateNewFile = () => {
+        // Сохраняем позицию скролла текущего активного файла перед созданием нового
+        saveCurrentScrollPosition();
+
         // Генерируем уникальное имя файла
         const generateUniqueFileName = () => {
             let counter = 1;
@@ -50,6 +67,9 @@ export const FileProvider = ({ children }) => {
     };
 
     const handleOpenFile = (fileContent, fileName, filePath) => {
+        // Сохраняем позицию скролла текущего активного файла перед открытием нового
+        saveCurrentScrollPosition();
+
         const newFile = {
             id: Date.now(),
             name: fileName,
@@ -86,6 +106,9 @@ export const FileProvider = ({ children }) => {
     };
 
     const handleCloseFile = (id) => {
+        // Сохраняем позицию скролла текущего активного файла перед закрытием
+        saveCurrentScrollPosition();
+
         const updatedFiles = files.filter((file) => file.id !== id);
         setFiles(updatedFiles);
 
@@ -99,6 +122,10 @@ export const FileProvider = ({ children }) => {
         // Remove file path from memory
         const { [id]: removedPath, ...remainingPaths } = filePaths;
         setFilePaths(remainingPaths);
+
+        // Remove scroll position from memory
+        const { [id]: removedScroll, ...remainingScrolls } = scrollPositions;
+        setScrollPositions(remainingScrolls);
 
         if (String(id) === String(activeFileId)) {
             const closedIndex = files.findIndex((file) => file.id === id);
@@ -124,14 +151,14 @@ export const FileProvider = ({ children }) => {
     };
 
     const handleTabChange = (newActiveFileId) => {
+        // Сохраняем текущую позицию скролла перед переключением
+        saveCurrentScrollPosition();
 
         if (newActiveFileId) {
             setActiveFileId(Number(newActiveFileId)); // Update active file ID
             setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Update current file path or name
         }
-
     };
-
 
     const handleWorkspaceMount = (fileId, workspace) => {
         setBlocklyWorkspaces(prevWorkspaces => ({
@@ -160,6 +187,8 @@ export const FileProvider = ({ children }) => {
         setCurrentFilePath,
         activeCategory,
         setActiveCategory,
+        scrollPositions,
+        setScrollPositions,
     };
 
     return (

@@ -37,7 +37,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
     const resizeObserverRef = useRef(null);
     const [autoSave, setAutoSave] = useState(true);
     const { showInputDialogReact } = useContext(ModalContext);
-    const { activeCategory, activeFileId, handleSaveFile } = useContext(FileContext);
+    const { activeCategory, activeFileId, handleSaveFile, scrollPositions } = useContext(FileContext);
 
     useEffect(() => {
         const workspace = Blockly.inject(blocklyDiv.current, {
@@ -69,7 +69,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
 
         if (initialXml) {
             Blockly.serialization.workspaces.load(initialXml, workspace);
-            workspace.scrollCenter()
+            workspace.scrollCenter();
         }
 
         workspaceRef.current = workspace;
@@ -123,6 +123,32 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
             workspaceRef.current.updateToolbox(newToolbox);
         }
     }, [activeCategory]);
+    
+    // Восстановление позиции скролла при переключении файлов
+    useEffect(() => {
+        if (workspaceRef.current && activeFileId && scrollPositions[activeFileId]) {
+            const savedPosition = scrollPositions[activeFileId];
+            
+            // Проверяем, загружены ли уже блоки
+            const blocks = workspaceRef.current.getAllBlocks(false);
+            if (blocks.length > 0) {
+                // Блоки уже загружены, восстанавливаем позицию сразу
+                workspaceRef.current.scrollX = savedPosition.x;
+                workspaceRef.current.scrollY = savedPosition.y;
+            } else {
+                // Блоки еще не загружены, ждем события FINISHED_LOADING
+                const restoreScroll = () => {
+                    workspaceRef.current.scrollX = savedPosition.x;
+                    workspaceRef.current.scrollY = savedPosition.y;
+                    // Удаляем слушатель после восстановления
+                    workspaceRef.current.removeChangeListener(restoreScroll);
+                };
+                
+                workspaceRef.current.addChangeListener(restoreScroll);
+            }
+        }
+    }, [activeFileId, scrollPositions]);
+    
     //Сохранение при переключение файла
     const saveToStorage = useCallback(() => {
         if (workspaceRef.current && activeFileId) {
