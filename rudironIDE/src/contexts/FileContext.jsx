@@ -5,14 +5,21 @@ import { categories } from '../components/BlockPanel/CategoriesToolbox.jsx';
 export const FileContext = createContext();
 
 export const FileProvider = ({ children }) => {
-    
+    // Список всех открытых файлов
     const [files, setFiles] = useState([]);
+    // ID активного (текущего) файла
     const [activeFileId, setActiveFileId] = useState(null);
+    // Словарь: fileId -> экземпляр Blockly.Workspace для каждого файла
     const [blocklyWorkspaces, setBlocklyWorkspaces] = useState({});
+    // Состояния Blockly.Workspace для каждого файла (например, XML)
     const [workspaceStates, setWorkspaceStates] = useState({});
+    // Словарь: fileId -> путь к файлу на диске
     const [filePaths, setFilePaths] = useState({}); 
+    // Путь к текущему открытому файлу (или его имя)
     const [currentFilePath, setCurrentFilePath] = useState(''); 
+    // Активная категория в панели блоков
     const [activeCategory, setActiveCategory] = useState(categories[0]); 
+    // Словарь: fileId -> позиция скролла {x, y} для каждого файла
     const [scrollPositions, setScrollPositions] = useState({}); 
 
     // Вспомогательная функция для сохранения позиции скролла текущего активного файла
@@ -29,6 +36,7 @@ export const FileProvider = ({ children }) => {
         }
     };
 
+    // Создание нового файла
     const handleCreateNewFile = () => {
         // Сохраняем позицию скролла текущего активного файла перед созданием нового
         saveCurrentScrollPosition();
@@ -59,13 +67,14 @@ export const FileProvider = ({ children }) => {
             [newFile.id]: null,
         }));
 
-        // Ensure a new workspace state is created
+        // Создаём новое состояние workspace для нового файла
         setWorkspaceStates(prevStates => ({
             ...prevStates,
             [newFile.id]: null,
         }));
     };
 
+    // Открытие существующего файла
     const handleOpenFile = (fileContent, fileName, filePath) => {
         // Сохраняем позицию скролла текущего активного файла перед открытием нового
         saveCurrentScrollPosition();
@@ -81,7 +90,7 @@ export const FileProvider = ({ children }) => {
             ...prevWorkspaces,
             [newFile.id]: fileContent,
         }));
-        // Ensure a new workspace state is created
+        // Создаём новое состояние workspace для открытого файла
         setWorkspaceStates(prevStates => ({
             ...prevStates,
             [newFile.id]: fileContent,
@@ -97,14 +106,15 @@ export const FileProvider = ({ children }) => {
         setCurrentFilePath(filePath || fileName);
     };
 
+    // Сохранение состояния workspace для файла
     const handleSaveFile = (fileId, workspaceState) => {
-        // Update workspace states
         setWorkspaceStates(prevStates => ({
             ...prevStates,
-            [fileId]: workspaceState, // Save workspace state to localStorage
+            [fileId]: workspaceState, // Сохраняем состояние workspace
         }));
     };
 
+    // Закрытие файла
     const handleCloseFile = (id) => {
         // Сохраняем позицию скролла текущего активного файла перед закрытием
         saveCurrentScrollPosition();
@@ -112,21 +122,23 @@ export const FileProvider = ({ children }) => {
         const updatedFiles = files.filter((file) => file.id !== id);
         setFiles(updatedFiles);
 
+        // Удаляем workspace закрытого файла
         const { [id]: removedWorkspace, ...remainingWorkspaces } = blocklyWorkspaces;
         setBlocklyWorkspaces(remainingWorkspaces);
 
-        // Remove workspace state from localStorage
+        // Удаляем состояние workspace закрытого файла
         const { [id]: removedState, ...remainingStates } = workspaceStates;
         setWorkspaceStates(remainingStates);
 
-        // Remove file path from memory
+        // Удаляем путь к файлу из памяти
         const { [id]: removedPath, ...remainingPaths } = filePaths;
         setFilePaths(remainingPaths);
 
-        // Remove scroll position from memory
+        // Удаляем позицию скролла для закрытого файла
         const { [id]: removedScroll, ...remainingScrolls } = scrollPositions;
         setScrollPositions(remainingScrolls);
 
+        // Если закрывается активный файл — выбираем новый активный
         if (String(id) === String(activeFileId)) {
             const closedIndex = files.findIndex((file) => file.id === id);
             
@@ -150,16 +162,18 @@ export const FileProvider = ({ children }) => {
         }
     };
 
+    // Переключение вкладки (файла)
     const handleTabChange = (newActiveFileId) => {
         // Сохраняем текущую позицию скролла перед переключением
         saveCurrentScrollPosition();
 
         if (newActiveFileId) {
-            setActiveFileId(Number(newActiveFileId)); // Update active file ID
-            setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Update current file path or name
+            setActiveFileId(Number(newActiveFileId)); // Обновляем ID активного файла
+            setCurrentFilePath(filePaths[newActiveFileId] || files.find(file => file.id === Number(newActiveFileId))?.name || ''); // Обновляем путь или имя
         }
     };
 
+    // Сохраняем экземпляр workspace для файла
     const handleWorkspaceMount = (fileId, workspace) => {
         setBlocklyWorkspaces(prevWorkspaces => ({
             ...prevWorkspaces,
@@ -167,28 +181,29 @@ export const FileProvider = ({ children }) => {
         }));
     };
 
+    // Контекст со всеми функциями и состояниями для работы с файлами
     const value = {
-        files,
-        setFiles,
-        activeFileId,
-        setActiveFileId,
-        blocklyWorkspaces,
-        setBlocklyWorkspaces,
-        workspaceStates,
-        setWorkspaceStates,
-        handleCreateNewFile,
-        handleOpenFile,
-        handleSaveFile,
-        handleCloseFile,
-        handleTabChange,
-        handleWorkspaceMount,
-        filePaths, 
-        currentFilePath, 
-        setCurrentFilePath,
-        activeCategory,
-        setActiveCategory,
-        scrollPositions,
-        setScrollPositions,
+        files, // Список файлов
+        setFiles, // Функция для обновления списка файлов
+        activeFileId, // ID активного файла
+        setActiveFileId, // Функция для установки активного файла
+        blocklyWorkspaces, // Словарь workspace'ов
+        setBlocklyWorkspaces, // Функция для обновления workspace'ов
+        workspaceStates, // Состояния workspace'ов
+        setWorkspaceStates, // Функция для обновления состояний
+        handleCreateNewFile, // Создать новый файл
+        handleOpenFile, // Открыть файл
+        handleSaveFile, // Сохранить файл
+        handleCloseFile, // Закрыть файл
+        handleTabChange, // Переключить вкладку
+        handleWorkspaceMount, // Сохранить workspace
+        filePaths, // Пути к файлам
+        currentFilePath, // Текущий путь
+        setCurrentFilePath, // Установить путь
+        activeCategory, // Активная категория блоков
+        setActiveCategory, // Установить категорию
+        scrollPositions, // Позиции скролла
+        setScrollPositions, // Установить позиции скролла
     };
 
     return (
