@@ -9,7 +9,7 @@ import { ModalContext } from '../../contexts/ModalContext';
 import { FileContext } from '../../contexts/FileContext';
 import {Minimap} from '@blockly/workspace-minimap';
 
-
+//Кастомная тема для блоков
 const customTheme = Blockly.Theme.defineTheme('myTheme', {
     'base': Blockly.Themes.Classic,
     'blockStyles': {
@@ -40,6 +40,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
     const { activeCategory, activeFileId, handleSaveFile, scrollPositions } = useContext(FileContext);
 
     useEffect(() => {
+        //Инициализация workspace c параметрами
         const workspace = Blockly.inject(blocklyDiv.current, {
             theme: customTheme,
             renderer: 'zelos',
@@ -63,6 +64,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
             media: 'blockly/'
         });
         
+        //Инициализация миникарты
         const minimap = new Minimap(workspace);
         minimap.enableFocusRegion();
         minimap.init();
@@ -128,8 +130,6 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
     useEffect(() => {
         if (workspaceRef.current && activeFileId && scrollPositions[activeFileId]) {
             const savedPosition = scrollPositions[activeFileId];
-            
-            // Проверяем, загружены ли уже блоки
             const blocks = workspaceRef.current.getAllBlocks(false);
             if (blocks.length > 0) {
                 // Блоки уже загружены, восстанавливаем позицию сразу
@@ -140,7 +140,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
                 const restoreScroll = () => {
                     workspaceRef.current.scrollX = savedPosition.x;
                     workspaceRef.current.scrollY = savedPosition.y;
-                    // Удаляем слушатель после восстановления
+
                     workspaceRef.current.removeChangeListener(restoreScroll);
                 };
                 
@@ -165,30 +165,23 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
             showInputDialogReact({
                 title: msg,
                 defaultValue: defaultValue,
+                //Обработка ввода
                 onOk: (newValue) => {
                     console.log("Received value from dialog:", newValue);
-
                     if (newValue !== undefined) {
                         const newName = newValue.trim();
-
                         if (newName) {
                             const workspace = workspaceRef.current;
-                            
-
                             if (defaultValue && defaultValue !== newName) {
-                                
                                 const existingVar = workspace.getVariableByName(defaultValue);
                                 if (existingVar) {
-                                   
                                     workspace.renameVariable(existingVar.getId(), newName);
                                     callback(newName);
                                 } else {
-                                   
                                     const newVar = workspace.createVariable(newName);
                                     callback(newName);
                                 }
                             } else {
-                                
                                 const newVar = workspace.createVariable(newName);
                                 callback(newName);
                             }
@@ -203,6 +196,7 @@ const BlocklyWorkspace = ({ initialXml, onWorkspaceMount }) => {
                     }
                     Blockly.Events.setGroup(false);
                 },
+                //Обработка отмены
                 onCancel: () => {
                     callback(defaultValue);
                     Blockly.Events.setGroup(false);
