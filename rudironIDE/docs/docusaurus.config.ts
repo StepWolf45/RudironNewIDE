@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'RudironIDE',
   tagline: 'Dinosaurs are cool',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/image.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -54,7 +54,7 @@ const config: Config = {
     navbar: {
       logo: {
         alt: 'Rudiron Logo',
-        src: 'img/logo.svg',
+        src: 'img/image.png',
       },
       items: [
         {
