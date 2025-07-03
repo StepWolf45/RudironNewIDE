@@ -1,7 +1,7 @@
 # MenuBar
 
 ## Назначение
-MenuBar предоставляет панель меню для управления файлами и подключениями в приложении. Интегрируется с Electron API для работы с файловой системой и поддерживает различные типы меню (Файл, Подключение). Обрабатывает создание, открытие, сохранение файлов и управление серийными портами.
+MenuBar предоставляет панель меню для управления файлами и подключениями в приложении. Интегрируется с Electron API для работы с файловой системой и поддерживает различные типы меню (Файл, Подключение). Обрабатывает создание, открытие, сохранение файлов и управление серийными портами. Обеспечивает единообразный интерфейс для всех операций с файлами и подключениями.
 
 ## Основные переменные состояния
 
@@ -15,8 +15,20 @@ MenuBar предоставляет панель меню для управлен
 ## Хуки
 - `useState` — для управления списком серийных портов
 - `useRef` — для ссылки на скрытый input файла
-- `useEffect` — для инициализации списка портов
+- `useEffect` — для инициализации и обновления списка серийных портов:
+    ```javascript
+    useEffect(() => {
+      if (flag === "3") {
+        fetchDevices();
+      }
+    }, [flag]);
+    ```
+
+    - Срабатывает при изменении флага типа меню
+    - Автоматически загружает список портов для меню подключения
+    - Вызывает fetchDevices только для меню подключения (flag="3")
 - `useContext` — для доступа к FileContext
+
 
 ## Props
 
@@ -39,35 +51,53 @@ MenuBar предоставляет панель меню для управлен
       <Button icon={iconbutton}>{title}</Button>
     </Dropdown>
   </Space>
-  <input type="file" ref={fileInputRef} style={{ display: 'none' }} />
+  <input 
+    type="file" 
+    ref={fileInputRef} 
+    style={{ display: 'none' }} 
+    accept=".json"
+    onChange={handleFileSelect}
+  />
 </div>
 ```
 
 ## Типы меню
 
-### Файловое меню (flag="1")
+### Файловое меню 
 ```javascript
 const MenuItem1 = [
-  { key: 'new', label: 'Новый файл' },
-  { key: 'open', label: 'Открыть файл' },
-  { key: 'save', label: 'Сохранить' },
-  { key: 'saveAs', label: 'Сохранить Как' }
+  { key: 'new', label: 'Новый файл', icon: <PlusOutlined /> },
+  { key: 'open', label: 'Открыть файл', icon: <FolderOpenOutlined /> },
+  { key: 'save', label: 'Сохранить', icon: <SaveOutlined /> },
+  { key: 'saveAs', label: 'Сохранить Как', icon: <SaveOutlined /> }
 ];
 ```
 
-### Меню подключения (flag="3")
+### Меню подключения
 ```javascript
 const connectionMenu = [
   {
     key: '1',
     label: 'Порт',
+    icon: <UsbOutlined />,
     children: serialPorts.length > 0 
-      ? serialPorts 
-      : [{ key: 'no-devices', label: 'Нет подключенных плат' }]
+      ? serialPorts.map(port => ({
+          key: port.path,
+          label: (
+            <Checkbox 
+              checked={port.isConnected}
+              onChange={(e) => handlePortToggle(port.path, e.checked)}
+            >
+              {port.path} - {port.manufacturer || 'Unknown'}
+            </Checkbox>
+          )
+        }))
+      : [{ key: 'no-devices', label: 'Нет подключенных плат', disabled: true }]
   },
   {
     key: '2',
-    label: 'Обновить'
+    label: 'Обновить',
+    icon: <ReloadOutlined />
   }
 ];
 ```
@@ -81,6 +111,59 @@ const connectionMenu = [
 | handleSaveAs     | -                 | void                 | Сохраняет файл как новый                                        |
 | handleFileSelect | event             | void                 | Обрабатывает выбор файла через input                           |
 | fetchDevices     | -                 | Promise void         | Получает список серийных портов                                |
+| handlePortToggle | path, isConnected | void                 | Обрабатывает подключение/отключение порта                      |
+
+## Обработчики событий
+
+### handleMenuClick
+```javascript
+const handleMenuClick = (e) => {
+  switch (e.key) {
+    case 'new':
+      window.electronAPI?.send('new-file');
+      break;
+    case 'open':
+      fileInputRef.current?.click();
+      break;
+    case 'save':
+      handleSave();
+      break;
+    case 'saveAs':
+      handleSaveAs();
+      break;
+    case '2': // Обновить порты
+      fetchDevices();
+      break;
+  }
+};
+```
+- Обрабатывает все клики по пунктам меню
+- Вызывает соответствующие функции в зависимости от выбранного пункта
+- Интегрируется с Electron API для файловых операций
+
+### handleFileSelect
+```javascript
+const handleFileSelect = (event) => {
+  const file = event.target.files[0];
+  if (file && file.name.endsWith('.json')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = JSON.parse(e.target.result);
+        window.electronAPI?.send('file-opened', file.path, content);
+      } catch (error) {
+        console.error('Ошибка чтения файла:', error);
+      }
+    };
+    reader.readAsText(file);
+  }
+  event.target.value = ''; // Очищаем input
+};
+```
+- Обрабатывает выбор файла через скрытый input
+- Валидирует тип файла (.json)
+- Читает содержимое файла и отправляет в Electron
+- Очищает input после использования
 
 ## Интеграция с Electron
 
@@ -93,47 +176,3 @@ const connectionMenu = [
 
 ### События получаемые от Electron:
 - `getSerialDevices` — получение списка портов
-
-## Пример использования
-```javascript
-import MenuBar from '../MenuBar/MenuBar';
-
-// Файловое меню
-<MenuBar title="Файл" flag="1" />
-
-// Меню подключения
-<MenuBar title="Подключение" flag="3" />
-```
-
-## Особенности
-- Поддерживает различные типы меню через флаг
-- Интегрируется с Electron API для работы с файлами
-- Автоматически обновляет список серийных портов
-- Поддерживает drag & drop файлов
-- Использует скрытый input для выбора файлов
-- Обрабатывает ошибки при работе с API
-- Поддерживает подключение к серийным портам
-
-## Стилизация
-- Использует Ant Design компоненты
-- Поддерживает темную тему
-- Кастомные стили для чекбоксов портов
-- Адаптивный дизайн
-
-## Обработка ошибок
-- Проверяет наличие Electron API перед использованием
-- Выводит предупреждения в консоль при отсутствии API
-- Graceful fallback при ошибках загрузки файлов
-- Обработка ошибок при работе с серийными портами
-
-## Безопасность
-- Валидация типов файлов (только .json)
-- Проверка содержимого файлов перед загрузкой
-- Безопасная обработка путей к файлам
-- Очистка input после использования
-
-## Производительность
-- Мемоизация списка портов
-- Оптимизированная обработка событий
-- Эффективная работа с файловой системой
-- Минимальные перерендеры компонента 
