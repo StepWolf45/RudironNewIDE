@@ -8,7 +8,8 @@
     "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build:win": "vite build && electron-builder --win"
+    "build:win": "vite build && electron-builder --win",
+    "build:linux": "vite build && electron-builder --linux"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
@@ -24,6 +25,7 @@
     "electron-packager": "^17.1.2",
     "electron-react-titlebar": "^1.2.1",
     "electron-store": "^10.0.1",
+    "gh-pages": "^6.3.0",
     "normalize.css": "^8.0.1",
     "react": "^18.3.1",
     "react-blockly": "^9.0.0",
@@ -72,7 +74,12 @@
       "icon": "public/logo_bar.png"
     },
     "linux": {
-      "target": "AppImage",
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm",
+        "tar.gz"
+      ],
       "icon": "public/logo_bar.png"
     },
     "nsis": {
