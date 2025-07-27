@@ -350,3 +350,6 @@ electron.contextBridge.exposeInMainWorld("visualization_api", {
 electron.contextBridge.exposeInMainWorld("board_connection", {
   checkConnected: () => electron.ipcRenderer.invoke("check_connected")
 });
+electron.contextBridge.exposeInMainWorld("bluetoothAPI", {
+  scan: () => electron.ipcRenderer.send("start-bluetooth-scan")
+});

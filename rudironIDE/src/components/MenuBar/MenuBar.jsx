@@ -13,6 +13,8 @@ export default function MenuBar({ title, flag }) {
     let iconbutton;
     const fileInputRef = useRef(null);
     const [serialPorts, setPorts] = useState([]);
+    const [bluetoothPorts, setBL] = useState([]);
+
     const { handleCreateNewFile, handleOpenFile, activeFileId, blocklyWorkspaces } = useContext(FileContext);
 
     const handleMenuClick = (e) => {
@@ -115,24 +117,39 @@ export default function MenuBar({ title, flag }) {
             {
                 key: '1',
                 label: 'Порт',
-                children: serialPorts.length > 0 
-                    ? serialPorts 
+                children: serialPorts.length > 0
+                    ? serialPorts
                     : [{ key: 'no-devices', label: <span style={{ color: 'white' }}>Нет подключенных плат</span> }]
             },
             {
                 key: '2',
                 label: ((<span onClick={() => {
+                    console.info("Поиск Bluetooth плат...");
+                    window.bluetoothAPI.scan(setBL);
+
+                }}>Поиск Bluetooth Рудирон</span>)),
+            },
+            {
+                key: '3',
+                label: 'Bluetooth платы',
+                children: bluetoothPorts.length > 0
+                    ? bluetoothPorts
+                    : [{ key: 'no-bl-devices', label: <span style={{ color: 'white' }}>Bluetooth платы не найдены</span> }]
+            },
+            {
+                key: '4',
+                label: ((<span onClick={() => {
                     fetchDevices();
 
-                }}>Обновить</span>) )
+                }}>Обновить</span>))
             },
         ];
         iconbutton = <ControlOutlined />;
     }
 
-        useEffect(() => {
-                fetchDevices();
-        }, []);
+    useEffect(() => {
+        fetchDevices();
+    }, []);
 
     return (
         <div>

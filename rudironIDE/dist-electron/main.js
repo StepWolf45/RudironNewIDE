@@ -10261,6 +10261,7 @@ const RENDERER_DIST = path$1.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path$1.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 const { Tray } = require2("electron");
 const { SerialPort } = require2("serialport");
+const noble = require2("@abandonware/noble");
 let board_connected = false;
 let tray = null;
 let win;
@@ -10286,13 +10287,20 @@ function createWindow() {
     webPreferences: {
       preload: path$1.join(__dirname, "preload.mjs"),
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      experimentalFeatures: true,
+      enableBlinkFeatures: "WebBluetooth"
     }
   });
   win.maximize();
   win.removeMenu();
   win.webContents.on("did-finish-load", () => {
     win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
+  });
+  win.webContents.openDevTools();
+  win.once("ready-to-show", () => {
+    win.show();
+    win.focus();
   });
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
@@ -10371,6 +10379,11 @@ app$1.on("ready", () => {
   } catch (error2) {
     console.error("Failed to create tray icon:", error2);
   }
+  if (process.platform === "linux") {
+    app$1.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
+  } else {
+    app$1.commandLine.appendSwitch("enable-web-bluetooth", true);
+  }
   require2("electron-react-titlebar/main").initialize();
   ipcMain$1.handle("show-input-dialog", async (event, options) => {
     if (!win) return void 0;
@@ -10427,7 +10440,7 @@ ipcMain$1.handle("connect-serial-device", async (event, data) => {
     console.log("[INFO] Port opened callback");
   });
   console.log("[INFO] Flow mode active; Wailting for RX");
-  console.warn(`[IDE] Подкючено к плате Рудирон на порту: ${data}`);
+  console.info(`[IDE] Подкючено к плате Рудирон на порту: ${data}`);
   board_connected = true;
 });
 ipcMain$1.handle("send-serial", async (event, data) => {
@@ -10489,6 +10502,33 @@ ipcMain$1.handle("send-and-wait", async (event, command, wait_packets_cnt) => {
   } catch (error2) {
     return { success: false, error: error2 };
   }
+});
+ipcMain$1.on("scan-bluetooth", (event) => {
+  device.listPairedDevices((devices) => {
+    event.sender.send("bluetooth-devices", devices);
+  });
+});
+function startScan(callback) {
+  noble.on("stateChange", async (state) => {
+    if (state === "poweredOn") {
+      await noble.startScanningAsync([], false);
+    } else {
+      await noble.stopScanningAsync();
+    }
+  });
+  noble.on("discover", (peripheral) => {
+    const device2 = {
+      id: peripheral.id,
+      name: peripheral.advertisement.localName || "Unknown",
+      rssi: peripheral.rssi
+    };
+    callback(device2);
+  });
+}
+ipcMain$1.on("start-bluetooth-scan", (event) => {
+  startScan((device2) => {
+    console.log(device2);
+  });
 });
 export {
   MAIN_DIST,
