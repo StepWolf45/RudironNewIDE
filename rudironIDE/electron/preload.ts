@@ -124,11 +124,35 @@ contextBridge.exposeInMainWorld('api', {
 
             return bufferRes;
         },
+        servoWrite: (pin, value) => {
+            let bufferRes = Buffer.concat([
+                Buffer.from([0xFE, 0xDE, 0x1F, 0x00, 0xF7, 0x01, 0x04]),
+                genNumberArgument(pin),
+                genNumberArgument(value)
+            ])
+
+            return bufferRes;
+        },
+
+        servoRead: (pin, value) => {
+            return Buffer.concat([
+                Buffer.from([0x02, 0xFB, 0x01, 0x01]), // digitalRead
+                genNumberArgument(pin)
+            ])
+        },
 
         delay: (time) => {
             let bufferRes = Buffer.concat([
                 Buffer.from([0xFE, 0xDE, 0x11, 0x00, 0x90, 0x01, 0x01]),
                 genNumberArgument(time)
+            ])
+
+            return bufferRes;
+
+        },
+        servo_stop: () => {
+            let bufferRes = Buffer.concat([
+                Buffer.from([0xFE, 0xDE, 0x11, 0x00, 0x90, 0x01, 0x01]),
             ])
 
             return bufferRes;
@@ -195,6 +219,54 @@ contextBridge.exposeInMainWorld('api', {
             } else {
                 val_buf = Buffer.concat([Buffer.from([0x02, 0xF8, 0x01, 0x01]), genNumberArgument(pin)]);
             } // analog
+
+
+
+            bufferRes = Buffer.concat([
+                bufferRes,
+                val_buf
+            ]);
+
+            let size = bufferSize2(bufferRes, 4)
+            bufferRes[2] = size[1];
+            bufferRes[3] = size[0];
+            printBuffer(bufferRes);
+            return bufferRes;
+
+        },
+
+        get_distance: (reader, name, echo, trig) => {
+            let name_buffer = genVarNameArgument(name);
+            let bufferRes = Buffer.concat([
+                Buffer.from([0xFE, 0xDE, 0xFF, 0xFF, 0x91, 0x01, 0x02]),
+                name_buffer
+            ]);
+            let val_buf;
+            val_buf = Buffer.concat([Buffer.from([0x02, 0xF8, 0x01, 0x01]), genNumberArgument(echo), genNumberArgument(trig)]);
+
+
+
+            bufferRes = Buffer.concat([
+                bufferRes,
+                val_buf
+            ]);
+
+            let size = bufferSize2(bufferRes, 4)
+            bufferRes[2] = size[1];
+            bufferRes[3] = size[0];
+            printBuffer(bufferRes);
+            return bufferRes;
+
+        },
+
+        set_var_as_servo: (name, pin) => {
+            let name_buffer = genVarNameArgument(name);
+            let bufferRes = Buffer.concat([
+                Buffer.from([0xFE, 0xDE, 0xFF, 0xFF, 0x91, 0x01, 0x02]),
+                name_buffer
+            ]);
+            let val_buf;
+            val_buf = Buffer.concat([Buffer.from([0x02, 0xFB, 0x01, 0x01]), genNumberArgument(pin)]);
 
 
 
