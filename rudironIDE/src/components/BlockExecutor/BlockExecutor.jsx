@@ -234,10 +234,19 @@ export async function executeBlock(block) {
             let val = value.getInputTargetBlock('NUM');
             let pinNum = window.Blockly.JavaScript.blockToCode(val)[0];
             resBuff = generators.set_var_as_pin(name, pinNum, 1);
+        }else if (value.type == "get_distance") {
+            let echo = value.getInputTargetBlock('ECHO');
+            let trig = value.getInputTargetBlock('TRIG');
+            let reader = window.Blockly.JavaScript.blockToCode(val)[0];
+            resBuff = generators.get_distance(reader, name, echo, trig);
+        } else if (value.type == "servo_read"){
+            let val = value.getInputTargetBlock('NUM');
+            let pinNum = window.Blockly.JavaScript.blockToCode(val)[0];
+            resBuff = generators.set_var_as_pin(name, pinNum);
         } else { // expression
             let rValue = window.Blockly.JavaScript.blockToCode(value)[0];
             resBuff = generators.set_var(name, transformLogicalExpression(rValue));
-        }
+        } 
         return api.writeSerialAndWait(resBuff).then(data => {
             console.log(data);
         });
@@ -267,6 +276,17 @@ export async function executeBlock(block) {
         return api.writeSerialAndWait(final_packet, 2).then(data => {
             console.log("RESP to print:", data.data[1]);
             console.info(asciiToString(data.data[1].slice(2, -1)));
+        });
+    } else if (block.type == "servo_write") {
+        let pin = block.getInputTargetBlock("PIN").getFieldValue("NUM");
+        let value = parseInt(block.getFieldValue("VALUE"));
+        return api.writeSerialAndWait(generators.servoWrite(pin, value)).then(data => {
+            console.log(data);
+        });
+    } else if (block.type == "delay") {
+        let pin = block.getInputTargetBlock("VALUE").getFieldValue("NUM");
+        return api.writeSerialAndWait(generators.servo_stop(pin)).then(data => {
+            console.log(data);
         });
     }
 
