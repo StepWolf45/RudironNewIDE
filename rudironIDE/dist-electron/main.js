@@ -10404,7 +10404,6 @@ let COMMANDS_QUEUE = new Queue();
 ipcMain$1.handle("request-serial-devices", async (event, data) => {
   try {
     const ports = await SerialPort.list();
-    console.log(ports);
     const filteredPorts = ports.filter((port2) => {
       if (port2.vendorId && port2.productId) {
         return port2.vendorId.toLowerCase() === RUDIRON_VID && port2.productId.toLowerCase() === RUDIRON_PID;
@@ -10428,6 +10427,7 @@ ipcMain$1.handle("connect-serial-device", async (event, data) => {
     console.log("[INFO] Port opened callback");
   });
   console.log("[INFO] Flow mode active; Wailting for RX");
+  console.warn(`[IDE] Подкючено к плате Рудирон на порту: ${data}`);
   board_connected = true;
 });
 ipcMain$1.handle("send-serial", async (event, data) => {

@@ -61,6 +61,11 @@ export const categories = [
         <block type="delay"></block>
         <block type="analog_read"></block>
         <block type="digital_read"></block>
+
+        <block type="servo_write"></block>
+        <block type="servo_stop"></block>
+        <block type="servo_read"></block>
+        <block type="get_distance"></block>
      </xml>
   `
 },

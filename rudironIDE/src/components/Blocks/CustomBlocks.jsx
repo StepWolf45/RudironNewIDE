@@ -296,3 +296,94 @@ Blockly.Blocks['analog_read'] = {
     });
   }
 };
+
+
+Blockly.Blocks['servo_write'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "servo_write",
+      "message0": "Установить угол сервы %1 на %2 °",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "PIN",
+          "check": "Number"
+        },
+        {
+          "type": "input_value",
+          "name": "ANGLE",
+          "check": "Number"
+        }
+      ],
+      "output": "Number",
+      "colour": "#90a955",
+      "tooltip": "Повернуть серву на заданный угол"
+    });
+  }
+};
+
+
+Blockly.Blocks['servo_stop'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "servo_stop",
+      "message0": "Остановть серву %1",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "NUM",
+          "check": "Number"
+        }
+      ],
+      "output": "Number",
+      "colour": "#90a955",
+      "tooltip": "Остановить серву"
+    });
+  }
+};
+
+Blockly.Blocks['servo_read'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "servo_read",
+      "message0": "Угол сервы %1",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "NUM",
+          "check": "Number"
+        }
+      ],
+      "output": "Number",
+      "colour": "#90a955",
+      "tooltip": "Записать текущий угол сервы в переменную"
+    });
+  }
+};
+
+
+
+
+Blockly.Blocks['get_distance'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "get_distance",
+      "message0": "Расстояние с дальномера\n t = %1 e = %2",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "TRIG",
+          "check": "Number"
+        },
+        {
+          "type": "input_value",
+          "name": "ECHO",
+          "check": "Number"
+        }
+      ],
+      "output": "Number",
+      "colour": "#f28c57",
+      "tooltip": "Записать расстояние с дальномера в переменную"
+    });
+  }
+};
