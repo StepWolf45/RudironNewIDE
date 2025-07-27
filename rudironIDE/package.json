@@ -12,6 +12,7 @@
     "build:linux": "vite build && electron-builder --linux"
   },
   "dependencies": {
+    "@abandonware/noble": "^1.9.2-26",
     "@ant-design/icons": "^5.6.1",
     "@blockly/dev-tools": "^8.0.12",
     "@blockly/workspace-minimap": "^0.3.1",
@@ -49,6 +50,7 @@
     "docdash": "^2.0.2",
     "electron": "^30.0.1",
     "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^8.57.0",
     "eslint-plugin-jsdoc": "^51.2.3",
     "eslint-plugin-react-hooks": "^4.6.0",

@@ -5,7 +5,8 @@ import path from 'path';
 import fs from 'fs';
 import Store from 'electron-store';
 import Queue from './queue';
-import {printBuffer, parsePinsByType } from './protocol';
+import { printBuffer, parsePinsByType } from './protocol';
+
 
 
 const require = createRequire(import.meta.url);
@@ -20,10 +21,12 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 const { Tray } = require('electron');
 const { SerialPort } = require('serialport');
+const noble = require('@abandonware/noble');
 let board_connected = false;
 
 let tray = null;
 let win: BrowserWindow | null;
+let connection_type = "Serial"; // default
 
 let port: SerialPort | null = null;
 const store = new Store();
@@ -54,13 +57,22 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.mjs'),
             nodeIntegration: false,
             contextIsolation: true,
+            experimentalFeatures: true,
+            enableBlinkFeatures: 'WebBluetooth'
 
         },
     });
+
     win.maximize()
     win.removeMenu();
     win.webContents.on('did-finish-load', () => {
         win?.webContents.send('main-process-message', (new Date()).toLocaleString());
+    });
+    win.webContents.openDevTools();
+
+    win.once('ready-to-show', () => {
+        win.show();
+        win.focus();
     });
 
     if (VITE_DEV_SERVER_URL) {
@@ -158,6 +170,11 @@ app.on('ready', () => {
     } catch (error) {
         console.error('Failed to create tray icon:', error);
     }
+    if (process.platform === 'linux') {
+        app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
+    } else {
+        app.commandLine.appendSwitch('enable-web-bluetooth', true);
+    }
 
     require('electron-react-titlebar/main').initialize();
 
@@ -189,6 +206,7 @@ app.on('activate', () => {
     }
 });
 
+
 app.whenReady().then(createWindow);
 
 // Serial part
@@ -204,7 +222,7 @@ ipcMain.handle('request-serial-devices', async (event, data) => {
     try {
         const ports = await SerialPort.list();  // With trash
         const filteredPorts = ports.filter(port => {
-            if (port.vendorId && port.productId){
+            if (port.vendorId && port.productId) {
                 return port.vendorId.toLowerCase() === RUDIRON_VID && port.productId.toLowerCase() === RUDIRON_PID;
             }
         });
@@ -218,7 +236,7 @@ ipcMain.handle('request-serial-devices', async (event, data) => {
 });
 
 ipcMain.handle('connect-serial-device', async (event, data) => {
-    
+
     console.log(`[INFO] Connecting to: ${data}`)
     port = new SerialPort({
         path: data,
@@ -233,7 +251,7 @@ ipcMain.handle('connect-serial-device', async (event, data) => {
     });
 
     console.log("[INFO] Flow mode active; Wailting for RX");
-    console.warn(`[IDE] Подкючено к плате Рудирон на порту: ${data}`)
+    console.info(`[IDE] Подкючено к плате Рудирон на порту: ${data}`)
     board_connected = true;
 
     // test_34
@@ -357,4 +375,34 @@ ipcMain.handle('send-and-wait', async (event, command, wait_packets_cnt) => {
 });
 
 
+ipcMain.on('scan-bluetooth', (event) => {
+    device.listPairedDevices(devices => {
+        event.sender.send('bluetooth-devices', devices);
+    });
+});
 
+
+function startScan(callback) {
+    noble.on('stateChange', async (state) => {
+        if (state === 'poweredOn') {
+            await noble.startScanningAsync([], false);
+        } else {
+            await noble.stopScanningAsync();
+        }
+    });
+
+    noble.on('discover', (peripheral) => {
+        const device = {
+            id: peripheral.id,
+            name: peripheral.advertisement.localName || 'Unknown',
+            rssi: peripheral.rssi
+        };
+        callback(device);
+    });
+}
+
+ipcMain.on('start-bluetooth-scan', (event) => {
+    startScan((device) => {
+        console.log(device);
+    });
+});

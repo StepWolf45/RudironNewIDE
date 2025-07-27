@@ -377,6 +377,9 @@ contextBridge.exposeInMainWorld('board_connection', {
     checkConnected: () => ipcRenderer.invoke('check_connected')
 });
 
+contextBridge.exposeInMainWorld('bluetoothAPI', {
+    scan: () => ipcRenderer.send('start-bluetooth-scan'),
+});
 
 declare global {
     interface Window {
