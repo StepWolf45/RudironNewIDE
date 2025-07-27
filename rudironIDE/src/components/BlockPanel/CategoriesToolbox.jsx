@@ -8,7 +8,7 @@ import cat4 from '/categories/RoundCube-Orange-Glossy.svg';
 export const categories = [
   { 
     id: '1', 
-    name: 'Конструкции',
+    name: 'Управление',
     image: cat4,
     toolboxXML: `
       <xml>
@@ -28,7 +28,7 @@ export const categories = [
         <block type="controls_ifelse" colour="#FFA500"></block>
         <block type="logic_compare"></block>
         <block type="logic_operation"></block>
-        <block type="logic_boolean"></block>
+        <block type="logic_negate"></block>
         <block type="math_arithmetic"></block>
       </xml>
     `
@@ -44,6 +44,7 @@ export const categories = [
         <block type="variables_get"></block>
         <block type="math_number"></block>
         <block type="text"></block>
+        <block type="logic_boolean"></block>
       </xml>
     `
   },

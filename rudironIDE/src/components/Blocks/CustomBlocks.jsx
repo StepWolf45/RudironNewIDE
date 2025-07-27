@@ -50,6 +50,26 @@ Blockly.Blocks['start'] = {
   }
 };
 
+Blockly.Blocks['text'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "text",
+      "message0": "❞%1❞",
+      "args0": [
+        {
+          "type": "field_input",
+          "name": "TEXT",
+          "text": ""
+        }
+      ],
+      "output": "String",
+      "colour": "#f08e32",
+      "tooltip": "Текстовая строка",
+      "helpUrl": ""
+    });
+  }
+};
+
 Blockly.Blocks['write_text'] = {
   init: function () {
     this.jsonInit({
@@ -252,7 +272,7 @@ Blockly.Blocks['digital_read'] = {
         }
       ],
       "output": "Number",
-      "colour": "#1E90FF",
+      "colour": "#224be0",
       "tooltip": "Чтение цифрового пина"
     });
   }
@@ -271,7 +291,7 @@ Blockly.Blocks['analog_read'] = {
         }
       ],
       "output": "Number",
-      "colour": "#1E90FF",
+      "colour": "#224be0",
       "tooltip": "Чтение аналог. пина"
     });
   }
