@@ -63,7 +63,7 @@ Blockly.Blocks['text'] = {
         }
       ],
       "output": "String",
-      "colour": "#f08e32",
+      "colour": "54b352",
       "tooltip": "Текстовая строка",
       "helpUrl": ""
     });
@@ -249,8 +249,6 @@ Blockly.Blocks['analog_write'] = {
         } else {
           this.setWarningText(null); 
         }
-      } else if (pinBlock) {
-        this.setWarningText("К пину можно подключить только числовое значение.");
       } else {
         this.setWarningText(null);
       }
@@ -315,8 +313,10 @@ Blockly.Blocks['servo_write'] = {
           "check": "Number"
         }
       ],
-      "output": "Number",
-      "colour": "#90a955",
+      "previousStatement": true,
+      "nextStatement": true,
+      "inputsInline": true, 
+      "colour": "#f28c57",
       "tooltip": "Повернуть серву на заданный угол"
     });
   }
@@ -327,7 +327,7 @@ Blockly.Blocks['servo_stop'] = {
   init: function () {
     this.jsonInit({
       "type": "servo_stop",
-      "message0": "Остановть серву %1",
+      "message0": "Остановить серву %1",
       "args0": [
         {
           "type": "input_value",
@@ -335,9 +335,12 @@ Blockly.Blocks['servo_stop'] = {
           "check": "Number"
         }
       ],
-      "output": "Number",
-      "colour": "#90a955",
+      "previousStatement": true,
+      "nextStatement": true,
+      "inputsInline": true, 
+      "colour": "#f28c57",
       "tooltip": "Остановить серву"
+      
     });
   }
 };
@@ -355,7 +358,7 @@ Blockly.Blocks['servo_read'] = {
         }
       ],
       "output": "Number",
-      "colour": "#90a955",
+      "colour": "#f28c57",
       "tooltip": "Записать текущий угол сервы в переменную"
     });
   }
@@ -368,7 +371,7 @@ Blockly.Blocks['get_distance'] = {
   init: function () {
     this.jsonInit({
       "type": "get_distance",
-      "message0": "Расстояние с дальномера\n t = %1 e = %2",
+      "message0": "Расстояние с дальномера\n trig = %1 echo = %2",
       "args0": [
         {
           "type": "input_value",
@@ -382,7 +385,7 @@ Blockly.Blocks['get_distance'] = {
         }
       ],
       "output": "Number",
-      "colour": "#f28c57",
+      "colour": "#90a955",
       "tooltip": "Записать расстояние с дальномера в переменную"
     });
   }

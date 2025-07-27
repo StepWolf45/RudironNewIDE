@@ -2,6 +2,7 @@ import cat1 from '/categories/RoundCube-Blue-Glossy.png';
 import cat2 from '/categories/Cube-Yellow-Glossy.png';
 import cat3 from '/categories/RoundCube-Blue-Glossy_2.svg';
 import cat4 from '/categories/RoundCube-Orange-Glossy.svg';
+import cat5 from '/categories/Cube-Orange (1).png';
 
 
 
@@ -61,14 +62,22 @@ export const categories = [
         <block type="delay"></block>
         <block type="analog_read"></block>
         <block type="digital_read"></block>
-
-        <block type="servo_write"></block>
-        <block type="servo_stop"></block>
-        <block type="servo_read"></block>
-        <block type="get_distance"></block>
      </xml>
   `
-},
+  },
+  {
+    id: '5', 
+    name: 'Датчики',
+    image: cat5,
+    toolboxXML: `
+      <xml>
+          <block type="servo_write"></block>
+          <block type="servo_stop"></block>
+          <block type="servo_read"></block>
+          <block type="get_distance"></block>
+       </xml>
+    `
+  },
   
 ];
 

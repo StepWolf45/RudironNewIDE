@@ -74,12 +74,7 @@
       "icon": "public/logo_bar.png"
     },
     "linux": {
-      "target": [
-        "AppImage",
-        "deb",
-        "rpm",
-        "tar.gz"
-      ],
+      "target": ["AppImage"],
       "icon": "public/logo_bar.png"
     },
     "nsis": {
