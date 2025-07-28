@@ -27,6 +27,7 @@
     "electron-react-titlebar": "^1.2.1",
     "electron-store": "^10.0.1",
     "gh-pages": "^6.3.0",
+    "noble-winrt": "^0.1.1",
     "normalize.css": "^8.0.1",
     "react": "^18.3.1",
     "react-blockly": "^9.0.0",
@@ -76,7 +77,9 @@
       "icon": "public/logo_bar.png"
     },
     "linux": {
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "icon": "public/logo_bar.png"
     },
     "nsis": {
