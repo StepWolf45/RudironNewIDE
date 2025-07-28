@@ -21,7 +21,7 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 const { Tray } = require('electron');
 const { SerialPort } = require('serialport');
-// const noble = require('@abandonware/noble');
+const noble = require('@abandonware/noble');
 let board_connected = false;
 
 let tray = null;
@@ -57,6 +57,7 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.mjs'),
             nodeIntegration: false,
             contextIsolation: true,
+            experimentalFeatures: true,
             enableBlinkFeatures: 'WebBluetooth'
 
         },
