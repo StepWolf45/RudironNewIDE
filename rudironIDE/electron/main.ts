@@ -75,6 +75,8 @@ function createWindow() {
         win.focus();
     });
 
+
+
     if (VITE_DEV_SERVER_URL) {
         win.loadURL(VITE_DEV_SERVER_URL);
     } else {
@@ -319,6 +321,7 @@ ipcMain.handle('send-serial', async (event, data) => {
 
 })
 
+
 function sendCommand(command, wait_packets_cnt = 1) {
     return new Promise((resolve, reject) => {
         let timeout;
@@ -368,6 +371,9 @@ ipcMain.handle('send-and-wait', async (event, command, wait_packets_cnt) => {
         // Start signature
         let header = Buffer.from([0x72, 0x75, 0x06, 0x64]);
         const response = await sendCommand(Buffer.concat([header, command]), wait_packets_cnt);
+
+        // wait before new send
+        setTimeout(() => {}, 250);
         return { success: true, data: response };
     } catch (error) {
         return { success: false, error };
