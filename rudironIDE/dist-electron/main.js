@@ -2869,7 +2869,7 @@ const keyword_1 = keyword;
 const subschema_1 = subschema;
 const codegen_1$r = codegen;
 const names_1$6 = names$1;
-const resolve_1$2 = resolve$2;
+const resolve_1$1 = resolve$2;
 const util_1$p = util;
 const errors_1 = errors;
 function validateFunctionCode(it) {
@@ -2996,7 +2996,7 @@ function checkNoDefault(it) {
 function updateContext(it) {
   const schId = it.schema[it.opts.schemaId];
   if (schId)
-    it.baseId = (0, resolve_1$2.resolveUrl)(it.opts.uriResolver, it.baseId, schId);
+    it.baseId = (0, resolve_1$1.resolveUrl)(it.opts.uriResolver, it.baseId, schId);
 }
 function checkAsyncSchema(it) {
   if (it.schema.$async && !it.schemaEnv.$async)
@@ -3013,9 +3013,9 @@ function commentKeyword({ gen, schemaEnv, schema, errSchemaPath, opts }) {
   }
 }
 function returnResults(it) {
-  const { gen, schemaEnv, validateName, ValidationError: ValidationError2, opts } = it;
+  const { gen, schemaEnv, validateName, ValidationError, opts } = it;
   if (schemaEnv.$async) {
-    gen.if((0, codegen_1$r._)`${names_1$6.default.errors} === 0`, () => gen.return(names_1$6.default.data), () => gen.throw((0, codegen_1$r._)`new ${ValidationError2}(${names_1$6.default.vErrors})`));
+    gen.if((0, codegen_1$r._)`${names_1$6.default.errors} === 0`, () => gen.return(names_1$6.default.data), () => gen.throw((0, codegen_1$r._)`new ${ValidationError}(${names_1$6.default.vErrors})`));
   } else {
     gen.assign((0, codegen_1$r._)`${validateName}.errors`, names_1$6.default.vErrors);
     if (opts.unevaluated)
@@ -3359,31 +3359,43 @@ function getData($data, { dataLevel, dataNames, dataPathArr }) {
 }
 validate.getData = getData;
 var validation_error = {};
-Object.defineProperty(validation_error, "__esModule", { value: true });
-class ValidationError extends Error {
-  constructor(errors2) {
-    super("validation failed");
-    this.errors = errors2;
-    this.ajv = this.validation = true;
+var hasRequiredValidation_error;
+function requireValidation_error() {
+  if (hasRequiredValidation_error) return validation_error;
+  hasRequiredValidation_error = 1;
+  Object.defineProperty(validation_error, "__esModule", { value: true });
+  class ValidationError extends Error {
+    constructor(errors2) {
+      super("validation failed");
+      this.errors = errors2;
+      this.ajv = this.validation = true;
+    }
   }
+  validation_error.default = ValidationError;
+  return validation_error;
 }
-validation_error.default = ValidationError;
 var ref_error = {};
-Object.defineProperty(ref_error, "__esModule", { value: true });
-const resolve_1$1 = resolve$2;
-class MissingRefError extends Error {
-  constructor(resolver, baseId, ref2, msg) {
-    super(msg || `can't resolve reference ${ref2} from id ${baseId}`);
-    this.missingRef = (0, resolve_1$1.resolveUrl)(resolver, baseId, ref2);
-    this.missingSchema = (0, resolve_1$1.normalizeId)((0, resolve_1$1.getFullPath)(resolver, this.missingRef));
+var hasRequiredRef_error;
+function requireRef_error() {
+  if (hasRequiredRef_error) return ref_error;
+  hasRequiredRef_error = 1;
+  Object.defineProperty(ref_error, "__esModule", { value: true });
+  const resolve_12 = resolve$2;
+  class MissingRefError extends Error {
+    constructor(resolver, baseId, ref2, msg) {
+      super(msg || `can't resolve reference ${ref2} from id ${baseId}`);
+      this.missingRef = (0, resolve_12.resolveUrl)(resolver, baseId, ref2);
+      this.missingSchema = (0, resolve_12.normalizeId)((0, resolve_12.getFullPath)(resolver, this.missingRef));
+    }
   }
+  ref_error.default = MissingRefError;
+  return ref_error;
 }
-ref_error.default = MissingRefError;
 var compile = {};
 Object.defineProperty(compile, "__esModule", { value: true });
 compile.resolveSchema = compile.getCompilingSchema = compile.resolveRef = compile.compileSchema = compile.SchemaEnv = void 0;
 const codegen_1$q = codegen;
-const validation_error_1 = validation_error;
+const validation_error_1 = requireValidation_error();
 const names_1$5 = names$1;
 const resolve_1 = resolve$2;
 const util_1$o = util;
@@ -4297,8 +4309,8 @@ uri$1.default = uri;
   Object.defineProperty(exports, "CodeGen", { enumerable: true, get: function() {
     return codegen_12.CodeGen;
   } });
-  const validation_error_12 = validation_error;
-  const ref_error_12 = ref_error;
+  const validation_error_12 = requireValidation_error();
+  const ref_error_12 = requireRef_error();
   const rules_12 = rules;
   const compile_12 = compile;
   const codegen_2 = codegen;
@@ -4891,7 +4903,7 @@ id.default = def$B;
 var ref = {};
 Object.defineProperty(ref, "__esModule", { value: true });
 ref.callRef = ref.getValidate = void 0;
-const ref_error_1$1 = ref_error;
+const ref_error_1$1 = requireRef_error();
 const code_1$8 = code;
 const codegen_1$p = codegen;
 const names_1$4 = names$1;
@@ -6606,7 +6618,7 @@ Object.defineProperty(discriminator, "__esModule", { value: true });
 const codegen_1 = codegen;
 const types_1 = types;
 const compile_1 = compile;
-const ref_error_1 = ref_error;
+const ref_error_1 = requireRef_error();
 const util_1 = util;
 const error = {
   message: ({ params: { discrError, tagName } }) => discrError === types_1.DiscrError.Tag ? `tag "${tagName}" must be string` : `value of tag "${tagName}" must be in oneOf`,
@@ -7306,11 +7318,11 @@ jsonSchema202012.default = addMetaSchema2020;
   Object.defineProperty(exports, "CodeGen", { enumerable: true, get: function() {
     return codegen_12.CodeGen;
   } });
-  var validation_error_12 = validation_error;
+  var validation_error_12 = requireValidation_error();
   Object.defineProperty(exports, "ValidationError", { enumerable: true, get: function() {
     return validation_error_12.default;
   } });
-  var ref_error_12 = ref_error;
+  var ref_error_12 = requireRef_error();
   Object.defineProperty(exports, "MissingRefError", { enumerable: true, get: function() {
     return ref_error_12.default;
   } });
@@ -7837,11 +7849,11 @@ const require$$3 = {
   Object.defineProperty(exports, "CodeGen", { enumerable: true, get: function() {
     return codegen_12.CodeGen;
   } });
-  var validation_error_12 = validation_error;
+  var validation_error_12 = requireValidation_error();
   Object.defineProperty(exports, "ValidationError", { enumerable: true, get: function() {
     return validation_error_12.default;
   } });
-  var ref_error_12 = ref_error;
+  var ref_error_12 = requireRef_error();
   Object.defineProperty(exports, "MissingRefError", { enumerable: true, get: function() {
     return ref_error_12.default;
   } });
@@ -10261,6 +10273,7 @@ const RENDERER_DIST = path$1.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path$1.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 const { Tray } = require2("electron");
 const { SerialPort } = require2("serialport");
+const noble = require2("@abandonware/noble");
 let board_connected = false;
 let tray = null;
 let win;
@@ -10287,6 +10300,7 @@ function createWindow() {
       preload: path$1.join(__dirname, "preload.mjs"),
       nodeIntegration: false,
       contextIsolation: true,
+      experimentalFeatures: true,
       enableBlinkFeatures: "WebBluetooth"
     }
   });
