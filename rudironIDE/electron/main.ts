@@ -21,7 +21,7 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 const { Tray } = require('electron');
 const { SerialPort } = require('serialport');
-const noble = require('@abandonware/noble');
+// const noble = require('@abandonware/noble');
 let board_connected = false;
 
 let tray = null;
@@ -389,22 +389,22 @@ ipcMain.on('scan-bluetooth', (event) => {
 
 
 function startScan(callback) {
-    noble.on('stateChange', async (state) => {
-        if (state === 'poweredOn') {
-            await noble.startScanningAsync([], false);
-        } else {
-            await noble.stopScanningAsync();
-        }
-    });
+    // noble.on('stateChange', async (state) => {
+    //     if (state === 'poweredOn') {
+    //         await noble.startScanningAsync([], false);
+    //     } else {
+    //         await noble.stopScanningAsync();
+    //     }
+    // });
 
-    noble.on('discover', (peripheral) => {
-        const device = {
-            id: peripheral.id,
-            name: peripheral.advertisement.localName || 'Unknown',
-            rssi: peripheral.rssi
-        };
-        callback(device);
-    });
+    // noble.on('discover', (peripheral) => {
+    //     const device = {
+    //         id: peripheral.id,
+    //         name: peripheral.advertisement.localName || 'Unknown',
+    //         rssi: peripheral.rssi
+    //     };
+    //     callback(device);
+    // });
 }
 
 ipcMain.on('start-bluetooth-scan', (event) => {
