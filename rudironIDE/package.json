@@ -12,7 +12,6 @@
     "build:linux": "vite build && electron-builder --linux"
   },
   "dependencies": {
-    "@abandonware/noble": "^1.9.2-26",
     "@ant-design/icons": "^5.6.1",
     "@blockly/dev-tools": "^8.0.12",
     "@blockly/workspace-minimap": "^0.3.1",

@@ -68,7 +68,8 @@ function createWindow() {
     win.webContents.on('did-finish-load', () => {
         win?.webContents.send('main-process-message', (new Date()).toLocaleString());
     });
-    win.webContents.openDevTools();
+    // Консоль разработчика
+    // win.webContents.openDevTools();
 
     win.once('ready-to-show', () => {
         win.show();
